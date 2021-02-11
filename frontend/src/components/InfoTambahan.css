@@ -1,0 +1,25 @@
+.title {
+  text-align: center;
+  color: brown;
+}
+
+.card{
+  width: 100%;
+  height: 200px;
+  background: #333;
+  color: white;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slick-prev {
+  left: 3% !important;
+  z-index: 1;
+}
+
+.slick-next {
+  right: 3% !important;
+  z-index: 1;
+}
