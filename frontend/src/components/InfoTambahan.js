@@ -1,30 +1,46 @@
 import './InfoTambahan.css';
-import Slider from "react-slick";
-import Card from './Card';
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
 
+import Carousel from 'react-material-ui-carousel'
+import {Paper, Button} from '@material-ui/core'
 
-function InfoTambahan() {
+function InfoTambahan()
+{
   const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+    navButtonsAlwaysVisible: true,
+    animation: "slide",
+  }
+  var items = [
+      {
+          name: "Random Name #1",
+          description: "Probably the most random thing you have ever seen!"
+      },
+      {
+          name: "Random Name #2",
+          description: "Hello World!"
+      }
+  ]
 
   return (
-    <div className="Slider">
-      <Slider {...settings}>
-        <Card number="1"/>
-        <Card number="2"/>
-        <Card number="2"/>
-        <Card number="3"/>
-        <Card number="4"/>
-      </Slider>   
-    </div>
-  );
+      <Carousel {...settings}>
+          {
+              items.map( (item, i) => <Item key={i} item={item} /> )
+          }
+      </Carousel>
+  )
+}
+
+function Item(props)
+{
+    return (
+        <Paper variant="outlined">
+            <h2>{props.item.name}</h2>
+            <p>{props.item.description}</p>
+
+            <Button className="CheckButton" variant="outlined">
+                Check it out!
+            </Button>
+        </Paper>
+    )
 }
 
 export default InfoTambahan;
