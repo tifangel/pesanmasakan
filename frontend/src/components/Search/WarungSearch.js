@@ -39,9 +39,6 @@ const WarungSearch = ({
         data
     }) => {
 
-    const { assetsURL } = config;
-    const { image } = assetsURL;
-
     let history = useHistory();
     const handleShowItem = (event) => {
         event.preventDefault();
