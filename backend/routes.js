@@ -10,6 +10,9 @@ module.exports = function(app) {
     app.route('/daftarwarung')
         .get(pesanmasakan.daftar_warung);
 
+    app.route('/daftarwarung/:id')
+        .get(pesanmasakan.lihat_warung);
+
     app.route('/cariwarung')
         .get(pesanmasakan.cari_warung);
 };
