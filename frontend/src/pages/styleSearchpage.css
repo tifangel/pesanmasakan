@@ -1,0 +1,23 @@
+.my-pagination {
+    width: 60%;
+    align-items: center;
+    color: #FDAF33;
+    z-index: 6;
+}
+
+.my-pagination span {
+    transition: all 0.4s;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 10px;
+    color: black!important;
+}
+.my-pagination span:hover {
+    transform: scale(1.1);
+    background-color: grey;
+    border-radius: 25%;
+}
+
+.my-pagination .current-page {
+    color: #FDAF33!important;
+}

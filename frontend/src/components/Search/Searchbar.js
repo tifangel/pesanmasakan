@@ -37,9 +37,9 @@ const useStyles = makeStyles((theme) => ({
     iconButton2: {
         padding: 10,
     },
-  }));
+}));
 
-const NavMain = (props) => {
+const Searchbar = (props) => {
 
     const [namaitem, setNamaitem] = useState('');
     const [lokasi, setLokasi] = useState('');
@@ -73,31 +73,15 @@ const NavMain = (props) => {
     return(
         <React.Fragment>
             <Container>
-                <h1>PESAN MASAKAN</h1>
                 <form onSubmit={handleSearch}>
                     <Paper className={classes.root}>
                         <LocationOnIcon className={classes.iconButton}/>
                         <InputBase
                             className={classes.input}
-                            placeholder="Your Location"
+                            placeholder="Location"
                             onChange={(e)=>{setLokasi(e.target.value)}}
                             // inputProps={{ 'aria-label': 'description' }}
                         />
-                        <IconButton 
-                            type="submit" 
-                            className={classes.iconButton2} 
-                            aria-label="search"
-                            >
-                                <SearchIcon />
-                        </IconButton>
-                        <Divider className={classes.divider} orientation="vertical" />
-                        <IconButton 
-                            type="button" 
-                            className={classes.iconButton2} 
-                            aria-label="search"
-                            >
-                                <MyLocationIcon/>
-                        </IconButton>
                     </Paper>
                     <Paper className={classes.root}>
                         <SearchIcon className={classes.iconButton}/>
@@ -114,4 +98,4 @@ const NavMain = (props) => {
     );
 }
 
-export default NavMain;
+export default Searchbar;

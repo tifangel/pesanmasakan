@@ -1,11 +1,11 @@
 import React from 'react'
-import NavMain from '../components/Navbar/NavMain'
+import Searchbar from '../components/Search/Searchbar'
 
 const HomePage = (props) => {
     
     return(
         <div>
-            <NavMain/>
+            <Searchbar/>
         </div>
     );
 }

@@ -9,15 +9,6 @@ export const getWarungList = async (datasearch, datalocation) =>
         return response
     }
 
-export const getWarungListLimit = async (datasearch) => 
-    {
-        // const url = `${defaultAPIURL}/cariwarunglimit?title=${datasearch}&location=${datalocation}&offset=${offset}`
-        const url = `${defaultAPIURL}/cariwarunglimit`
-        const response = await post(url,datasearch)
-
-        return response
-    }
-
 export const getAllWarungList = async () => 
     {
         const url = `${defaultAPIURL}/daftarwarung`

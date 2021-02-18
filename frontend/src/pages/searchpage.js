@@ -2,14 +2,12 @@ import React, {useState, useEffect} from 'react';
 import queryString from 'query-string';
 
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 
-import NavMain from '../components/Navbar/NavMain';
+import Searchbar from '../components/Search/Searchbar';
 import {getWarungList, getWarungListLimit} from '../resource';
 import WarungSearch from '../components/Search/WarungSearch';
+import './styleSearchpage.css'
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -20,11 +18,9 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
     },
     grid: {
-        width: '25%',
+        
     },
     button: {
         width: '100%',
@@ -39,79 +35,100 @@ const SearchPage = (props) => {
     const [datalocation, setDataLocation] = useState('');
     const [result,setResult] = useState([]);
 
-    const [allResult, setAllResult] = useState([]);
-    const [offset, setOffset] = useState(0);
-    // const [limit, setLimit] = useState(3);
-
+    const [currentPage,
+        setCurrentPage] = useState(1);
+    const postPerPage = 3;
+    
     useEffect(() => {
-        
-        loadWarungList();
-
-    }, [props.location,datasearch]);
-
-    async function loadWarungList(){
-        try{
-            let params = queryString.parse(props.location.search);
-            
-            setDataSearch(params.query);
-            setDataLocation(params.location);
-            
-            let responseAll = await getWarungList(datasearch, datalocation);
-
-            const data = {title:datasearch, location:datalocation, offset:offset};
-            let response = await getWarungListLimit(data);
-            
-            if (response.status == 200 && responseAll.status == 200) {
-                setAllResult(responseAll.data.values);
-                console.log("Jumlah all result = ", allResult.length);
-                console.log("Jumlah offset = ",offset);
+        async function loadWarungList(){
+            try{
+                let params = queryString.parse(props.location.search);
                 
-                // let newResult = result.concat(response.data.values.filter((item) => result.indexOf(item) < 0));
-                let newResult = result.concat(response.data.values);
-                setResult(newResult);
+                setDataSearch(params.query);
+                setDataLocation(params.location);
+    
+                let response = await getWarungList(datasearch, datalocation);
+                
+                if (response.status == 200) {
+                    setResult(response.data.values);
+                }
+    
             }
+            catch (e) {
+                console.log(e);
+            }
+        }
 
-        }
-        catch (e) {
-            console.log(e);
-        }
+        loadWarungList();
+    }, [props.location,datasearch,datalocation]);
+
+
+    console.log(result.length);
+    let lastIndex = currentPage * postPerPage;
+    let firstIndex = lastIndex - postPerPage;
+
+    let currentResult = [];
+
+    if (result.length) {
+        currentResult = result.slice(firstIndex, lastIndex);
     }
 
-    // let offset = 0;
-    const onLoadMore = () => {
-        // offset += 3;
-
-        let skip = offset+3;
-        setOffset(3);
-
-        if(offset < allResult.length){
-
-            loadWarungList();
-        }
+    let pageNumber = [];
+    for (let i = 1; i <= Math.ceil(result.length / postPerPage); i++) {
+        pageNumber.push(i);
     }
 
     const classes = useStyles();
 
     return(
         <React.Fragment>
-            <NavMain/>
+            <Searchbar/>
             <Container className={classes.root}>
                 <Grid container justify="center" spacing={2}>
-                    {result.map((item) => {
+                    {currentResult.map((item) => {
                         return(
-                            <Grid className={classes.grid} item md={3} key={item.id}>
-                                <Paper className={classes.paper}>
+                            <Grid className={classes.grid} item xs={12} sm={6} md={4} key={item.id}>
                                     <WarungSearch
                                         data={item}
                                     />
-                                </Paper>
                             </Grid>
                         );
                     })}
                 </Grid>
-                <Button variant="outlined" className={classes.button} onClick={onLoadMore}>
-                    Load more
-                </Button>
+                {result.length === 0 && <div style={{
+                            paddingTop: "150px",
+                            textAlign: "center"
+                }}>Kosong</div>}
+                {currentResult.length
+                    ? 
+                    <div className="my-pagination" style={{
+                        paddingTop: "50px"
+                    }}>
+                        <span
+                            onClick={() => setCurrentPage(currentPage > 1
+                                ? currentPage - 1
+                                : currentPage)}>
+                            &#60;
+                        </span>
+                        {pageNumber.map(item => {
+                            return (
+                                <span
+                                    onClick={() => setCurrentPage(item)}
+                                    key={item}
+                                    className={`page-number ${currentPage === item && `current-page`}`}>{item}
+                                </span>
+                            )
+                        })}
+                        <span
+                            onClick={() => setCurrentPage(currentPage < currentResult.length - 1
+                            ? currentPage + 1
+                            : currentPage)}>
+                            &#62;
+                        </span>
+                    </div>
+                    : 
+                    null
+                }
             </Container>
         </React.Fragment>
     );
