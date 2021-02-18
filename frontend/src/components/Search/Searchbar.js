@@ -16,8 +16,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      marginTop: 25,
-      padding: '5px',
+      marginTop: 20,
+      padding: 10,
       display: 'flex',
       alignItems: 'center',
       width: '100%',
@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(3),
     },
     iconButton2: {
-        padding: 10,
+        padding: 1,
+        margin: 1,
     },
 }));
 
@@ -59,6 +60,7 @@ const Searchbar = (props) => {
     }, [paramQuery,paramLocation]);
     
     const handleSearch = (event) => {
+        console.log("Kamu kenapa T_T");
         event.preventDefault();
         let querySearch = namaitem? namaitem : paramQuery;
         let locationSearch = lokasi? lokasi : paramLocation;
@@ -82,6 +84,13 @@ const Searchbar = (props) => {
                             onChange={(e)=>{setLokasi(e.target.value)}}
                             // inputProps={{ 'aria-label': 'description' }}
                         />
+                        <IconButton 
+                            type="submit" 
+                            className={classes.iconButton2} 
+                            aria-label="search"
+                            >
+                            <SearchIcon />
+                        </IconButton>
                     </Paper>
                     <Paper className={classes.root}>
                         <SearchIcon className={classes.iconButton}/>

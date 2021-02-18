@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
       
     },
     media: {
-      
+        height: 200,
     },
     card: {
         marginTop: theme.spacing(1),
