@@ -55,7 +55,7 @@ const InfoPage = (props) => {
                 Nama Warung: 
                 </h1>
                 <p>
-                {result.id}
+                {result.nama}
                 </p>
             </Paper>
             </Grid>
