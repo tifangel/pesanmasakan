@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const InfoPage = (props) => {
     const [id, setID] = useState(0);
-    const [result,setResult] = useState([]);
+    const [result, setResult] = useState([]);
     const classes = useStyles();
 
     useEffect(() => {
@@ -30,9 +30,10 @@ const InfoPage = (props) => {
                 setID(1);
     
                 let response = await getWarung(id);
-                
+                console.log(response.data.values[0]);
                 if (response.status == 200) {
-                    setResult(response.data.values[0]);
+                    setResult(response.data.values)
+                    console.log(result);
                 }
     
             }
@@ -42,7 +43,7 @@ const InfoPage = (props) => {
         }
 
         loadWarung();
-    }, [id]);
+    }, [id, result]);
     return (
         <div className={classes.root}>
         <div class="image">
@@ -55,7 +56,7 @@ const InfoPage = (props) => {
                 Nama Warung: 
                 </h1>
                 <p>
-                {result.nama}
+                {result[0].nama}
                 </p>
             </Paper>
             </Grid>
@@ -65,7 +66,7 @@ const InfoPage = (props) => {
                 Alamat Warung: 
                 </h1>
                 <p>
-                {result.alamat}
+                {result[0].alamat}
                 </p>
             </Paper>
             </Grid>
@@ -75,7 +76,7 @@ const InfoPage = (props) => {
                 Kategori Warung: 
                 </h1>
                 <p>
-                {result.kategori}
+                {result[0].kategori}
                 </p>
             </Paper>
             </Grid>
