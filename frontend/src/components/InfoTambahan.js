@@ -32,7 +32,7 @@ function InfoTambahan()
 function Item(props)
 {
     return (
-        <Paper variant="outlined">
+        <Paper variant="outlined" className="Carousel">
             <h2>{props.item.name}</h2>
             <p>{props.item.description}</p>
 
