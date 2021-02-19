@@ -16,3 +16,11 @@ export const getAllWarungList = async () =>
 
         return response
     }
+
+export const getWarung = async (id) =>
+    {
+        const url = `${defaultAPIURL}/daftarwarung/${id}`
+        const response = await get(url)
+
+        return response
+    }

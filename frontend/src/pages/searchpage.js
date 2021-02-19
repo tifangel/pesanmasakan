@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 import queryString from 'query-string';
 
 import Grid from '@material-ui/core/Grid';
@@ -38,6 +39,8 @@ const SearchPage = (props) => {
     const [currentPage,
         setCurrentPage] = useState(1);
     const postPerPage = 3;
+
+    let history = useHistory();
     
     useEffect(() => {
         async function loadWarungList(){
@@ -87,7 +90,14 @@ const SearchPage = (props) => {
                 <Grid container justify="center" spacing={2}>
                     {currentResult.map((item) => {
                         return(
-                            <Grid className={classes.grid} item xs={12} sm={6} md={4} key={item.id}>
+                            <Grid className={classes.grid} item xs={12} sm={6} md={4} key={item.id} onClick={
+                                ()=>{
+                                    history.push({
+                                        pathname : `/warung/${item.id}`,
+                                        state: { id: item.id }
+                                    });
+                                }
+                            }>
                                     <WarungSearch
                                         data={item}
                                     />
