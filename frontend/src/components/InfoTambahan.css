@@ -3,11 +3,12 @@
   color: brown;
 }
 
-.MuiPaper-root{
+.MuiPaper-root.Carousel{
   padding: 50px 100px;
+  border: 0px 24px;
 }
 
-.Carousel-root-1{
+.Carousel-root-23{
   max-width: 1280px;
   width: 100%;
   display: block;
