@@ -21,7 +21,7 @@ const name = "Warung 1";
 const address = "Jalan-jalan";
 const category = "Makanan";
 
-export default function CenteredGrid() {
+function InformasiWarung() {
   const classes = useStyles();
 
   return (
@@ -64,3 +64,5 @@ export default function CenteredGrid() {
     </div>
   );
 }
+
+export default InformasiWarung;
