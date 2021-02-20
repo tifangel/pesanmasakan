@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Searchbar from '../components/Search/Searchbar'
 import WarungList from '../components/WarungList/WarungList';
 import {getAllWarungList} from "../resource/index"
+import Filter from '../components/filter/Filter'
 
 const HomePage = (props) => {
     

@@ -6,8 +6,8 @@ import Container from '@material-ui/core/Container';
 
 import Searchbar from '../components/Search/Searchbar';
 import {getWarungList, getWarungListLimit} from '../resource';
-import WarungItem from '../components/WarungList/WarungItem';
 import WarungList from '../components/WarungList/WarungList';
+import Filter from '../components/filter/Filter';
 import './styleSearchpage.css'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,10 +34,13 @@ const SearchPage = (props) => {
 
     const [datasearch, setDataSearch] = useState('');
     const [datalocation, setDataLocation] = useState('');
-    const [result,setResult] = useState([]);
 
-    const [currentPage,
-        setCurrentPage] = useState(1);
+    const [result,setResult] = useState([]); // the filtered data
+    const [filtered, setFiltered] = useState([]);
+    const [fullData, setFullData] = useState([]); // the unfiltered data
+    const [length, setLength] = useState(0);
+
+    const [currentPage, setCurrentPage] = useState(1);
     const postPerPage = 3;
     
     useEffect(() => {
@@ -52,19 +55,28 @@ const SearchPage = (props) => {
                 
                 if (response.status === 200) {
                     setResult(response.data.values);
+                    setFullData(response.data.values);
+                    setLength(response.data.values.length);
                 }
-    
             }
             catch (e) {
                 console.log(e);
             }
         }
-
         loadWarungList();
     }, [props.location,datasearch,datalocation]);
 
+    const handleFilter = (f) => {
+        if (f.length === 0) {
+            setResult(fullData);
+            setLength(0);
+        }
+        else {
+            setResult(f);
+            setLength(f.length);
+        }
+    }
 
-    console.log(result.length);
     let lastIndex = currentPage * postPerPage;
     let firstIndex = lastIndex - postPerPage;
 
@@ -81,10 +93,13 @@ const SearchPage = (props) => {
 
     const classes = useStyles();
 
+    console.log("res", result);
     return(
         <React.Fragment>
             <Searchbar/>
-            <WarungList data={result}/>
+            <WarungList data={currentResult}/>
+            <Searchbar />
+            <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
         </React.Fragment>
     );
 }
