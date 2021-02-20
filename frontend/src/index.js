@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import WarungList from './components/warung-list/WarungList';
+import WarungList from './components/WarungList/WarungList';
 import InfoTambahan from './components/InfoTambahan';
 import InfoPage from './pages/infopage';
 
