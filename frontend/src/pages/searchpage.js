@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 
 import Searchbar from '../components/Search/Searchbar';
 import {getWarungList, getWarungListLimit} from '../resource';
-import WarungSearch from '../components/Search/WarungSearch';
+import WarungList from '../components/WarungList/WarungList';
 import Filter from '../components/filter/Filter';
 import './styleSearchpage.css'
 
@@ -53,7 +53,7 @@ const SearchPage = (props) => {
     
                 let response = await getWarungList(datasearch, datalocation);
                 
-                if (response.status == 200) {
+                if (response.status === 200) {
                     setResult(response.data.values);
                     setFullData(response.data.values);
                     setLength(response.data.values.length);
@@ -96,55 +96,10 @@ const SearchPage = (props) => {
     console.log("res", result);
     return(
         <React.Fragment>
+            <Searchbar/>
+            <WarungList data={currentResult}/>
             <Searchbar />
             <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
-            <Container className={classes.root}>
-                <Grid container justify="center" spacing={2}>
-                    {currentResult.map((item) => {
-                        return(
-                            <Grid className={classes.grid} item xs={12} sm={6} md={4} key={item.id}>
-                                    <WarungSearch
-                                        data={item}
-                                    />
-                            </Grid>
-                        );
-                    })}
-                </Grid>
-                {result.length === 0 && <div style={{
-                            paddingTop: "150px",
-                            textAlign: "center"
-                }}>Kosong</div>}
-                {currentResult.length
-                    ? 
-                    <div className="my-pagination" style={{
-                        paddingTop: "50px"
-                    }}>
-                        <span
-                            onClick={() => setCurrentPage(currentPage > 1
-                                ? currentPage - 1
-                                : currentPage)}>
-                            &#60;
-                        </span>
-                        {pageNumber.map(item => {
-                            return (
-                                <span
-                                    onClick={() => setCurrentPage(item)}
-                                    key={item}
-                                    className={`page-number ${currentPage === item && `current-page`}`}>{item}
-                                </span>
-                            )
-                        })}
-                        <span
-                            onClick={() => setCurrentPage(currentPage < currentResult.length - 1
-                            ? currentPage + 1
-                            : currentPage)}>
-                            &#62;
-                        </span>
-                    </div>
-                    : 
-                    null
-                }
-            </Container>
         </React.Fragment>
     );
 }
