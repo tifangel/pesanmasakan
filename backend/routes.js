@@ -15,4 +15,7 @@ module.exports = function(app) {
 
     app.route('/cariwarung')
         .get(pesanmasakan.cari_warung);
+
+    app.route('/categories')
+        .get(pesanmasakan.lihat_kategori);
 };
