@@ -32,7 +32,7 @@ const InfoPage = (props) => {
                 let response = await getWarung(id);
                 console.log(response.data.values[0]);
                 if (response.status == 200) {
-                    setResult(response.data.values)
+                    setResult(response.data.values);
                     console.log(result);
                 }
     
@@ -56,7 +56,7 @@ const InfoPage = (props) => {
                 Nama Warung: 
                 </h1>
                 <p>
-                {result[0].nama}
+                {result.map(result => <div>{result.nama}</div>)}
                 </p>
             </Paper>
             </Grid>
@@ -66,7 +66,7 @@ const InfoPage = (props) => {
                 Alamat Warung: 
                 </h1>
                 <p>
-                {result[0].alamat}
+                {result.map(result => <div>{result.alamat}</div>)}
                 </p>
             </Paper>
             </Grid>
@@ -76,7 +76,7 @@ const InfoPage = (props) => {
                 Kategori Warung: 
                 </h1>
                 <p>
-                {result[0].kategori}
+                {result.map(result => <div>{result.kategori}</div>)}
                 </p>
             </Paper>
             </Grid>
