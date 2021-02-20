@@ -9,10 +9,7 @@ import InfoPage from './pages/infopage';
 ReactDOM.render(
   <React.StrictMode>
     <InfoTambahan />
-    <App />
-    <WarungList/>
-    <InfoPage/>
-    
+    <App />    
   </React.StrictMode>,
   document.getElementById('root')
 );

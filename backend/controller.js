@@ -34,4 +34,16 @@ exports.cari_warung = function(req,res, next) {
             response.ok(rows, res)
         }
     });
+};
+
+exports.lihat_kategori = function(req, res) {
+    const category = req.query.category;
+
+    connection.query("SELECT DISTINCT kategori FROM warung", function(error, rows, fields) {
+        if (error) {
+            console.log(error)
+        } else {
+            response.ok(rows, res)
+        }
+    });
 }
