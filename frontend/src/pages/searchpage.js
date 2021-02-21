@@ -97,9 +97,8 @@ const SearchPage = (props) => {
     return(
         <React.Fragment>
             <Searchbar/>
-            <WarungList data={currentResult}/>
-            <Searchbar />
             <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
+            <WarungList data={currentResult}/>
         </React.Fragment>
     );
 }
