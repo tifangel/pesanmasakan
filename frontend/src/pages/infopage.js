@@ -23,19 +23,18 @@ const InfoPage = (props) => {
     const [result, setResult] = useState([]);
     const classes = useStyles();
 
+
     useEffect(() => {
         async function loadWarung(){
             try{
-                
-                setID(1);
+                setID(props.match.params.id);
     
                 let response = await getWarung(id);
                 console.log(response.data.values[0]);
+                
                 if (response.status == 200) {
                     setResult(response.data.values);
-                    console.log(result);
                 }
-    
             }
             catch (e) {
                 console.log(e);
@@ -43,10 +42,11 @@ const InfoPage = (props) => {
         }
 
         loadWarung();
-    }, [id, result]);
+    }, [id]);
+
     return (
         <div className={classes.root}>
-        <div class="image">
+        <div>
             <img src="/logo512.png"/>
         </div>
         <Grid container spacing={3}>

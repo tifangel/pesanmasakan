@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -31,12 +32,20 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const WarungItem = ({data}) => {
+
+    let history = useHistory();
     
     const classes = useStyles();
 
     return(
         <React.Fragment>
-            <Card className={classes.root}> 
+            <Card className={classes.root} onClick={
+                                ()=>{
+                                    history.push({
+                                        pathname : `/warung/${data.id}`
+                                    });
+                                }
+                            }> 
                 <CardMedia
                     className={classes.media}
                     image="/logo512.png"
