@@ -8,27 +8,7 @@ import Searchbar from '../components/Search/Searchbar';
 import {getWarungList, getWarungListLimit} from '../resource';
 import WarungList from '../components/WarungList/WarungList';
 import Filter from '../components/filter/Filter';
-import './styleSearchpage.css'
-
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: 100,
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing(1),
-    },
-    grid: {
-        
-    },
-    button: {
-        width: '100%',
-        marginTop: 50,
-        marginBottom: 50,
-    }
-  }));
+import './styleSearchpage.css';
 
 const SearchPage = (props) => {
 
@@ -39,9 +19,6 @@ const SearchPage = (props) => {
     const [filtered, setFiltered] = useState([]);
     const [fullData, setFullData] = useState([]); // the unfiltered data
     const [length, setLength] = useState(0);
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const postPerPage = 3;
     
     useEffect(() => {
         async function loadWarungList(){
@@ -77,28 +54,12 @@ const SearchPage = (props) => {
         }
     }
 
-    let lastIndex = currentPage * postPerPage;
-    let firstIndex = lastIndex - postPerPage;
-
-    let currentResult = [];
-
-    if (result.length) {
-        currentResult = result.slice(firstIndex, lastIndex);
-    }
-
-    let pageNumber = [];
-    for (let i = 1; i <= Math.ceil(result.length / postPerPage); i++) {
-        pageNumber.push(i);
-    }
-
-    const classes = useStyles();
-
     console.log("res", result);
     return(
         <React.Fragment>
             <Searchbar/>
             <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
-            <WarungList data={currentResult}/>
+            <WarungList data={result}/>
         </React.Fragment>
     );
 }
