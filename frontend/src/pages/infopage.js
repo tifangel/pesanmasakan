@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import './styleinfo.css';
 import {getWarung} from '../resource';
+import MenuList from '../components/MenuList/MenuList'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -81,6 +82,14 @@ const InfoPage = (props) => {
             </Paper>
             </Grid>
         </Grid>
+        <MenuList data={
+            [
+                {id: '1', nama: 'tes1'},
+                {id: '2', nama: 'tes2'},
+                {id: '3', nama: 'tes3'},
+                {id: '4', nama: 'tes4'}
+            ]
+            }/>
         </div>
     );
 }
