@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(5),
       flex: 1,
     },
+    form: {
+        display: 'flex',
+    },
     divider: {
         height: 28,
         margin: 4,
@@ -75,7 +78,7 @@ const Searchbar = (props) => {
     return(
         <React.Fragment>
             <Container>
-                <form onSubmit={handleSearch}>
+                <form className={classes.form} onSubmit={handleSearch}>
                     <Paper className={classes.root}>
                         <LocationOnIcon className={classes.iconButton}/>
                         <InputBase
@@ -84,13 +87,6 @@ const Searchbar = (props) => {
                             onChange={(e)=>{setLokasi(e.target.value)}}
                             // inputProps={{ 'aria-label': 'description' }}
                         />
-                        <IconButton 
-                            type="submit" 
-                            className={classes.iconButton2} 
-                            aria-label="search"
-                            >
-                            <SearchIcon />
-                        </IconButton>
                     </Paper>
                     <Paper className={classes.root}>
                         <SearchIcon className={classes.iconButton}/>
@@ -100,6 +96,13 @@ const Searchbar = (props) => {
                             onChange={(e)=>{setNamaitem(e.target.value)}}
                             // inputProps={{ 'aria-label': 'description' }}
                         />
+                        <IconButton 
+                            type="submit" 
+                            className={classes.iconButton2} 
+                            aria-label="search"
+                            >
+                            {/* <SearchIcon /> */}
+                        </IconButton>
                     </Paper>
                 </form>
             </Container>
