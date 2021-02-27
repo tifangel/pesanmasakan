@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -31,12 +32,34 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const WarungItem = ({data}) => {
+
+    let history = useHistory();
+    let location = useLocation();
+
+    const [prevLocation, setPrevLocation] = useState('');
+    const [searchPath, setSearchPath] = useState('');
+
+    useEffect(() => {
+        // let path = location.pathname.concat(location.search);
+        setPrevLocation(location.pathname);
+        setSearchPath(location.search);
+        // console.log(prevLocation);
+        // console.log(searchPath);
+    }, [prevLocation, searchPath, location]);
     
     const classes = useStyles();
 
     return(
         <React.Fragment>
-            <Card className={classes.root}> 
+            <Card className={classes.root} onClick={
+                                ()=>{
+                                    history.push({
+                                        pathname : `/warung/${data.id}`,
+                                        state: {prevLocation : prevLocation,
+                                                searchPath: searchPath}
+                                    });
+                                }
+                            }> 
                 <CardMedia
                     className={classes.media}
                     image="/logo512.png"
