@@ -47,3 +47,25 @@ exports.lihat_kategori = function(req, res) {
         }
     });
 }
+
+
+exports.daftar_menu = function(req, res) {
+    const sql = req.query.id_warung? `SELECT * FROM menu WHERE id_warung=${req.query.id_warung}` : 'SELECT * FROM menu';
+    connection.query(sql, function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            response.ok(rows, res)
+        }
+    });
+};
+
+exports.lihat_menu = function(req, res) {
+    connection.query("SELECT * FROM menu WHERE id = " + req.params.id, function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            response.ok(rows, res)
+        }
+    });
+};
