@@ -63,7 +63,6 @@ const Searchbar = (props) => {
     }, [paramQuery,paramLocation]);
     
     const handleSearch = (event) => {
-        console.log("Kamu kenapa T_T");
         event.preventDefault();
         let querySearch = namaitem? namaitem : paramQuery;
         let locationSearch = lokasi? lokasi : paramLocation;
