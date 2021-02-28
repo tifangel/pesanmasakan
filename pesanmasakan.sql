@@ -108,6 +108,8 @@ CREATE TABLE `transaksi` (
   `tgl_transaksi` date DEFAULT NULL,
   `total` int(11) DEFAULT NULL,
   `alamat_tujuan` varchar(255) DEFAULT NULL,
+  `longitude` double(10,6) DEFAULT NULL,
+  `latitude` double(10,6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_pembeli` (`id_pembeli`),
   CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_pembeli`) REFERENCES `pembeli` (`id`)
@@ -120,7 +122,7 @@ CREATE TABLE `transaksi` (
 
 LOCK TABLES `transaksi` WRITE;
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
-INSERT INTO `transaksi` VALUES (1,1,'2021-02-24',75000,'Jl Ijen Nirwana no 12'),(2,2,'2021-02-26',17000,'Jl Dieng Kawi no 76'),(3,3,'2021-02-25',40000,'Jl Raya Langsep no 32');
+INSERT INTO `transaksi` VALUES (1,1,'2021-02-24',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779),(2,2,'2021-02-26',17000,'Jl Dieng Kawi no 76',-6.931036,107.596800),(3,3,'2021-02-25',40000,'Jl Raya Langsep no 32',-7.383062,108.534895);
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,6 +167,8 @@ CREATE TABLE `warung` (
   `alamat` varchar(255) NOT NULL,
   `kategori` varchar(30) DEFAULT NULL,
   `pic` varchar(300) DEFAULT NULL,
+  `longitude` double(10,6) DEFAULT NULL,
+  `latitude` double(10,6) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -175,7 +179,7 @@ CREATE TABLE `warung` (
 
 LOCK TABLES `warung` WRITE;
 /*!40000 ALTER TABLE `warung` DISABLE KEYS */;
-INSERT INTO `warung` VALUES (1,'Lalapan Lahap','Jl pertenakan no 45','chicken & duck','/warung/lalapan-lahap.jpg'),(2,'Warung Padang Pak Lontong','Jl lampunyala no 2','masakan padang','/warung/warung-padang-pak-lontong.jpg'),(3,'Gang Kapak Chinese Food','Jl sipitputih no 25','masakan cina','/warung/gang-kapak-chinese-food.jpg'),(4,'Warung Mamasuka','Jl malasmasak no 6','masakan rumah','/warung/warung-mamasuka.jpg');
+INSERT INTO `warung` VALUES (1,'Lalapan Lahap','Jl pertenakan no 45','chicken & duck','/warung/lalapan-lahap.jpg',-6.917431,107.657066),(2,'Warung Padang Pak Lontong','Jl lampunyala no 2','masakan padang','/warung/warung-padang-pak-lontong.jpg',-7.077877,107.735901),(3,'Gang Kapak Chinese Food','Jl sipitputih no 25','masakan cina','/warung/gang-kapak-chinese-food.jpg',-7.372021,108.559485),(4,'Warung Mamasuka','Jl malasmasak no 6','masakan rumah','/warung/warung-mamasuka.jpg',-6.464019,107.179779);
 /*!40000 ALTER TABLE `warung` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -188,4 +192,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-26 11:03:13
+-- Dump completed on 2021-02-27 12:20:55
