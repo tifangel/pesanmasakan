@@ -1,10 +1,7 @@
-import React from 'react';
-import {useHistory} from 'react-router-dom';
-
-import config from '../../config'
+import React, {useState, useEffect} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
@@ -14,15 +11,14 @@ import StarIcon from '@material-ui/icons/Star';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      
+      padding : 0,
+      height : 440
     },
     media: {
         height: 200,
@@ -31,28 +27,39 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
     },
     dist:{
-        marginLeft: theme.spacing(2),
+        marginLeft: theme.spacing(0),
     },
   }));
 
-const WarungSearch = ({
-        data
-    }) => {
+const WarungItem = ({data}) => {
 
     let history = useHistory();
-    const handleShowItem = (event) => {
-        event.preventDefault();
-        history.push({
-            pathname: '/',
-            search : '?query='
-        });
-    }
+    let location = useLocation();
+
+    const [prevLocation, setPrevLocation] = useState('');
+    const [searchPath, setSearchPath] = useState('');
+
+    useEffect(() => {
+        // let path = location.pathname.concat(location.search);
+        setPrevLocation(location.pathname);
+        setSearchPath(location.search);
+        // console.log(prevLocation);
+        // console.log(searchPath);
+    }, [prevLocation, searchPath, location]);
     
     const classes = useStyles();
 
     return(
         <React.Fragment>
-            <Card>
+            <Card className={classes.root} onClick={
+                                ()=>{
+                                    history.push({
+                                        pathname : `/warung/${data.id}`,
+                                        state: {prevLocation : prevLocation,
+                                                searchPath: searchPath}
+                                    });
+                                }
+                            }> 
                 <CardMedia
                     className={classes.media}
                     image="/logo512.png"
@@ -101,4 +108,4 @@ const WarungSearch = ({
     );
 }
 
-export default WarungSearch;
+export default WarungItem;

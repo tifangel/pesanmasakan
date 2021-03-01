@@ -17,9 +17,25 @@ export const getAllWarungList = async () =>
         return response
     }
 
+export const getCategories = async() =>
+    {
+        const url = `${defaultAPIURL}/categories`
+        const response = await get(url)
+
+        return response
+    }
+
 export const getWarung = async (id) =>
     {
-        const url = `${defaultAPIURL}/daftarwarung/${id}`
+        const url =`${defaultAPIURL}/daftarwarung/${id}`
+        const response = await get(url)
+
+        return response
+    }
+
+export const getMenuWarung = async(datasearch) =>
+    {
+        const url = `${defaultAPIURL}`
         const response = await get(url)
 
         return response

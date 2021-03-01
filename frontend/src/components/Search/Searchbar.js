@@ -5,7 +5,8 @@ import queryString from 'query-string';
 import SearchIcon from '@material-ui/icons/Search';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
-import Divider from '@material-ui/core/Divider';
+import RestaurantMenuIcon from '@material-ui/icons/RestaurantMenu';
+import StoreIcon from '@material-ui/icons/Store';
 
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -26,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(5),
       flex: 1,
     },
+    form: {
+        display: 'flex',
+    },
     divider: {
         height: 28,
         margin: 4,
@@ -44,29 +48,32 @@ const Searchbar = (props) => {
 
     const [namaitem, setNamaitem] = useState('');
     const [lokasi, setLokasi] = useState('');
+    const [menu, setMenu] = useState('');
     
     let location = useLocation();
     let history = useHistory();
 
     const [paramQuery, setParamQuery] = useState('');
     const [paramLocation, setParamLocation] = useState('');
+    const [paramMenu, setParamMenu] = useState('');
 
     useEffect(() => {
         if(location.pathname.includes('search')){
             let params = queryString.parse(location.search);
             setParamQuery(params.query);
             setParamLocation(params.location);
+            setParamMenu(params.menu);
         }
     }, [paramQuery,paramLocation]);
     
     const handleSearch = (event) => {
-        console.log("Kamu kenapa T_T");
         event.preventDefault();
         let querySearch = namaitem? namaitem : paramQuery;
         let locationSearch = lokasi? lokasi : paramLocation;
+        let menuSearch =menu? menu : paramMenu;
         history.push({
             pathname: '/search',
-            search : '?location='+locationSearch+'&query='+querySearch
+            search : '?location='+locationSearch+'&query='+querySearch+'&menu='+menuSearch
         });
     }
     
@@ -75,31 +82,37 @@ const Searchbar = (props) => {
     return(
         <React.Fragment>
             <Container>
-                <form onSubmit={handleSearch}>
+                <form className={classes.form} onSubmit={handleSearch}>
                     <Paper className={classes.root}>
                         <LocationOnIcon className={classes.iconButton}/>
                         <InputBase
                             className={classes.input}
                             placeholder="Location"
-                            onChange={(e)=>{setLokasi(e.target.value)}}
-                            // inputProps={{ 'aria-label': 'description' }}
-                        />
+                            onChange={(e)=>{setLokasi(e.target.value)}}/>
+                    </Paper>
+                    <Paper className={classes.root}>
+                        <RestaurantMenuIcon className={classes.iconButton}/>
+                        <InputBase
+                            className={classes.input}
+                            placeholder="Search Warung"
+                            onChange={(e)=>{setNamaitem(e.target.value)}}/>
                         <IconButton 
                             type="submit" 
                             className={classes.iconButton2} 
-                            aria-label="search"
-                            >
-                            <SearchIcon />
+                            aria-label="search">
                         </IconButton>
                     </Paper>
                     <Paper className={classes.root}>
                         <SearchIcon className={classes.iconButton}/>
                         <InputBase
                             className={classes.input}
-                            placeholder="Search"
-                            onChange={(e)=>{setNamaitem(e.target.value)}}
-                            // inputProps={{ 'aria-label': 'description' }}
-                        />
+                            placeholder="Search Menu"
+                            onChange={(e)=>{setMenu(e.target.value)}}/>
+                        <IconButton 
+                            type="submit" 
+                            className={classes.iconButton2} 
+                            aria-label="search">
+                        </IconButton>
                     </Paper>
                 </form>
             </Container>

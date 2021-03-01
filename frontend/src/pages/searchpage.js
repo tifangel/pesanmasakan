@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
 import queryString from 'query-string';
 
 import Grid from '@material-ui/core/Grid';
@@ -7,7 +6,8 @@ import Container from '@material-ui/core/Container';
 
 import Searchbar from '../components/Search/Searchbar';
 import {getWarungList, getWarungListLimit} from '../resource';
-import WarungSearch from '../components/Search/WarungSearch';
+import WarungList from '../components/WarungList/WarungList';
+import Filter from '../components/filter/Filter';
 import './styleSearchpage.css'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,13 +34,16 @@ const SearchPage = (props) => {
 
     const [datasearch, setDataSearch] = useState('');
     const [datalocation, setDataLocation] = useState('');
-    const [result,setResult] = useState([]);
+    const [datamenu, setDataMenu] = useState('');
 
-    const [currentPage,
-        setCurrentPage] = useState(1);
+    const [result,setResult] = useState([]); // the filtered data
+    const [resultMenu, setResultMenu] = useState([]);
+    const [filtered, setFiltered] = useState([]);
+    const [fullData, setFullData] = useState([]); // the unfiltered data
+    const [length, setLength] = useState(0);
+
+    const [currentPage, setCurrentPage] = useState(1);
     const postPerPage = 3;
-
-    let history = useHistory();
     
     useEffect(() => {
         async function loadWarungList(){
@@ -49,97 +52,49 @@ const SearchPage = (props) => {
                 
                 setDataSearch(params.query);
                 setDataLocation(params.location);
+                setDataMenu(params.menu);
     
-                let response = await getWarungList(datasearch, datalocation);
+                let response;
+                let responseMenu;
+
+                response = await getWarungList(datasearch, datalocation);
+                // responseMenu = await getMenuList(datasearch, datamenu);
                 
-                if (response.status == 200) {
+                if (response.status === 200) {
                     setResult(response.data.values);
+                    setFullData(response.data.values);
+                    setLength(response.data.values.length);
                 }
-    
+
+                // if (responseMenu.status === 200){
+                //     setResultMenu(responseMenu.data.values);
+                    
+                // }
             }
             catch (e) {
                 console.log(e);
             }
         }
-
         loadWarungList();
-    }, [props.location,datasearch,datalocation]);
+    }, [props.location,datasearch,datalocation,datamenu]);
 
-
-    console.log(result.length);
-    let lastIndex = currentPage * postPerPage;
-    let firstIndex = lastIndex - postPerPage;
-
-    let currentResult = [];
-
-    if (result.length) {
-        currentResult = result.slice(firstIndex, lastIndex);
+    const handleFilter = (f) => {
+        if (f.length === 0) {
+            setResult(fullData);
+            setLength(0);
+        }
+        else {
+            setResult(f);
+            setLength(f.length);
+        }
     }
 
-    let pageNumber = [];
-    for (let i = 1; i <= Math.ceil(result.length / postPerPage); i++) {
-        pageNumber.push(i);
-    }
-
-    const classes = useStyles();
-
+    console.log("res", result);
     return(
         <React.Fragment>
             <Searchbar/>
-            <Container className={classes.root}>
-                <Grid container justify="center" spacing={2}>
-                    {currentResult.map((item) => {
-                        return(
-                            <Grid className={classes.grid} item xs={12} sm={6} md={4} key={item.id} onClick={
-                                ()=>{
-                                    history.push({
-                                        pathname : `/warung/${item.id}`,
-                                        state: { id: item.id }
-                                    });
-                                }
-                            }>
-                                    <WarungSearch
-                                        data={item}
-                                    />
-                            </Grid>
-                        );
-                    })}
-                </Grid>
-                {result.length === 0 && <div style={{
-                            paddingTop: "150px",
-                            textAlign: "center"
-                }}>Kosong</div>}
-                {currentResult.length
-                    ? 
-                    <div className="my-pagination" style={{
-                        paddingTop: "50px"
-                    }}>
-                        <span
-                            onClick={() => setCurrentPage(currentPage > 1
-                                ? currentPage - 1
-                                : currentPage)}>
-                            &#60;
-                        </span>
-                        {pageNumber.map(item => {
-                            return (
-                                <span
-                                    onClick={() => setCurrentPage(item)}
-                                    key={item}
-                                    className={`page-number ${currentPage === item && `current-page`}`}>{item}
-                                </span>
-                            )
-                        })}
-                        <span
-                            onClick={() => setCurrentPage(currentPage < currentResult.length - 1
-                            ? currentPage + 1
-                            : currentPage)}>
-                            &#62;
-                        </span>
-                    </div>
-                    : 
-                    null
-                }
-            </Container>
+            <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
+            <WarungList data={currentResult}/>
         </React.Fragment>
     );
 }

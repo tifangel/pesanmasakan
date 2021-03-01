@@ -1,0 +1,20 @@
+.title {
+  text-align: center;
+  color: brown;
+}
+
+.MuiPaper-root.Carousel{
+  padding: 50px 100px;
+  border: 0px 24px;
+}
+
+.Carousel-root-23{
+  max-width: 1280px;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  margin-bottom: 50px;
+}

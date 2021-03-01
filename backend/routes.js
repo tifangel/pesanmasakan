@@ -15,4 +15,14 @@ module.exports = function(app) {
 
     app.route('/cariwarung')
         .get(pesanmasakan.cari_warung);
+
+    app.route('/categories')
+        .get(pesanmasakan.lihat_kategori);
+        
+    app.route('/daftarmenu')
+        .get(pesanmasakan.daftar_menu);
+    // query params : id_warung
+    
+    app.route('/daftarmenu/:id')
+        .get(pesanmasakan.lihat_menu);
 };
