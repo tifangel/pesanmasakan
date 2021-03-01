@@ -14,6 +14,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import { makeStyles } from '@material-ui/core/styles';
+import Distance from './Distance';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -83,7 +84,7 @@ const WarungItem = ({data}) => {
                         </Grid>
                         <Grid item className={classes.dist}>
                             <Typography variant="body2" color="textSecondary" component="p">
-                                1.2km
+                                <Distance latitude={data.latitude} longitude={data.longitude}></Distance>
                             </Typography>
                         </Grid>
                     </Grid>
