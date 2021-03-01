@@ -84,10 +84,10 @@ const InfoPage = (props) => {
         </Grid>
         <MenuList data={
             [
-                {id: '1', nama: 'tes1'},
-                {id: '2', nama: 'tes2'},
-                {id: '3', nama: 'tes3'},
-                {id: '4', nama: 'tes4'}
+                {id: '1', nama: 'Sup Ayam Kepiting Jagung'},
+                {id: '2', nama: 'Sup Ayam Kepiting Jagung'},
+                {id: '3', nama: 'Sup Ayam Kepiting Jagung'},
+                {id: '4', nama: 'Sup Ayam Kepiting Jagung'}
             ]
             }/>
         </div>
