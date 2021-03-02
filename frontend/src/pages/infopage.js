@@ -7,6 +7,7 @@ import './styleinfo.css';
 import {getWarung} from '../resource';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import MenuList from '../components/MenuList/MenuList'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -109,6 +110,14 @@ const InfoPage = (props) => {
             </Paper>
             </Grid>
         </Grid>
+        <MenuList data={
+            [
+                {id: '1', nama: 'Sup Ayam Kepiting Jagung'},
+                {id: '2', nama: 'Sup Ayam Kepiting Jagung'},
+                {id: '3', nama: 'Sup Ayam Kepiting Jagung'},
+                {id: '4', nama: 'Sup Ayam Kepiting Jagung'}
+            ]
+            }/>
         </div>
         </React.Fragment>
     );
