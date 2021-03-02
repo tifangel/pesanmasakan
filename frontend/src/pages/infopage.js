@@ -1,9 +1,13 @@
 import React, {useState, useEffect} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import './styleinfo.css';
 import {getWarung} from '../resource';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import MenuList from '../components/MenuList/MenuList'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.secondary,
       boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .3)',
     },
+    iconback: {
+        margin: '20px',
+    }
   }));
 
 
@@ -23,6 +30,10 @@ const InfoPage = (props) => {
     const [result, setResult] = useState([]);
     const classes = useStyles();
 
+    let location = useLocation();
+    let history = useHistory();
+
+    const [prevLocation, setPrevLocation] = useState('');
 
     useEffect(() => {
         async function loadWarung(){
@@ -40,11 +51,28 @@ const InfoPage = (props) => {
                 console.log(e);
             }
         }
-
+        let path = '/';
+        if(location.state){
+            path = location.state.prevLocation.concat(location.state.searchPath);
+            console.log("Jika ada location state");
+            console.log(path);
+        }
+        setPrevLocation(path);
+        console.log(prevLocation);
         loadWarung();
-    }, [id]);
+    }, [id,location,prevLocation]);
 
     return (
+        <React.Fragment>
+        <IconButton 
+            className={classes.iconback}
+            onClick = {()=>{
+                history.push(prevLocation);
+            }}
+        >
+            <ArrowBackIcon/>
+        </IconButton>
+        
         <div className={classes.root}>
         <div>
             <img src="/logo512.png"/>
@@ -81,7 +109,16 @@ const InfoPage = (props) => {
             </Paper>
             </Grid>
         </Grid>
+        <MenuList data={
+            [
+                {id: '1', nama: 'Sup Ayam Kepiting Jagung'},
+                {id: '2', nama: 'Sup Ayam Kepiting Jagung'},
+                {id: '3', nama: 'Sup Ayam Kepiting Jagung'},
+                {id: '4', nama: 'Sup Ayam Kepiting Jagung'}
+            ]
+            }/>
         </div>
+        </React.Fragment>
     );
 }
 
