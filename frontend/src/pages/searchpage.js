@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import Searchbar from '../components/Search/Searchbar';
 import {getWarungList, getMenuList} from '../resource';
 import WarungList from '../components/WarungList/WarungList';
+import MenuList from '../components/MenuList/MenuList';
 import Filter from '../components/filter/Filter';
 import './styleSearchpage.css';
 
@@ -91,17 +92,7 @@ const SearchPage = (props) => {
             <Searchbar/>
             <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
             <WarungList data={result}/>
-            {resultMenu.map(item => {
-                return(
-                    <div>
-                        {item.nama}
-                        {item.id_warung}
-                        {item.harga}
-                        {item.desc_menu}
-                        {item.pic}
-                    </div>
-                );
-            })}
+            <MenuList data={resultMenu}/>
         </React.Fragment>
     );
 }
