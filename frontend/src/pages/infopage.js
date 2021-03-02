@@ -55,13 +55,12 @@ const InfoPage = (props) => {
         let path = '/';
         if(location.state){
             path = location.state.prevLocation.concat(location.state.searchPath);
-            console.log("Jika ada location state");
             console.log(path);
         }
         setPrevLocation(path);
         console.log(prevLocation);
         loadWarung();
-    }, [id,location,prevLocation]);
+    }, [id,location,prevLocation,props.match.params.id]);
 
     return (
         <React.Fragment>
