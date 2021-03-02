@@ -59,7 +59,7 @@ const InfoPage = (props) => {
         setPrevLocation(path);
         console.log(prevLocation);
         loadWarung();
-    }, [id,location,prevLocation]);
+    }, [id,location,prevLocation,props.match.params.id]);
 
     return (
         <React.Fragment>
