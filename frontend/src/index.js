@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import SampleComponent from './components/SampleComponent';
+import InfoTambahan from './components/InfoTambahan';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
     <InfoTambahan />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

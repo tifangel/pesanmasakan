@@ -5,10 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 
 import Searchbar from '../components/Search/Searchbar';
-import {getWarungList, getWarungListLimit} from '../resource';
+import {getWarungList, getMenuList} from '../resource';
 import WarungList from '../components/WarungList/WarungList';
 import Filter from '../components/filter/Filter';
-import './styleSearchpage.css'
+import './styleSearchpage.css';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -41,9 +41,6 @@ const SearchPage = (props) => {
     const [filtered, setFiltered] = useState([]);
     const [fullData, setFullData] = useState([]); // the unfiltered data
     const [length, setLength] = useState(0);
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const postPerPage = 3;
     
     useEffect(() => {
         async function loadWarungList(){
@@ -58,7 +55,7 @@ const SearchPage = (props) => {
                 let responseMenu;
 
                 response = await getWarungList(datasearch, datalocation);
-                // responseMenu = await getMenuList(datasearch, datamenu);
+                responseMenu = await getMenuList(datasearch,datamenu);
                 
                 if (response.status === 200) {
                     setResult(response.data.values);
@@ -66,10 +63,9 @@ const SearchPage = (props) => {
                     setLength(response.data.values.length);
                 }
 
-                // if (responseMenu.status === 200){
-                //     setResultMenu(responseMenu.data.values);
-                    
-                // }
+                if (responseMenu.status === 200){
+                    setResultMenu(responseMenu.data.values);
+                }
             }
             catch (e) {
                 console.log(e);
@@ -94,7 +90,18 @@ const SearchPage = (props) => {
         <React.Fragment>
             <Searchbar/>
             <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
-            <WarungList data={currentResult}/>
+            <WarungList data={result}/>
+            {resultMenu.map(item => {
+                return(
+                    <div>
+                        {item.nama}
+                        {item.id_warung}
+                        {item.harga}
+                        {item.desc_menu}
+                        {item.pic}
+                    </div>
+                );
+            })}
         </React.Fragment>
     );
 }

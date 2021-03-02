@@ -2,12 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import queryString from 'query-string';
 
-import SearchIcon from '@material-ui/icons/Search';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import MyLocationIcon from '@material-ui/icons/MyLocation';
-import RestaurantMenuIcon from '@material-ui/icons/RestaurantMenu';
-import StoreIcon from '@material-ui/icons/Store';
-
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -18,13 +12,15 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
       marginTop: 20,
-      padding: 10,
+      padding: 5,
       display: 'flex',
       alignItems: 'center',
       width: '100%',
+      borderRadius: '15px',
+      margin: theme.spacing(1.5),
     },
     input: {
-      marginRight: theme.spacing(5),
+      marginLeft: theme.spacing(5),
       flex: 1,
     },
     form: {
@@ -84,26 +80,18 @@ const Searchbar = (props) => {
             <Container>
                 <form className={classes.form} onSubmit={handleSearch}>
                     <Paper className={classes.root}>
-                        <LocationOnIcon className={classes.iconButton}/>
                         <InputBase
                             className={classes.input}
-                            placeholder="Location"
+                            placeholder="Search Name"
+                            onChange={(e)=>{setNamaitem(e.target.value)}}/>
+                    </Paper>
+                    <Paper className={classes.root}>
+                        <InputBase
+                            className={classes.input}
+                            placeholder="Search Location"
                             onChange={(e)=>{setLokasi(e.target.value)}}/>
                     </Paper>
                     <Paper className={classes.root}>
-                        <RestaurantMenuIcon className={classes.iconButton}/>
-                        <InputBase
-                            className={classes.input}
-                            placeholder="Search Warung"
-                            onChange={(e)=>{setNamaitem(e.target.value)}}/>
-                        <IconButton 
-                            type="submit" 
-                            className={classes.iconButton2} 
-                            aria-label="search">
-                        </IconButton>
-                    </Paper>
-                    <Paper className={classes.root}>
-                        <SearchIcon className={classes.iconButton}/>
                         <InputBase
                             className={classes.input}
                             placeholder="Search Menu"

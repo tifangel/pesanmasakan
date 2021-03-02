@@ -54,7 +54,6 @@ const InfoPage = (props) => {
         let path = '/';
         if(location.state){
             path = location.state.prevLocation.concat(location.state.searchPath);
-            console.log("Jika ada location state");
             console.log(path);
         }
         setPrevLocation(path);
