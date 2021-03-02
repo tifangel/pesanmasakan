@@ -36,16 +36,16 @@ class Distance extends Component{
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const R = 6371; // Radius of the earth in km
-                const lon1 = position.coords.latitude;
-                const lat1 = position.coords.longitude;
+                const lon1 = position.coords.longitude;
+                const lat1 = position.coords.latitude;
                 const lat2 = this.props.latitude;
                 const lon2 = this.props.longitude;
                 
-                const dLat = (lat2-lat1) * Math.PI / 180;  // Javascript functions in radians
-                const dLon = (lon2-lon1) * Math.PI / 180; 
-                const a = Math.sin(dLat/2) * Math.sin(dLat/2) +Math.cos(lat1* Math.PI / 180) * Math.cos(lat2* Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+                const dLat = (lat2-lat1) * (Math.PI / 180);  // Javascript functions in radians
+                const dLon = (lon2-lon1) * (Math.PI / 180); 
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1* (Math.PI / 180)) * Math.cos(lat2* (Math.PI / 180)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
                 const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-                const d= R * c; // Distance in km  
+                const d = Number((R *c ).toFixed(1)); // Distance in km  
                 console.log(lat1);
                 console.log(lon1);
                 console.log(lat2);
@@ -67,7 +67,7 @@ class Distance extends Component{
     render(){
         return(
             <Typography variant="body2" color="textSecondary" component="p">
-                { this.state.dist }
+                { this.state.dist + ' km'}
             </Typography>
         )
     }
