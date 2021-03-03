@@ -40,3 +40,11 @@ export const getMenuList = async(datasearch,datamenu) =>
 
         return response
     }
+    
+export const getMenuListByWarungId = async(warungId) =>
+    {
+        const url = `${defaultAPIURL}/daftarmenu?id_warung=${warungId}`
+        const response = await get(url)
+
+        return response
+    }

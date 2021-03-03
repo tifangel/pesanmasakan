@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from '@material-ui/core';
 
+const { defaultAPIURL } = require("../../config");
+
 const useStyles = makeStyles((theme) => ({
     root: {
       padding : 0,
@@ -75,7 +77,7 @@ const MenuItem = ({data}) => {
             <Card className={classes.root}> 
                 <CardMedia
                     className={classes.media}
-                    image="/logo512.png"
+                    image={`${defaultAPIURL}${data.pic}`}
                     title={data.nama}
                 />
                 <CardContent className={classes.content}>
@@ -83,10 +85,10 @@ const MenuItem = ({data}) => {
                         {data.nama}
                     </Typography>
                     <Typography className={classes.menuDesc} variant="body2" color="textSecondary" component="p">
-                    Deskripsi menunya di sini, ini menu pokoknya enak sehat lezat delicious mantapppp luar biasa duh nulis apa lagi ya biar sampe tiga baris ni
+                        {data.desc_menu}
                     </Typography>
                     <Typography className={classes.menuPrice} variant="body2" color="textSecondary" component="p">
-                        Rp 15.000 
+                        Rp {data.harga}
                     </Typography>
                     <Grid container className={classes.card} spacing={1}>
                         {sampleHari.map((item, idx)=>

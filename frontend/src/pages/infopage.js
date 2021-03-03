@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import './styleinfo.css';
-import {getWarung} from '../resource';
+import {getWarung, getMenuListByWarungId} from '../resource';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuList from '../components/MenuList/MenuList'
@@ -34,6 +34,7 @@ const InfoPage = (props) => {
     let history = useHistory();
 
     const [prevLocation, setPrevLocation] = useState('');
+    const [menuList, setMenuList] = useState([]);
     
 
     useEffect(() => {
@@ -44,8 +45,14 @@ const InfoPage = (props) => {
                 let response = await getWarung(id);
                 console.log(response.data.values[0]);
                 
-                if (response.status == 200) {
+                if (response.status === 200) {
                     setResult(response.data.values);
+                }
+
+                let responseMenu = await getMenuListByWarungId(id);
+                console.log(responseMenu.data.values);
+                if (responseMenu.status === 200) {
+                    setMenuList(responseMenu.data.values);
                 }
             }
             catch (e) {
@@ -109,14 +116,7 @@ const InfoPage = (props) => {
             </Paper>
             </Grid>
         </Grid>
-        <MenuList data={
-            [
-                {id: '1', nama: 'Sup Ayam Kepiting Jagung'},
-                {id: '2', nama: 'Sup Ayam Kepiting Jagung'},
-                {id: '3', nama: 'Sup Ayam Kepiting Jagung'},
-                {id: '4', nama: 'Sup Ayam Kepiting Jagung'}
-            ]
-            }/>
+        <MenuList data={menuList}/>
         </div>
         </React.Fragment>
     );
