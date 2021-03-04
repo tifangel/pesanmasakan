@@ -10,7 +10,7 @@ function App(){
         <BrowserRouter>
             <Switch>
                 <Route exact={true} path="/" component={HomePage}/>
-                <Route exact path="/search" component={SearchPage}/>\
+                <Route exact path="/search" component={SearchPage}/>
                 <Route exact path="/warung/:id" component={InfoPage}/>
             </Switch>
         </BrowserRouter>
