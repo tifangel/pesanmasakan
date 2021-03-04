@@ -1,32 +1,35 @@
 import React, {useState, useEffect} from 'react'
 import Searchbar from '../components/Search/Searchbar'
 import WarungList from '../components/WarungList/WarungList';
-import {getAllWarungList} from "../resource/index"
+import {getAllWarungList} from "../resource/index";
+import { setDistance } from '../components/WarungList/Distance';
 import Filter from '../components/filter/Filter'
 
 const HomePage = (props) => {
     
-  const [warungList,setWarungList] = useState([]);
+    const [warungList,setWarungList] = useState([]);
 
-  useEffect(() => {
-      async function loadWarungList(){
-          try{
-  
-              let response = await getAllWarungList();
-              
-              if (response.status === 200) {
-                setWarungList(response.data.values);
-              }
-  
-          }
-          catch (e) {
-              console.log(e);
-          }
-      }
-
-      loadWarungList();
-  }, []);
-
+    useEffect(() => {
+        async function loadWarungList(){
+            try{
+    
+                let response = await getAllWarungList();
+                
+                if (response.status === 200) {
+                    setWarungList(response.data.values);
+                    // console.log(rawList);
+                }
+    
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        loadWarungList();
+    }, []);
+    
+    setDistance(warungList);
+    // console.log("warung", warungList[0].distance);
     return(
         <div>
             <Searchbar/>

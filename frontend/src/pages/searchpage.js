@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import Searchbar from '../components/Search/Searchbar';
 import {getWarungList, getWarungListLimit} from '../resource';
 import WarungList from '../components/WarungList/WarungList';
+import { setDistance } from '../components/WarungList/Distance';
 import Filter from '../components/filter/Filter';
 import './styleSearchpage.css'
 
@@ -35,7 +36,7 @@ const SearchPage = (props) => {
     const [datasearch, setDataSearch] = useState('');
     const [datalocation, setDataLocation] = useState('');
 
-    const [result,setResult] = useState([]); // the filtered data
+    const [result, setResult] = useState([]); // the filtered data
     const [filtered, setFiltered] = useState([]);
     const [fullData, setFullData] = useState([]); // the unfiltered data
     const [length, setLength] = useState(0);
@@ -94,6 +95,8 @@ const SearchPage = (props) => {
     const classes = useStyles();
 
     console.log("res", result);
+    console.log("res", currentResult);
+    setDistance(currentResult);
     return(
         <React.Fragment>
             <Searchbar/>

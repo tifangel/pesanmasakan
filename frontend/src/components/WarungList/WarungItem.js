@@ -84,7 +84,7 @@ const WarungItem = ({data}) => {
                         </Grid>
                         <Grid item className={classes.dist}>
                             <Typography variant="body2" color="textSecondary" component="p">
-                                <Distance latitude={data.latitude} longitude={data.longitude}></Distance>
+                                {data.distance + ' km'}
                             </Typography>
                         </Grid>
                     </Grid>
