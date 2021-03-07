@@ -39,6 +39,7 @@ const SearchPage = (props) => {
     const [result, setResult] = useState([]); // the filtered data
     const [filtered, setFiltered] = useState([]);
     const [fullData, setFullData] = useState([]); // the unfiltered data
+    const [dData, setDistance] = useState(fullData); // the unfiltered data
     const [length, setLength] = useState(0);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -136,10 +137,10 @@ const SearchPage = (props) => {
 
     const classes = useStyles();
 
-    console.log("res", result);
-    setDistance(currentResult);
-
-    console.log("cur", currentResult);
+    // console.log("ddata", dData);
+    // console.log("res", currentResult);
+    // setDistance(currentResult);
+    // setDistance(fullData);
     return(
         <React.Fragment>
             <Searchbar/>
