@@ -7,7 +7,8 @@ import './styleinfo.css';
 import {getWarung, getMenuListByWarungId} from '../resource';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MenuList from '../components/MenuList/MenuList'
+import MenuList from '../components/MenuList/MenuList';
+import MenuPopUp from '../components/MenuList/MenuPopUp';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,6 +36,17 @@ const InfoPage = (props) => {
 
     const [prevLocation, setPrevLocation] = useState('');
     const [menuList, setMenuList] = useState([]);
+
+    const [menuInfo, setMenuInfo] = useState({});
+    const [infoShowed, setInfoShowed] = useState(false);
+
+    const handleShowInfoMenu = (menuData) => {
+        setInfoShowed(true);
+        setMenuInfo(menuData);
+    }
+    const handleCloseInfoMenu = (menuData) => {
+        setInfoShowed(false);
+    }
     
 
     useEffect(() => {
@@ -116,7 +128,15 @@ const InfoPage = (props) => {
             </Paper>
             </Grid>
         </Grid>
-        <MenuList data={menuList}/>
+        <MenuList 
+            data={menuList}
+            onMenuClick={handleShowInfoMenu}
+        />
+        <MenuPopUp 
+            data={menuInfo} 
+            open={infoShowed}
+            onClose={handleCloseInfoMenu}
+        />
         </div>
         </React.Fragment>
     );
