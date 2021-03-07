@@ -69,3 +69,16 @@ exports.lihat_menu = function(req, res) {
         }
     });
 };
+
+exports.cari_menu = function(req,res, next) {
+    console.log("masuk")
+    const title = req.query.title;
+
+    connection.query("SELECT * FROM menu WHERE nama LIKE '%" + title + "%'", function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            response.ok(rows, res)
+        }
+    });
+};

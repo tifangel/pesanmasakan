@@ -56,7 +56,7 @@ const SearchPage = (props) => {
                 let responseMenu;
 
                 response = await getWarungList(datasearch, datalocation);
-                responseMenu = await getMenuList(datasearch,datamenu);
+                responseMenu = await getMenuList(datamenu);
                 
                 if (response.status === 200) {
                     setResult(response.data.values);
