@@ -65,7 +65,6 @@ const SearchPage = (props) => {
                 fullData[i].distance = d;
             }
             setFullData(fullData);
-            console.log(fullData);
         }
     
     

@@ -28,7 +28,6 @@ const HomePage = (props) => {
                 fullData[i].distance = d;
             }
             setWarungList(fullData);
-            console.log(warungList);
         }
     
     
