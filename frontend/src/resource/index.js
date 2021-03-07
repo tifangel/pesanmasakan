@@ -32,3 +32,19 @@ export const getWarung = async (id) =>
 
         return response
     }
+
+export const getMenuList = async(datasearch,datamenu) =>
+    {
+        const url = `${defaultAPIURL}/daftarmenu`
+        const response = await get(url)
+
+        return response
+    }
+    
+export const getMenuListByWarungId = async(warungId) =>
+    {
+        const url = `${defaultAPIURL}/daftarmenu?id_warung=${warungId}`
+        const response = await get(url)
+
+        return response
+    }

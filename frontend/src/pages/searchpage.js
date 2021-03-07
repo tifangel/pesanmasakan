@@ -5,11 +5,11 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 
 import Searchbar from '../components/Search/Searchbar';
-import {getWarungList, getWarungListLimit} from '../resource';
+import {getWarungList, getMenuList} from '../resource';
 import WarungList from '../components/WarungList/WarungList';
-// import { setDistance } from '../components/WarungList/Distance';
+import MenuList from '../components/MenuList/MenuList';
 import Filter from '../components/filter/Filter';
-import './styleSearchpage.css'
+import './styleSearchpage.css';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -35,11 +35,12 @@ const SearchPage = (props) => {
 
     const [datasearch, setDataSearch] = useState('');
     const [datalocation, setDataLocation] = useState('');
+    const [datamenu, setDataMenu] = useState('');
 
-    const [result, setResult] = useState([]); // the filtered data
+    const [result,setResult] = useState([]); // the filtered data
+    const [resultMenu, setResultMenu] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [fullData, setFullData] = useState([]); // the unfiltered data
-    const [dData, setDistance] = useState(fullData); // the unfiltered data
     const [length, setLength] = useState(0);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -94,13 +95,22 @@ const SearchPage = (props) => {
                 
                 setDataSearch(params.query);
                 setDataLocation(params.location);
+                setDataMenu(params.menu);
     
-                let response = await getWarungList(datasearch, datalocation);
+                let response;
+                let responseMenu;
+
+                response = await getWarungList(datasearch, datalocation);
+                responseMenu = await getMenuList(datasearch,datamenu);
                 
                 if (response.status === 200) {
                     setResult(response.data.values);
                     setDistance(response.data.values);
                     setLength(response.data.values.length);
+                }
+
+                if (responseMenu.status === 200){
+                    setResultMenu(responseMenu.data.values);
                 }
             }
             catch (e) {
@@ -108,7 +118,7 @@ const SearchPage = (props) => {
             }
         }
         loadWarungList();
-    }, [props.location,datasearch,datalocation]);
+    }, [props.location,datasearch,datalocation,datamenu]);
 
     const handleFilter = (f) => {
         if (f.length === 0) {
@@ -145,7 +155,8 @@ const SearchPage = (props) => {
         <React.Fragment>
             <Searchbar/>
             <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
-            <WarungList data={currentResult}/>
+            <WarungList data={result}/>
+            <MenuList data={resultMenu}/>
         </React.Fragment>
     );
 }

@@ -4,9 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import './styleinfo.css';
-import {getWarung} from '../resource';
+import {getWarung, getMenuListByWarungId} from '../resource';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import MenuList from '../components/MenuList/MenuList'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,6 +34,7 @@ const InfoPage = (props) => {
     let history = useHistory();
 
     const [prevLocation, setPrevLocation] = useState('');
+    const [menuList, setMenuList] = useState([]);
     
 
     useEffect(() => {
@@ -43,8 +45,14 @@ const InfoPage = (props) => {
                 let response = await getWarung(id);
                 console.log(response.data.values[0]);
                 
-                if (response.status == 200) {
+                if (response.status === 200) {
                     setResult(response.data.values);
+                }
+
+                let responseMenu = await getMenuListByWarungId(id);
+                console.log(responseMenu.data.values);
+                if (responseMenu.status === 200) {
+                    setMenuList(responseMenu.data.values);
                 }
             }
             catch (e) {
@@ -54,13 +62,12 @@ const InfoPage = (props) => {
         let path = '/';
         if(location.state){
             path = location.state.prevLocation.concat(location.state.searchPath);
-            console.log("Jika ada location state");
             console.log(path);
         }
         setPrevLocation(path);
         console.log(prevLocation);
         loadWarung();
-    }, [id,location,prevLocation]);
+    }, [id,location,prevLocation,props.match.params.id]);
 
     return (
         <React.Fragment>
@@ -109,6 +116,7 @@ const InfoPage = (props) => {
             </Paper>
             </Grid>
         </Grid>
+        <MenuList data={menuList}/>
         </div>
         </React.Fragment>
     );
