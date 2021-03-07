@@ -42,6 +42,50 @@ const SearchPage = (props) => {
     const [filtered, setFiltered] = useState([]);
     const [fullData, setFullData] = useState([]); // the unfiltered data
     const [length, setLength] = useState(0);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const postPerPage = 3;
+
+    function setDistance(fullData){
+        navigator.geolocation.getCurrentPosition(handleSuccess,handleError, { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 });
+    
+        function handleSuccess(position){
+            const R = 6371; // Radius of the earth in km
+            const lon1 = position.coords.longitude;
+            const lat1 = position.coords.latitude;
+            for (var i = 0; i < fullData.length; i++){
+                const lat2 = fullData[i].latitude;
+                const lon2 = fullData[i].longitude;
+                const dLat = (lat2-lat1) * (Math.PI / 180);  // Javascript functions in radians
+                const dLon = (lon2-lon1) * (Math.PI / 180); 
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1* (Math.PI / 180)) * Math.cos(lat2* (Math.PI / 180)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                const d = Number((R *c ).toFixed(1)); // Distance in km  
+                fullData[i]["distance"] = [];
+                fullData[i].distance = d;
+            }
+            setFullData(fullData);
+        }
+    
+    
+        function handleError(error){
+            //Handle Errors
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    console.log("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    console.log("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                console.log("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                console.log("An unknown error occurred.");
+                    break;
+            }
+        }
+    }
     
     useEffect(() => {
         async function loadWarungList(){
@@ -60,7 +104,7 @@ const SearchPage = (props) => {
                 
                 if (response.status === 200) {
                     setResult(response.data.values);
-                    setFullData(response.data.values);
+                    setDistance(response.data.values);
                     setLength(response.data.values.length);
                 }
 
@@ -86,7 +130,26 @@ const SearchPage = (props) => {
         }
     }
 
-    console.log("res", result);
+    let lastIndex = currentPage * postPerPage;
+    let firstIndex = lastIndex - postPerPage;
+
+    let currentResult = [];
+
+    if (result.length) {
+        currentResult = result.slice(firstIndex, lastIndex);
+    }
+
+    let pageNumber = [];
+    for (let i = 1; i <= Math.ceil(result.length / postPerPage); i++) {
+        pageNumber.push(i);
+    }
+
+    const classes = useStyles();
+
+    // console.log("ddata", dData);
+    // console.log("res", currentResult);
+    // setDistance(currentResult);
+    // setDistance(fullData);
     return(
         <React.Fragment>
             <Searchbar/>

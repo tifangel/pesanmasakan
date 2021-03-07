@@ -8,7 +8,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 
-import { distance, price, loadCategories, day } from './FilterParams';
+import { distance, price, loadCategories, loadDistances, day } from './FilterParams';
 import { filterDistance, filterPrice, filterCategory, filterDay } from './FilterFunctions';
 
 // TODO
