@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function MenuList({data}) {
+function MenuList({data, onMenuClick}) {
   const classes = useStyles(); 
 
   return (
@@ -29,6 +29,7 @@ function MenuList({data}) {
                     <Grid item xs={12} sm={12} md={6} key={menu.id} className={classes.cardItem}>
                             <MenuItem
                                 data={menu}
+                                onClick={onMenuClick}
                             />
                     </Grid>
                 );

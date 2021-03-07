@@ -5,19 +5,22 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from '@material-ui/core';
+import { Button, Dialog } from '@material-ui/core';
 
 const { defaultAPIURL } = require("../../config");
 
 const useStyles = makeStyles((theme) => ({
+    dialog: {
+    },
     root: {
       padding : 0,
       height : 240,
-      display: 'flex'
+      width : 570,
+      display: 'flex',
+      
     },
     media: {
         height: 240,
@@ -56,6 +59,16 @@ const useStyles = makeStyles((theme) => ({
         fontWeight : 'light',
         color : '#000',
         marginLeft: 'auto',
+        position : 'absolute',
+        bottom : 55,
+        right : 12,
+    },
+    menuDayHint: {
+        marginTop: theme.spacing(1),
+        fontSize : 14,
+        // fontFamily : 'Inter',
+        fontWeight : 'bold',
+        color : '#000'
     },
     menuDay: {
         fontSize : 14,
@@ -64,17 +77,32 @@ const useStyles = makeStyles((theme) => ({
         background : '#FDCB35',
         color : '#000'
     },
+    menuOrder: {
+        fontSize : 14,
+        // fontFamily : 'Inter',
+        width : 380,
+        fontWeight : 'light',
+        background : '#FDCB35',
+        color : '#000',
+        position : 'absolute',
+        bottom : 10,
+        right : 10,
+        left : 180,
+        '&:hover': {
+           background: "#FDCB35",
+        },
+    },
   }));
 
 const sampleHari = ['Rabu', 'Kamis', 'Jumat']
 
-const MenuItem = ({data, onClick}) => {
+const MenuPopUp = ({data, open, onClose}) => {
     
     const classes = useStyles();
 
     return(
-        <React.Fragment>
-            <Card className={classes.root} onClick={() => onClick(data)}> 
+        <Dialog open={open} onClose={onClose} className={classes.dialog}>
+            <Card className={classes.root}> 
                 <CardMedia
                     className={classes.media}
                     image={`${defaultAPIURL}${data.pic}`}
@@ -87,8 +115,8 @@ const MenuItem = ({data, onClick}) => {
                     <Typography className={classes.menuDesc} variant="body2" color="textSecondary" component="p">
                         {data.desc_menu}
                     </Typography>
-                    <Typography className={classes.menuPrice} variant="body2" color="textSecondary" component="p">
-                        Rp {data.harga}
+                    <Typography className={classes.menuDayHint} variant="body2" color="textSecondary" component="p">
+                        Tersedia di hari:
                     </Typography>
                     <Grid container className={classes.card} spacing={1}>
                         {sampleHari.map((item, idx)=>
@@ -99,10 +127,14 @@ const MenuItem = ({data, onClick}) => {
                             </Grid>
                         )}
                     </Grid>
+                    <Typography className={classes.menuPrice} variant="body2" color="textSecondary" component="p">
+                        Rp {data.harga}
+                    </Typography>
+                    <Button className={classes.menuOrder}>Pesan</Button>
                 </CardContent>
             </Card>
-        </React.Fragment>
+        </Dialog>
     );
 }
 
-export default MenuItem;
+export default MenuPopUp;
