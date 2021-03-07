@@ -15,6 +15,8 @@ import Typography from '@material-ui/core/Typography';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+const { defaultAPIURL } = require("../../config");
+
 const useStyles = makeStyles((theme) => ({
     root: {
       padding : 0,
@@ -62,7 +64,7 @@ const WarungItem = ({data}) => {
                             }> 
                 <CardMedia
                     className={classes.media}
-                    image="/logo512.png"
+                    image={`${defaultAPIURL}${data.pic}`}
                     title={data.nama}
                 />
                 <CardContent>
