@@ -1,14 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import './styleinfo.css';
-import {getWarung, getMenuListByWarungId} from '../resource';
+import {getWarung, getMenuListByWarungId, getDaysbyMenuId} from '../resource';
 import IconButton from '@material-ui/core/IconButton';
+import StarIcon from '@material-ui/icons/Star';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import NearMeIcon from '@material-ui/icons/NearMe';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuList from '../components/MenuList/MenuList';
 import MenuPopUp from '../components/MenuList/MenuPopUp';
+
+const { defaultAPIURL } = require("../config");
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,14 +26,63 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .3)',
     },
     iconback: {
-        margin: '20px',
-    }
+        margin: '3% 0 0 3%',
+        backgroundColor: '#FDCB35',
+    },
+    info: {
+        padding: '6.5% 0 13% 0',
+    },
+    cat: {
+        display: 'inline',
+        padding: 0,
+        backgroundColor: '#FDCB35',
+        fontSize: '1.95vw',
+        position: 'relative',
+        top: '3px',
+        position: 'relative',
+        left: '18%',
+    },
+    title: {
+        color: '#FDCB35',
+        fontSize: '4.5vw',
+        width: '73vw',
+        margin: 0,
+        paddingTop: '0.2vw',
+        paddingBottom: '0.2vw',
+        backgroundColor: '#08080C',
+        borderRadius: '25px',
+        textAlign: 'center',
+        position: 'relative',
+        left: '50%',
+        transform: 'translateX(-50%)',
+    },
+    detail: {
+        width: '68vw',
+        position: 'relative',
+        left: '50%',
+        transform: 'translateX(-50%)',
+    },
+    boxdetail: {
+        padding: 0,
+        margin: 0,
+        paddingTop: 0.3,
+        paddingLeft: 6,
+        fontSize: '1.17vw',
+    },
+    basket: {
+        marginTop: theme.spacing(8),
+        marginRight: theme.spacing(3),
+        border: '0.5px solid #C4C4C4',
+        borderRadius: '5px',
+        height: '641px'
+    },
   }));
 
 
 const InfoPage = (props) => {
     const [id, setID] = useState(0);
     const [result, setResult] = useState([]);
+    const [pathpic, setpathpic] = useState('');
     const classes = useStyles();
 
     let location = useLocation();
@@ -38,11 +92,26 @@ const InfoPage = (props) => {
     const [menuList, setMenuList] = useState([]);
 
     const [menuInfo, setMenuInfo] = useState({});
+    const[days, setDays] = useState([]);
     const [infoShowed, setInfoShowed] = useState(false);
+
+    async function loadDays(id){
+        try{
+            let response = await getDaysbyMenuId(id);
+            
+            if (response.status === 200) {
+                setDays(response.data.values);
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
 
     const handleShowInfoMenu = (menuData) => {
         setInfoShowed(true);
         setMenuInfo(menuData);
+        loadDays(menuData.id);
     }
     const handleCloseInfoMenu = (menuData) => {
         setInfoShowed(false);
@@ -55,14 +124,13 @@ const InfoPage = (props) => {
                 setID(props.match.params.id);
     
                 let response = await getWarung(id);
-                console.log(response.data.values[0]);
                 
                 if (response.status === 200) {
                     setResult(response.data.values);
+                    setpathpic(response.data.values[0].pic);
                 }
 
                 let responseMenu = await getMenuListByWarungId(id);
-                console.log(responseMenu.data.values);
                 if (responseMenu.status === 200) {
                     setMenuList(responseMenu.data.values);
                 }
@@ -74,69 +142,65 @@ const InfoPage = (props) => {
         let path = '/';
         if(location.state){
             path = location.state.prevLocation.concat(location.state.searchPath);
-            console.log(path);
         }
         setPrevLocation(path);
-        console.log(prevLocation);
         loadWarung();
-    }, [id,location,prevLocation,props.match.params.id]);
+    }, [id,location,prevLocation,props.match.params.id,pathpic]);
 
     return (
         <React.Fragment>
-        <IconButton 
-            className={classes.iconback}
-            onClick = {()=>{
-                history.push(prevLocation);
-            }}
-        >
-            <ArrowBackIcon/>
-        </IconButton>
-        
         <div className={classes.root}>
-        <div>
-            <img src="/logo512.png"/>
-        </div>
-        <Grid container spacing={3}>
-            <Grid item xs={4}>
-            <Paper className={classes.paper}>
-                <h1>
-                Nama Warung: 
-                </h1>
-                <p>
-                {result.map(result => <div>{result.nama}</div>)}
-                </p>
-            </Paper>
-            </Grid>
-            <Grid item xs={4}>
-            <Paper className={classes.paper}>
-                <h1>
-                Alamat Warung: 
-                </h1>
-                <p>
-                {result.map(result => <div>{result.alamat}</div>)}
-                </p>
-            </Paper>
-            </Grid>
-            <Grid item xs={4}>
-            <Paper className={classes.paper}>
-                <h1>
-                Kategori Warung: 
-                </h1>
-                <p>
-                {result.map(result => <div>{result.kategori}</div>)}
-                </p>
-            </Paper>
-            </Grid>
-        </Grid>
-        <MenuList 
-            data={menuList}
-            onMenuClick={handleShowInfoMenu}
-        />
-        <MenuPopUp 
-            data={menuInfo} 
-            open={infoShowed}
-            onClose={handleCloseInfoMenu}
-        />
+            <div style={{
+                        backgroundImage: `url(${defaultAPIURL+pathpic})`, 
+                        backgroundRepeat: 'no-repeat', 
+                        backgroundSize: 'cover'}}>
+            <IconButton 
+                className={classes.iconback}
+                onClick = {()=>{
+                    history.push(prevLocation);
+            }}>
+                <ArrowBackIcon style={{color: '#08080C', fontSize: '1em'}}/>
+            </IconButton>
+            {result.map(result => 
+                <div className={classes.info}>
+                    <div className={classes.cat}>{result.kategori}</div>
+                    <div className={classes.title}>{result.nama}</div>
+                    <Box className={classes.detail} display="flex" flexDirection="row-reverse" p={0} m={0} bgcolor="#FFFFFF">
+                        <Box display="flex" p={1} marginLeft="5%" marginRight="2%">
+                            <NearMeIcon style={{color: '#FDCB35', fontSize: '1.5vw'}}/>
+                            <Box className={classes.boxdetail}>{result.alamat}</Box>
+                        </Box>
+                        <Box display="flex" p={1} marginLeft="5%">
+                            <LocationOnIcon style={{color: '#FDCB35', fontSize: '1.5vw'}}/>
+                            <Box className={classes.boxdetail}>1.2km</Box>
+                        </Box>
+                        <Box display="flex" p={1}>
+                            <StarIcon style={{color: '#FDCB35', fontSize: '1.5vw'}}/>
+                            <Box className={classes.boxdetail}>3</Box>
+                        </Box>
+                    </Box>
+                </div>
+            )}
+            </div>
+            <Grid container spacing={0}>
+                <Grid item xs={12} sm={12} md={9}>
+                    <MenuList 
+                        data={menuList}
+                        onMenuClick={handleShowInfoMenu}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={12} md={3}>
+                    <Box className={classes.basket}>
+                        
+                    </Box>
+                </Grid>
+            </Grid>         
+            <MenuPopUp 
+                data={menuInfo}
+                days={days} 
+                open={infoShowed}
+                onClose={handleCloseInfoMenu}
+            />
         </div>
         </React.Fragment>
     );

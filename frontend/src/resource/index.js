@@ -57,3 +57,10 @@ export const getMenuListByWarungId = async(warungId) =>
         return response
     }
 
+export const getDaysbyMenuId = async(menuid) =>
+    {
+        const url = `${defaultAPIURL}/daftarharimenu?id=${menuid}`
+        const response = await get(url)
+
+        return response
+    }
