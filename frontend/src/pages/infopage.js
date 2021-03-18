@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
         backgroundColor: '#FDCB35',
         fontSize: '1.95vw',
+        fontFamily : 'Inter',
+        fontWeight : 'light',
         position: 'relative',
         top: '3px',
         position: 'relative',
@@ -45,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
     title: {
         color: '#FDCB35',
         fontSize: '4.5vw',
+        fontFamily : 'Roboto Slab',
+        fontWeight : 'black',
         width: '73vw',
         margin: 0,
         paddingTop: '0.2vw',
@@ -68,6 +72,8 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 0.3,
         paddingLeft: 6,
         fontSize: '1.17vw',
+        fontFamily : 'Inter',
+        fontWeight : 'light',
     },
     basket: {
         marginTop: theme.spacing(8),

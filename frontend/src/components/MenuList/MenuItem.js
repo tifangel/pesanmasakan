@@ -46,15 +46,15 @@ const useStyles = makeStyles((theme) => ({
     },
     menuDesc: {
         fontSize : 12,
-        // fontFamily : 'Inter',
+        fontFamily : 'Inter',
         fontWeight : 'light',
         color : '#000',
         marginTop : 4,
     },
     menuPrice: {
         fontSize : 18,
-        // fontFamily : 'Inter',
-        fontWeight : 'light',
+        fontFamily : 'Inter',
+        fontWeight : '600',
         color : '#000',
         marginLeft: 'auto',
     },
