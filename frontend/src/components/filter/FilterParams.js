@@ -1,10 +1,10 @@
 import { getCategories } from '../../resource/index';
 
 export var distance = [
-    { name: "distance", value: "dist_lt1", label: "<1km" },
-    { name: "distance", value: "dist_1_2", label: "1-2km" },
-    { name: "distance", value: "dist_2_5", label: "2-5km" },
-    { name: "distance", value: "dist_gt5", label: ">5km" },
+    { name: "distance", value: "0_1", label: "<1km" },
+    { name: "distance", value: "1_2", label: "1-2km" },
+    { name: "distance", value: "2_5", label: "2-5km" },
+    { name: "distance", value: "5_Infinity", label: ">5km" },
   ];
   
 export var price = [
