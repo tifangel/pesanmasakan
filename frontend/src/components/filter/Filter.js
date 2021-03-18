@@ -11,11 +11,6 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import { distance, price, loadCategories, loadDistances, day } from './FilterParams';
 import { filterDistance, filterPrice, filterCategory, filterDay } from './FilterFunctions';
 
-// TODO
-// - get category from query
-// - define onChange function
-// - kalo di uncheck semua bakal kosong
-
 function Filter(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,6 +26,9 @@ function Filter(props) {
 
   var [category, setCategory] = useState([]);
   var [expanded, setExpanded] = useState(false);
+  var [activeCat, setActiveCat] = useState([]);
+  var [activeDist, setActiveDist] = useState([]);
+  var [ticked, setTicked] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -48,28 +46,49 @@ function Filter(props) {
   const handleCheckbox = () => (event, isChecked) => {
     var id = event.target.id;
     var value = event.target.value;
+    var n = ticked;
+
+    isChecked ? n++ : n--;
+    setTicked(n);
+
     switch (id) {
       case 'category':
-        console.log("category");
-        var f = filterCategory(value, props.original, props.current, isChecked);
-        props.onFilter(f);
+        var cat = activeCat;
+        isChecked? cat.push(value) : cat.splice(cat.indexOf(value), 1);
+        setActiveCat(cat);
+
+        var f = props.original.filter(filterCategory(activeCat));
+        chainFilters(n);
         return;
+
       case 'price':
         console.log("price");
         var f = filterPrice(value, props.original, props.current, isChecked);
-        props.onFilter(f);
+        props.onFilter(f, n);
         return;
+
       case 'distance':
-        console.log("dist");
-        var f = filterDistance(value, props.original, props.current, isChecked);
-        props.onFilter(f);
+        var dist = activeDist;
+        isChecked? dist.push(value) : dist.splice(dist.indexOf(value), 1);
+        setActiveDist(dist);
+
+        var f = props.original.filter(filterDistance(activeDist));
+        chainFilters(n);
         return;
+
       case 'day':
         console.log("day");
         var f = filterDay(value, props.original, props.current, isChecked);
-        props.onFilter(f);
+        props.onFilter(f, n);
         return;
     };
+  }
+
+  const chainFilters = (n) => {
+    var f = props.original
+      .filter(filterCategory(activeCat))
+      .filter(filterDistance(activeDist));
+    props.onFilter(f, n);
   }
 
   function mapToForm(list) {
