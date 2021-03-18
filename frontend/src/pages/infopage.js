@@ -77,6 +77,8 @@ const useStyles = makeStyles((theme) => ({
     },
     basket: {
         marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(4),
+        marginLeft: theme.spacing(1),
         marginRight: theme.spacing(3),
         border: '0.5px solid #C4C4C4',
         borderRadius: '5px',
