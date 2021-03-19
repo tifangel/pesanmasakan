@@ -71,7 +71,6 @@ exports.lihat_menu = function(req, res) {
 };
 
 exports.cari_menu = function(req,res, next) {
-    console.log("masuk")
     const title = req.query.title;
 
     connection.query("SELECT * FROM menu WHERE nama LIKE '%" + title + "%'", function (error, rows, fields){
@@ -82,3 +81,13 @@ exports.cari_menu = function(req,res, next) {
         }
     });
 };
+
+exports.daftar_hari_menu = function(req,res){
+    connection.query("SELECT hari FROM hari_menu WHERE id_menu = " + req.query.id, function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            response.ok(rows, res)
+        }
+    });
+}

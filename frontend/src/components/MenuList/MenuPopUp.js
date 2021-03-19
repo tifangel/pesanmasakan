@@ -94,10 +94,8 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const sampleHari = ['Rabu', 'Kamis', 'Jumat']
+const MenuPopUp = ({data, days, open, onClose}) => {
 
-const MenuPopUp = ({data, open, onClose}) => {
-    
     const classes = useStyles();
 
     return(
@@ -119,10 +117,10 @@ const MenuPopUp = ({data, open, onClose}) => {
                         Tersedia di hari:
                     </Typography>
                     <Grid container className={classes.card} spacing={1}>
-                        {sampleHari.map((item, idx)=>
+                        {days.map((item, idx)=>
                             <Grid item>
                                 <Typography className={classes.menuDay} variant="body2" color="textSecondary" component="p">
-                                    {item}
+                                    {item.hari}
                                 </Typography>
                             </Grid>
                         )}
