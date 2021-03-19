@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import './styleinfo.css';
+import InfoTambahan from '../components/InfoTambahan';
 import {getWarung, getMenuListByWarungId} from '../resource';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -83,6 +84,7 @@ const InfoPage = (props) => {
 
     return (
         <React.Fragment>
+        <InfoTambahan />
         <IconButton 
             className={classes.iconback}
             onClick = {()=>{

@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react'
-import Searchbar from '../components/Search/Searchbar'
+import React, {useState, useEffect} from 'react';
+import InfoTambahan from '../components/InfoTambahan';
+import Searchbar from '../components/Search/Searchbar';
 import WarungList from '../components/WarungList/WarungList';
 import {getAllWarungList} from "../resource/index";
 // import { setDistance } from '../components/WarungList/Distance';
@@ -70,6 +71,7 @@ const HomePage = (props) => {
     
     return(
         <div>
+            <InfoTambahan />
             <Searchbar/>
             <WarungList data={warungList}/>
         </div>

@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 
+import InfoTambahan from '../components/InfoTambahan';
 import Searchbar from '../components/Search/Searchbar';
 import {getWarungList, getMenuList} from '../resource';
 import WarungList from '../components/WarungList/WarungList';
@@ -152,6 +153,7 @@ const SearchPage = (props) => {
     // setDistance(fullData);
     return(
         <React.Fragment>
+            <InfoTambahan />
             <Searchbar/>
             <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
             <WarungList data={result}/>
