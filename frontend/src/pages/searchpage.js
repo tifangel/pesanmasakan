@@ -120,8 +120,8 @@ const SearchPage = (props) => {
         loadWarungList();
     }, [props.location,datasearch,datalocation,datamenu]);
 
-    const handleFilter = (f) => {
-        if (f.length === 0) {
+    const handleFilter = (f, n) => {
+        if (n === 0) {
             setResult(fullData);
             setLength(0);
         }
