@@ -1,13 +1,13 @@
--- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Win64 (AMD64)
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
 -- Host: localhost    Database: pesanmasakan
 -- ------------------------------------------------------
--- Server version	10.5.8-MariaDB
+-- Server version	8.0.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,9 +21,9 @@
 
 DROP TABLE IF EXISTS `hari_menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hari_menu` (
-  `id_menu` int(11) NOT NULL,
+  `id_menu` int NOT NULL,
   `hari` varchar(10) NOT NULL,
   PRIMARY KEY (`id_menu`,`hari`),
   CONSTRAINT `hari_menu_ibfk_1` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -46,18 +46,18 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `menu` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_warung` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_warung` int DEFAULT NULL,
   `nama` varchar(255) NOT NULL,
-  `harga` int(11) DEFAULT NULL,
+  `harga` int DEFAULT NULL,
   `desc_menu` varchar(255) DEFAULT NULL,
   `pic` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_warung` (`id_warung`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`id_warung`) REFERENCES `warung` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,13 +76,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `pembeli`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pembeli` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `nama` varchar(255) NOT NULL,
   `telp` varchar(14) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,19 +101,19 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `transaksi`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transaksi` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_pembeli` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_pembeli` int DEFAULT NULL,
   `tgl_transaksi` date DEFAULT NULL,
-  `total` int(11) DEFAULT NULL,
+  `total` int DEFAULT NULL,
   `alamat_tujuan` varchar(255) DEFAULT NULL,
   `longitude` double(10,6) DEFAULT NULL,
   `latitude` double(10,6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_pembeli` (`id_pembeli`),
   CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_pembeli`) REFERENCES `pembeli` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -132,16 +132,16 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `transaksi_menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transaksi_menu` (
-  `id_transaksi` int(11) DEFAULT NULL,
-  `id_menu` int(11) DEFAULT NULL,
-  `jumlah_porsi` int(11) DEFAULT NULL,
+  `id_transaksi` int DEFAULT NULL,
+  `id_menu` int DEFAULT NULL,
+  `jumlah_porsi` int DEFAULT NULL,
   KEY `id_transaksi` (`id_transaksi`),
   KEY `id_menu` (`id_menu`),
   CONSTRAINT `transaksi_menu_ibfk_1` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id`),
   CONSTRAINT `transaksi_menu_ibfk_2` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,22 +155,79 @@ INSERT INTO `transaksi_menu` VALUES (1,28,1),(1,16,1),(2,34,1),(3,9,2);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user_pembeli`
+--
+
+DROP TABLE IF EXISTS `user_pembeli`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_pembeli` (
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `no_hp` varchar(15) DEFAULT NULL,
+  `nama` varchar(255) NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_pembeli`
+--
+
+LOCK TABLES `user_pembeli` WRITE;
+/*!40000 ALTER TABLE `user_pembeli` DISABLE KEYS */;
+INSERT INTO `user_pembeli` VALUES ('indy','pass','anindya@mail.com','081353513','anindya'),('raras','1234','raras@mail.com','081565379','raras');
+/*!40000 ALTER TABLE `user_pembeli` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_penjual`
+--
+
+DROP TABLE IF EXISTS `user_penjual`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_penjual` (
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `no_hp` varchar(15) DEFAULT NULL,
+  `id_warung` int DEFAULT NULL,
+  `nama` varchar(255) NOT NULL,
+  PRIMARY KEY (`username`),
+  KEY `id_warung` (`id_warung`),
+  CONSTRAINT `user_penjual_ibfk_1` FOREIGN KEY (`id_warung`) REFERENCES `warung` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_penjual`
+--
+
+LOCK TABLES `user_penjual` WRITE;
+/*!40000 ALTER TABLE `user_penjual` DISABLE KEYS */;
+INSERT INTO `user_penjual` VALUES ('jundu','password','jundu.lalapan@mail.com','081234568',1,'jundullah'),('tiffany','4321','tiffany.mamasuka@mail.com','0887654321',4,'tiffany');
+/*!40000 ALTER TABLE `user_penjual` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `warung`
 --
 
 DROP TABLE IF EXISTS `warung`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `warung` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `nama` varchar(255) NOT NULL,
   `alamat` varchar(255) NOT NULL,
   `kategori` varchar(30) DEFAULT NULL,
   `pic` varchar(300) DEFAULT NULL,
-  `latitude` double(10,6) DEFAULT NULL,
   `longitude` double(10,6) DEFAULT NULL,
+  `latitude` double(10,6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,4 +249,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-27 12:20:55
+-- Dump completed on 2021-03-19 11:12:21
