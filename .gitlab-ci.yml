@@ -19,7 +19,6 @@ compile-backend:
     - echo "Start building Backend App"
     - cd backend
     - npm install
-    - npm start
     - echo "Build successfully!"
 
 test-frontend:
@@ -28,6 +27,7 @@ test-frontend:
   script:
     - echo "Testing Frontend App"
     - cd frontend
+    - npm install
     - CI=true npm test
     - echo "Test successfully!"
     
@@ -37,5 +37,6 @@ test-backend:
   script:
     - echo "Testing Backend App"
     - cd backend
+    - npm install
     - CI=true npm test
     - echo "Test successfully!"
