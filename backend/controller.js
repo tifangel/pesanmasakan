@@ -91,3 +91,15 @@ exports.daftar_hari_menu = function(req,res){
         }
     });
 }
+
+exports.ubah_data_warung = function(req,res){
+    connection.query("UPDATE warung, user_penjual SET warung.nama = " + req.body.nama + ", warung.alamat = " + req.body.alamat + ", warung.kategori = " + req.body.cat + ", warung.pic = " + req.body.pic + 
+                     "user_penjual.username = " + req.body.username + "user_penjual.email = " + req.body.email + "user_penjual.no_hp = " + req.body.hp +
+                     " WHERE user_penjual.id_warung = warung.id AND warung.id = " + req.body.idwarung, function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            response.ok(rows, res)
+        }
+    });
+}
