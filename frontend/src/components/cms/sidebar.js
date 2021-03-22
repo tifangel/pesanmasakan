@@ -12,20 +12,26 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
         position: 'static',
-        width: '300px',
+        width: '19.53125vw',
         flexShrink: 0,
     },
     drawerPaper: {
-        width: '300px',
+        width: '19.53125vw',
         backgroundColor: '#08080C',
         color: '#9A7A18',
-        fontSize : 30,
-        fontFamily : 'Roboto Slab',
-        fontWeight : 'medium',
     },
     toolbar: theme.mixins.toolbar,
     dividerColor: {
         backgroundColor: '#717181',
+    },
+    listItemText: {
+        fontSize : '1.875em',
+        fontFamily : 'Roboto Slab',
+        fontWeight : 'medium',
+    },
+    icon: {
+        color: '#FDCB35',
+        fontSize: '1.875em',
     },
   }));
 
@@ -36,19 +42,13 @@ const ListItem = withStyles({
         color: "#FDCB35"
       },
       "&$selected:hover": {
-        backgroundColor: "purple",
-        color: "white"
+        backgroundColor: "#292727",
+        color: "#9A7A18"
       },
       "&:hover": {
-        backgroundColor: "blue",
-        color: "white",
-        ListItemIcon: {
-            color: "black",
-        }
+        backgroundColor: "#292727",
+        color: "#FDCB35",
       },
-      ListItemIcon: {
-        color: '#FDCB35',
-      }
     },
     selected: {}
   })(MuiListItem);
@@ -89,9 +89,9 @@ const Sidebar = ({id, onMenuClick}) => {
                     onClick={event => onMenuClick(event, 0)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon/>
+                        <DashboardIcon className={classes.icon}/>
                     </ListItemIcon>
-                    <ListItemText primary="Dashboard"/>
+                    <ListItemText classes={{primary:classes.listItemText}} primary="Dashboard"/>
                 </ListItem>
                 <Divider classes={{root: classes.dividerColor}}/>
                 <ListItem button 
@@ -99,9 +99,9 @@ const Sidebar = ({id, onMenuClick}) => {
                     onClick={event => onMenuClick(event, 1)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon/>
+                        <DashboardIcon className={classes.icon}/>
                     </ListItemIcon>
-                    <ListItemText primary="Products"/>
+                    <ListItemText classes={{primary:classes.listItemText}} primary="Products"/>
                 </ListItem>
                 <Divider classes={{root: classes.dividerColor}}/>
                 <ListItem button 
@@ -109,9 +109,9 @@ const Sidebar = ({id, onMenuClick}) => {
                     onClick={event => onMenuClick(event, 2)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon/>
+                        <DashboardIcon className={classes.icon}/>
                     </ListItemIcon>
-                    <ListItemText primary="Orders"/>
+                    <ListItemText classes={{primary:classes.listItemText}} primary="Orders"/>
                 </ListItem>
                 <Divider classes={{root: classes.dividerColor}}/>
                 <ListItem button 
@@ -119,9 +119,9 @@ const Sidebar = ({id, onMenuClick}) => {
                     onClick={event => onMenuClick(event, 3)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon/>
+                        <DashboardIcon className={classes.icon}/>
                     </ListItemIcon>
-                    <ListItemText primary="Profile"/>
+                    <ListItemText classes={{primary:classes.listItemText}} primary="Profile"/>
                 </ListItem>
                 <Divider classes={{root: classes.dividerColor}}/>
             </List>

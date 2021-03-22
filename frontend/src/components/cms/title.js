@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flex: '50%',
         color: '#000000',
-        fontSize : 40,
+        fontSize : '2.6vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
     },
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         flex: '50%',
         textAlign: 'right',
         color: '#000000',
-        fontSize : 20,
+        fontSize : '1.3vw',
         fontFamily : 'Inter',
         fontWeight : 'medium',
     }

@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import Title from './title';
@@ -9,6 +11,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#FFFFFF',
         borderRadius: '10px',
         padding: theme.spacing(5),
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(0),
         margin: theme.spacing(0),
     },
     contflex: {
@@ -17,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flex: '95%',
         color: '#000000',
-        fontSize : 30,
+        fontSize : '1.9vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
     },
@@ -29,40 +33,45 @@ const useStyles = makeStyles((theme) => ({
         top: '50%',
         transform: 'translateY(-50%)',
     },
+    icon: {
+        fontSize: '1.9vw',
+    },
+    gridcontainer: {
+        paddingBottom: theme.spacing(5),
+    },
     info: {
-        flex: '50%',
-        padding: theme.spacing(4),
+        paddingLeft: theme.spacing(4),
         paddingRight: theme.spacing(6),
     },
     col1: {
         width: '40%',
-        paddingBottom: '30px',
+        paddingTop: '1.8vw',
         color: '#C4C4C4',
-        fontSize : 20,
+        fontSize : '1.3vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
     },
     col2: {
         width: '60%',
-        paddingBottom: '30px',
+        paddingTop: '1.8vw',
         color: '#000000',
-        fontSize : 20,
+        fontSize : '1.3vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
     },
     contimg: {
-        flex: '50%',
         paddingTop: theme.spacing(2),
         paddingBottom: theme.spacing(2),
     },
     titleimg: {
         color: '#C4C4C4',
-        fontSize : 20,
+        fontSize : '1.3vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
     },
     img: {
-        width: '100%',
+        width: '30vw',
+        height: '15vw',
     },
   }));
 
@@ -80,12 +89,12 @@ const Profile = (props) => {
                         <IconButton
                             className={classes.editbtn}
                         >
-                            <EditIcon/>
+                            <EditIcon className={classes.icon}/>
                         </IconButton>
                     </div>
                 </div>
-                <div className={classes.contflex}>
-                    <div className={classes.info}>
+                <Grid container className={classes.gridcontainer}>
+                    <Grid className={classes.info} item xs={12} sm={12} md={6}>
                         <table>
                             <tr>
                                 <td className={classes.col1}>Warung Name</td>
@@ -112,12 +121,12 @@ const Profile = (props) => {
                                 <td className={classes.col2}>john.doe@lalapan.lahap</td>
                             </tr>
                         </table>
-                    </div>
-                    <div className={classes.contimg}>
+                    </Grid>
+                    <Grid className={classes.contimg} item xs={12} sm={12} md={6}>
                         <p className={classes.titleimg}>Warung Image</p>
                         <img src="/logo512.png" className={classes.img}/>
-                    </div>
-                </div>
+                    </Grid>
+                </Grid>
             </div>
         </React.Fragment>
     );
