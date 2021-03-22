@@ -28,4 +28,7 @@ module.exports = function(app) {
 
     app.route('/carimenu')
         .get(pesanmasakan.cari_menu);
+
+    app.route('/daftarharimenu')
+        .get(pesanmasakan.daftar_hari_menu);
 };

@@ -1,41 +1,14 @@
-stages:
-  - build
-  - test
+build-job:
+    stage: build
+    script:
+        - echo "Hello, $GITLAB_USER_LOGIN!"
 
-build-frontend:
-  stage: build
-  image: node
-  script: 
-    - echo "Start building Frontend App"
-    - cd frontend
-    - npm install
-    - npm run-script build
-    - echo "Build successfully!"
-    
-compile-backend:
-  stage: build
-  image: node
-  script: 
-    - echo "Start building Backend App"
-    - cd backend
-    - npm install
-    - npm start
-    - echo "Build successfully!"
+test-job1:
+    stage: test
+    script:
+        - echo "This job tests something"
 
-test-frontend:
-  stage: test
-  image: node
-  script:
-    - echo "Testing Frontend App"
-    - cd frontend
-    - CI=true npm test
-    - echo "Test successfully!"
-    
-test-backend:
-  stage: test
-  image: node
-  script:
-    - echo "Testing Backend App"
-    - cd backend
-    - CI=true npm test
-    - echo "Test successfully!"
+deploy-prod:
+    stage: deploy
+    script:
+        - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."

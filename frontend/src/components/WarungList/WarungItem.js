@@ -42,11 +42,8 @@ const WarungItem = ({data}) => {
     const [searchPath, setSearchPath] = useState('');
 
     useEffect(() => {
-        // let path = location.pathname.concat(location.search);
         setPrevLocation(location.pathname);
         setSearchPath(location.search);
-        // console.log(prevLocation);
-        // console.log(searchPath);
     }, [prevLocation, searchPath, location]);
     
     const classes = useStyles();
