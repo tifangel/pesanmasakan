@@ -118,7 +118,7 @@ const MenuPopUp = ({data, days, open, onClose}) => {
                     </Typography>
                     <Grid container className={classes.card} spacing={1}>
                         {days.map((item, idx)=>
-                            <Grid item>
+                            <Grid item key={idx}>
                                 <Typography className={classes.menuDay} variant="body2" color="textSecondary" component="p">
                                     {item.hari}
                                 </Typography>
