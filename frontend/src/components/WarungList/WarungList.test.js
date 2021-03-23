@@ -1,6 +1,7 @@
 import WarungList from './WarungList';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
 
 const dummyMenu = [{
     'id' : 1,
@@ -22,7 +23,10 @@ const dummyMenu = [{
 
 test("Render warung list", () => {
     const root = document.createElement('div');
-    ReactDOM.render(<WarungList data={dummyMenu}/>, root);
+    ReactDOM.render(
+        <BrowserRouter>
+            <WarungList data={dummyMenu}/>
+        </BrowserRouter>, root);
     const titles = root.querySelectorAll('h2');
 
     expect(titles[0].textContent).toBe(dummyMenu[0].nama);
