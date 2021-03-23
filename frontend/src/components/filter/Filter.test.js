@@ -2,7 +2,7 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
-import Filter from "../components/filter/Filter";
+import Filter from "./Filter";
 
 let container = null;
 let data = [
