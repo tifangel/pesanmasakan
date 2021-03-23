@@ -95,7 +95,7 @@ function Filter(props) {
     return (list.map((data, id) => {
       return (
         <FormControlLabel 
-          control={ <Checkbox onChange={handleCheckbox()} id={data.name} value={data.value} />}
+          control={ <Checkbox onChange={handleCheckbox()} id={data.name} value={data.value} data-testid={data.value} />}
           label={data.label}
         />
       );
