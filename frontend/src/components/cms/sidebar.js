@@ -6,7 +6,11 @@ import List from '@material-ui/core/List';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+import MenuIcon from '@material-ui/icons/Menu';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import StorefrontIcon from '@material-ui/icons/Storefront';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -99,7 +103,7 @@ const Sidebar = ({id, onMenuClick}) => {
                     onClick={event => onMenuClick(event, 1)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon className={classes.icon}/>
+                        <MenuBookIcon className={classes.icon}/>
                     </ListItemIcon>
                     <ListItemText classes={{primary:classes.listItemText}} primary="Products"/>
                 </ListItem>
@@ -109,7 +113,7 @@ const Sidebar = ({id, onMenuClick}) => {
                     onClick={event => onMenuClick(event, 2)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon className={classes.icon}/>
+                        <ShoppingBasketIcon className={classes.icon}/>
                     </ListItemIcon>
                     <ListItemText classes={{primary:classes.listItemText}} primary="Orders"/>
                 </ListItem>
@@ -119,7 +123,7 @@ const Sidebar = ({id, onMenuClick}) => {
                     onClick={event => onMenuClick(event, 3)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon className={classes.icon}/>
+                        <StorefrontIcon className={classes.icon}/>
                     </ListItemIcon>
                     <ListItemText classes={{primary:classes.listItemText}} primary="Profile"/>
                 </ListItem>

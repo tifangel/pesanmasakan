@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const Profile = (props) => {
+const Profile = ({onClick}) => {
 
     const classes = useStyles();
 
@@ -88,6 +88,7 @@ const Profile = (props) => {
                     <div className={classes.contbtn}>
                         <IconButton
                             className={classes.editbtn}
+                            onClick={onClick}
                         >
                             <EditIcon className={classes.icon}/>
                         </IconButton>
