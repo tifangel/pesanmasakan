@@ -106,7 +106,7 @@ const MenuCmsPage = (props) => {
       <div className={classes.root}>
         <Grid container spacing={0}>
           <Grid item xs={12} sm={12} md={12}>
-            <MenuListPenjual data={menuList} onMenuClick={() => {}}/>
+            <MenuListPenjual data={menuList} />
           </Grid>
         </Grid>
       </div>
