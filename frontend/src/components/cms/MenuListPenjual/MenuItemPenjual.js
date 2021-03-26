@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from '@material-ui/core';
 
-const { defaultAPIURL } = require("../../config");
+const { defaultAPIURL } = require("../../../config");
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -5,7 +5,7 @@ import { Link } from '@material-ui/core/Link';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import EditIcon from '@material-ui/icons/Edit';
 
-const { defaultAPIURL } = require("../../config");
+const { defaultAPIURL } = require("../../../config");
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Profile from './profile'
 import Test from './test'
+import MenuListPenjual from './MenuListPenjual';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const MainContent = ({id}) => {
+const MainContent = ({id, menuList}) => {
 
     const [stateProfile, setStateProfile] = useState('show');
     const [stateEditProfile, setStateEditProfile] = useState('hide');
@@ -34,7 +35,7 @@ const MainContent = ({id}) => {
     }else if(id===1){
         content = "Menu 2";
     }else if(id===2){
-        content = "Menu 3";
+        content = <MenuListPenjual data={menuList} />;
     }else if(id===3){
         content = <div>
                         { stateProfile === 'show' && (<Profile onClick={gotoEditProfile}/>)}
