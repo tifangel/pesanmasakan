@@ -32,6 +32,12 @@ module.exports = function(app) {
     app.route('/daftarharimenu')
         .get(pesanmasakan.daftar_hari_menu);
 
-    app.route('editdatawarung')
+    app.route('/editdatawarung')
        .post(pesanmasakan.ubah_data_warung);
+
+    app.route('/tambahwarung')
+       .post(pesanmasakan.tambah_warung);
+
+    app.route('/hapuswarung')
+       .post(pesanmasakan.hapus_warung);
 };
