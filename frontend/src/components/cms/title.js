@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
+        paddingTop: theme.spacing(0),
         paddingBottom: theme.spacing(1),
     },
     title: {
@@ -12,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize : '2.6vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
+        [theme.breakpoints.down('sm')]: {
+            fontSize : '4vw',
+        },
     },
     date: {
         flex: '50%',
@@ -20,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize : '1.3vw',
         fontFamily : 'Inter',
         fontWeight : 'medium',
+        [theme.breakpoints.down('sm')]: {
+            fontSize : '2vw',
+        },
     }
   }));
 
