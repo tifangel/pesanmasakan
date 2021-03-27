@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize : '1.9vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
+        [theme.breakpoints.down('sm')]: {
+            fontSize : '3vw',
+        },
     },
     contbtn: {
         flex: '5%',
@@ -35,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     },
     icon: {
         fontSize: '1.9vw',
+        [theme.breakpoints.down('sm')]: {
+            fontSize : '3vw',
+        },
     },
     gridcontainer: {
         paddingBottom: theme.spacing(5),
@@ -50,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize : '1.3vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
+        [theme.breakpoints.down('sm')]: {
+            fontSize : '2vw',
+        },
     },
     col2: {
         width: '60%',
@@ -58,20 +67,38 @@ const useStyles = makeStyles((theme) => ({
         fontSize : '1.3vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
+        [theme.breakpoints.down('sm')]: {
+            fontSize : '2vw',
+        },
     },
     contimg: {
         paddingTop: theme.spacing(2),
         paddingBottom: theme.spacing(2),
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: theme.spacing(5),
+        },
     },
     titleimg: {
         color: '#C4C4C4',
         fontSize : '1.3vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
+        [theme.breakpoints.down('sm')]: {
+            fontSize : '2vw',
+        },
     },
     img: {
         width: '30vw',
         height: '15vw',
+        [theme.breakpoints.down('md')]: {
+            position: 'relative',
+            left: '50%',
+            transform: 'translateX(-50%)',
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: '50vw',
+            height: '30vw',
+        },
     },
   }));
 
@@ -95,7 +122,7 @@ const Profile = ({onClick}) => {
                     </div>
                 </div>
                 <Grid container className={classes.gridcontainer}>
-                    <Grid className={classes.info} item xs={12} sm={12} md={6}>
+                    <Grid className={classes.info} item xs={12} sm={12} md={12} lg={6}>
                         <table>
                             <tr>
                                 <td className={classes.col1}>Warung Name</td>
@@ -123,7 +150,7 @@ const Profile = ({onClick}) => {
                             </tr>
                         </table>
                     </Grid>
-                    <Grid className={classes.contimg} item xs={12} sm={12} md={6}>
+                    <Grid className={classes.contimg} item xs={12} sm={12} md={12} lg={6}>
                         <p className={classes.titleimg}>Warung Image</p>
                         <img src="/logo512.png" className={classes.img}/>
                     </Grid>
