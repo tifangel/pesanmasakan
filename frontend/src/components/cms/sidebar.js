@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import Drawer from "@material-ui/core/Drawer";
 import MuiListItem from "@material-ui/core/ListItem";
-import MuiListItemIcon from "@material-ui/core/ListItemIcon";
 import List from '@material-ui/core/List';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import StorefrontIcon from '@material-ui/icons/Storefront';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,40 +54,18 @@ const ListItem = withStyles({
     selected: {}
   })(MuiListItem);
 
-// const ListItemIcon = withStyles({
-//     root: {
-//       "&$selected": {
-//         color: "blue"
-//       },
-//       "&$selected:hover": {
-//         color: "red"
-//       },
-//       "&:hover": {
-//         color: "black"
-//       },
-//       color: '#FDCB35',
-//     },
-//   })(MuiListItemIcon);
-
-const Sidebar = ({id, onMenuClick}) => {
+const Sidebar = ({id, mobile, onMenuClick}) => {
 
     const classes = useStyles();
 
     return(
-        <Drawer
-            variant="permanent"
-            className={classes.root}
-            classes={{
-                paper: classes.drawerPaper,
-            }}
-            anchor="left"
-        >
+        <React.Fragment>
             <div className={classes.toolbar} />
             <List>
                 <Divider classes={{root: classes.dividerColor}}/>
                 <ListItem button 
                     selected={id === 0}
-                    onClick={event => onMenuClick(event, 0)}
+                    onClick={event => onMenuClick(event, 0, mobile)}
                 >
                     <ListItemIcon>
                         <DashboardIcon className={classes.icon}/>
@@ -96,36 +75,36 @@ const Sidebar = ({id, onMenuClick}) => {
                 <Divider classes={{root: classes.dividerColor}}/>
                 <ListItem button 
                     selected={id === 1}
-                    onClick={event => onMenuClick(event, 1)}
+                    onClick={event => onMenuClick(event, 1, mobile)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon className={classes.icon}/>
+                        <MenuBookIcon className={classes.icon}/>
                     </ListItemIcon>
                     <ListItemText classes={{primary:classes.listItemText}} primary="Products"/>
                 </ListItem>
                 <Divider classes={{root: classes.dividerColor}}/>
                 <ListItem button 
                     selected={id === 2}
-                    onClick={event => onMenuClick(event, 2)}
+                    onClick={event => onMenuClick(event, 2, mobile)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon className={classes.icon}/>
+                        <ShoppingBasketIcon className={classes.icon}/>
                     </ListItemIcon>
                     <ListItemText classes={{primary:classes.listItemText}} primary="Orders"/>
                 </ListItem>
                 <Divider classes={{root: classes.dividerColor}}/>
                 <ListItem button 
                     selected={id === 3}
-                    onClick={event => onMenuClick(event, 3)}
+                    onClick={event => onMenuClick(event, 3, mobile)}
                 >
                     <ListItemIcon>
-                        <DashboardIcon className={classes.icon}/>
+                        <StorefrontIcon className={classes.icon}/>
                     </ListItemIcon>
                     <ListItemText classes={{primary:classes.listItemText}} primary="Profile"/>
                 </ListItem>
                 <Divider classes={{root: classes.dividerColor}}/>
             </List>
-        </Drawer>
+        </React.Fragment>
     );
 }
 
