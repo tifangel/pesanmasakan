@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormMenu from './formmenu'
 import Profile from './profile'
@@ -34,13 +34,46 @@ const MainContent = ({id}) => {
         setStateProfile('show');
         setStateEditProfile('hide');
     }
+    
+    const [dataFormMenu, setDataFormMenu] = useState({
+        nama: "",
+        harga: 0,
+        desc_menu: "",
+        pic: "",
+    });
+    const [daysMenu, setDaysMenu] = useState({
+        senin: false,
+        selasa: false,
+        rabu: false,
+        kamis: false,
+        jumat: false,
+        sabtu: false,
+        minggu: false,
+    });
+    const [statusFormMenu, setStatusFormMenu] = useState('insert');
+    
+    const changeStatusFormtoEdit = (data) => {
+        setStatusFormMenu('edit');
+        setDataFormMenu(data)
+    }
+    
+    const resetStatusFormMenu = () => {
+        setStatusFormMenu('insert');
+    }
 
     var content;
 
     if(id===0){
         content = "Menu 1";
     }else if(id===1){
-        content = <FormMenu/>;
+        content = <div>
+                        <FormMenu 
+                            datamenu={dataFormMenu}
+                            statedays={daysMenu}
+                            status={statusFormMenu} 
+                            resetFormStatus={resetStatusFormMenu}
+                        />
+                  </div>;
     }else if(id===2){
         content = "Menu 3";
     }else if(id===3){

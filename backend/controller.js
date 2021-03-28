@@ -92,10 +92,103 @@ exports.daftar_hari_menu = function(req,res){
     });
 }
 
+exports.add_menu = function(req,res){
+    const id_warung = req.body.id_warung;
+    const nama = req.body.nama;
+    const harga = parseInt(req.body.harga);
+    const desc_menu = req.body.desc_menu;
+    const pic = req.body.pic;
+    const hari = req.body.hari;
+
+    const query_add_menu = 'INSERT INTO menu (id_warung, nama, harga, desc_menu, pic) VALUES (' + id_warung + ', "' + nama + '", ' + harga + ', "' + desc_menu + '", "' + pic + '")';
+    connection.query(query_add_menu, function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            var id_menu = rows.insertId
+
+            let query_add_hari_menu = 'INSERT INTO hari_menu (id_menu, hari) VALUES '
+            for (var i=0; i < hari.length; i++){
+                query_add_hari_menu += '(' + id_menu + ', "' + hari[i] + '")' 
+                if(i < hari.length-1){
+                    query_add_hari_menu += ', '
+                }    
+            }
+            connection.query(query_add_hari_menu, function (error, rows, fields){
+                if(error){
+                    console.log(error)
+                } else{
+                    response.ok(rows, res)
+                }
+            })
+        }
+    });
+}
+
+exports.delete_menu = function(req, res){
+    const id_menu = req.body.id;
+
+    const query_delete_menu = "DELETE FROM menu WHERE id = " + id_menu
+    const query_delete_hari_menu = "DELETE FROM hari_menu WHERE id_menu = " + id_menu
+    connection.query(query_delete_hari_menu, function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            connection.query(query_delete_menu, function (error, rows, fields){
+                if(error){
+                    console.log(error)
+                }else{
+                    response.ok(rows, res)
+                }
+            });
+        }
+    });
+}
+
+exports.update_menu = function(req,res){
+    const id_menu = req.body.id;
+    const nama = req.body.nama;
+    const harga = req.body.harga;
+    const desc_menu = req.body.desc_menu;
+    const pic = req.body.pic;
+    const hari = req.body.hari;
+
+    const query_update_menu = 'UPDATE menu SET nama = "' + nama + '", harga = ' + harga + ', desc_menu = "' + desc_menu + '", pic = "' + pic + '" WHERE id = ' + id_menu
+    connection.query(query_update_menu, function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            const query_delete_hari_menu = "DELETE FROM hari_menu WHERE id_menu = " + id_menu
+            connection.query(query_delete_hari_menu, function (error, rows, fields){
+                if(error){
+                    console.log(error)
+                } else{
+                    let query_add_hari_menu = 'INSERT INTO hari_menu (id_menu, hari) VALUES '
+                    for (var i=0; i < hari.length; i++){
+                        query_add_hari_menu += '(' + id_menu + ', "' + hari[i] + '")' 
+                        if(i < hari.length-1){
+                            query_add_hari_menu += ', '
+                        }    
+                    }
+                    connection.query(query_add_hari_menu, function (error, rows, fields){
+                        if(error){
+                            console.log(error)
+                        } else{
+                            response.ok(rows, res)
+                        }
+                    })
+                }
+                
+            })
+        }
+    });
+}
+
+
 exports.ubah_data_warung = function(req,res){
-    connection.query("UPDATE warung, user_penjual SET warung.nama = " + req.body.nama + ", warung.alamat = " + req.body.alamat + ", warung.kategori = " + req.body.cat + ", warung.pic = " + req.body.pic + 
-                     "user_penjual.username = " + req.body.username + "user_penjual.email = " + req.body.email + "user_penjual.no_hp = " + req.body.hp +
-                     " WHERE user_penjual.id_warung = warung.id AND warung.id = " + req.body.idwarung, function (error, rows, fields){
+    connection.query('UPDATE warung, user_penjual SET warung.nama = "' + req.body.nama + '", warung.alamat = "' + req.body.alamat + '", warung.kategori = "' + req.body.cat + '", warung.pic = "' + req.body.pic + 
+                     '", user_penjual.username = "' + req.body.username + '", user_penjual.email = "' + req.body.email + '", user_penjual.no_hp = "' + req.body.hp +
+                     '" WHERE user_penjual.id_warung = warung.id AND warung.id = ' + req.body.idwarung, function (error, rows, fields){
         if(error){
             console.log(error)
         } else{
@@ -105,9 +198,9 @@ exports.ubah_data_warung = function(req,res){
 }
 
 exports.tambah_warung = function(req,res){
-    connection.query("INSERT INTO warung SET (nama,alamat,kategori,pic,longitude,langitude) VALUES (" + 
-                     req.body.nama + ", " + req.body.alamat + ", " + req.body.cat + ", " + req.body.pic + ", " + req.body.long + ", " + req.body.lang + 
-                     ") ", function (error, rows, fields){
+    connection.query('INSERT INTO warung SET (nama,alamat,kategori,pic,longitude,langitude) VALUES ("' + 
+                     req.body.nama + '", "' + req.body.alamat + '", "' + req.body.cat + '", "' + req.body.pic + '", ' + req.body.long + ', ' + req.body.lang + 
+                     ')', function (error, rows, fields){
         if(error){
             console.log(error)
         } else{
