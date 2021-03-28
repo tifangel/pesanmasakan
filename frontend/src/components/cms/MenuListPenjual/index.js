@@ -4,6 +4,8 @@ import { DataGrid } from '@material-ui/data-grid';
 import { Link } from '@material-ui/core/Link';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import EditIcon from '@material-ui/icons/Edit';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 const { defaultAPIURL } = require("../../../config");
 
@@ -11,8 +13,16 @@ const useStyles = makeStyles((theme) => ({
   root: {
     margin: 20,
     "& .header-style": {
-      backgroundColor: "#D3E7E8",
+      backgroundColor: "#FDCB35",
     },
+  },
+  menuDay: {
+      fontSize : 14,
+      marginLeft : 4,
+      // fontFamily : 'Inter',
+      fontWeight : 'light',
+      background : '#FDCB35',
+      color : '#000'
   },
 }));
 
@@ -60,6 +70,15 @@ function columns(props) {
       headerName: "Available On",
       width: 200,
       headerClassName: "header-style",
+      renderCell: (params) => (
+        ["senin", "selasa", "rabu"].map((item, idx)=>
+          <Grid item>
+              <Typography className={props.classes.menuDay} variant="body2" color="textSecondary" component="p">
+                  {item}
+              </Typography>
+          </Grid>
+      )
+      ),
     },
     {
       field: "action",
@@ -110,6 +129,7 @@ function MenuListPenjual({data}) {
         columns={columns({
           onClickEdit: (id_menu) => {alert(`edit ${id_menu}`)},
           onClickDelete: (id_menu) => {alert(`delete ${id_menu}`)},
+          classes : classes,
         })}
         pageSize={20}
         disableColumnMenu

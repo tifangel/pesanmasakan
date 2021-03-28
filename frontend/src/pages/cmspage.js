@@ -22,7 +22,6 @@ const CMSPage = (props) => {
     
     // Daftar menu (masakan)
     const [menuList, setMenuList] = useState([]);
-  
     useEffect(() => {
       async function loadMenu() {
         try {
