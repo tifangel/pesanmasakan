@@ -213,7 +213,7 @@ exports.ubah_data_warung = function(req,res){
 
 exports.tambah_warung = function(req,res){
     connection.query('INSERT INTO warung SET (nama,alamat,kategori,pic,longitude,langitude) VALUES ("' + 
-                     req.body.nama + '", "' + req.body.alamat + '", "' + req.body.cat + '", "' + req.body.pic + '", ' + req.body.long + ', ' + req.body.lang + 
+                     req.body.nama + '", "' + req.body.alamat + '", "' + req.body.cat + '", "' + req.body.pic + '", ' + parseFloat(req.body.long) + ', ' + parseFloat(req.body.lang) + 
                      ')', function (error, rows, fields){
         if(error){
             console.log(error)
