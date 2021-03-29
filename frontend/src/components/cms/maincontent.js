@@ -2,7 +2,6 @@ import React, {useState, useEffect, useReducer} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormMenu from './formmenu'
 import Profile from './profile'
-import Test from './test'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,30 +20,29 @@ const useStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
   }));
 
-const MainContent = ({id, username, idWarung}) => {
+const MainContent = ({id}) => {
 
     // Content Menu Profile
-    // Switch Profile to Edit Profile
-    const [stateProfile, setStateProfile] = useState('show');
-    const [stateEditProfile, setStateEditProfile] = useState('hide');
+    // useEffect(() => {
+    //     async function loadWarungList(){
+    //         try{
 
-    const gotoEditProfile = () => {
-        setStateProfile('hide');
-        setStateEditProfile('show');
-    }
-    const submitChange = () => {
-        setStateProfile('show');
-        setStateEditProfile('hide');
-    }
-    // Handling Form Edit Profile
+    //         }
+    //         catch (e) {
+    //             console.log(e)
+    //         }
+    //     }
+    // },[])
     const [dataFormProfile, setDataFormProfile] = useState({
-        nama_warung: "",
+        username: "jundu",
+        id_warung: 1,
+        nama_warung: "Lalapan Lahap",
         nama_owner: "jundullah",
         no_hp: "081234568",
         email: "jundu.lalapan@mail.com",
-        alamat: "",
-        kategori: "",
-        pic: "",
+        alamat: "Jl peternakan no 45",
+        kategori: "chicken & duck",
+        pic: "/warung/lalapan-lahap.jpg",
     })
 
     
@@ -95,10 +93,7 @@ const MainContent = ({id, username, idWarung}) => {
     }else if(id===2){
         content = "Menu 3";
     }else if(id===3){
-        content = <div>
-                        { stateProfile === 'show' && (<Profile onClick={gotoEditProfile}/>)}
-                        { stateEditProfile === 'show' && (<Test onClick={submitChange}/>)}
-                  </div>
+        content = <Profile data={dataFormProfile}/>
     }
 
     const classes = useStyles();

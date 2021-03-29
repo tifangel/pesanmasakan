@@ -80,3 +80,11 @@ export const editMenu = async(data) =>
 
         return response
     }
+
+export const editProfile = async(data) =>
+    {
+        const url = `${defaultAPIURL}/editdatawarung`
+        const response = await post(url,data)
+
+        return response
+    }

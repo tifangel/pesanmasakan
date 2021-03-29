@@ -186,9 +186,23 @@ exports.update_menu = function(req,res){
 
 
 exports.ubah_data_warung = function(req,res){
-    connection.query('UPDATE warung, user_penjual SET warung.nama = "' + req.body.nama + '", warung.alamat = "' + req.body.alamat + '", warung.kategori = "' + req.body.cat + '", warung.pic = "' + req.body.pic + 
-                     '", user_penjual.username = "' + req.body.username + '", user_penjual.email = "' + req.body.email + '", user_penjual.no_hp = "' + req.body.hp +
-                     '" WHERE user_penjual.id_warung = warung.id AND warung.id = ' + req.body.idwarung, function (error, rows, fields){
+    const username = req.body.username
+    const id_warung = req.body.id_warung
+    const nama_warung = req.body.nama_warung
+    const nama_owner = req.body.nama_owner
+    const no_hp = req.body.no_hp
+    const email = req.body.email
+    const alamat = req.body.alamat
+    const kategori = req.body.kategori
+    const pic = req.body.pic
+
+    console.log(req.body)
+    const query_update_warung = 'UPDATE warung, user_penjual SET warung.nama = "' + nama_warung + '", warung.alamat = "' + alamat + '", warung.kategori = "' + kategori + '", warung.pic = "' + pic + 
+                                '", user_penjual.nama = "' + nama_owner + '", user_penjual.email = "' + email + '", user_penjual.no_hp = "' + no_hp +
+                                '" WHERE user_penjual.id_warung = warung.id AND warung.id = ' + id_warung
+    console.log(query_update_warung)
+
+    connection.query(query_update_warung, function (error, rows, fields){
         if(error){
             console.log(error)
         } else{
