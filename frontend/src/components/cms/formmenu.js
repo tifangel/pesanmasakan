@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
@@ -7,6 +7,8 @@ import Button from '@material-ui/core/IconButton';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { useFormFields } from '../../lib';
+import {insertMenu, editMenu} from '../../resource';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -110,20 +112,77 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const FormMenu = () => {
+const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
 
-    const [state, setState] = React.useState({
-        senin: false,
-        selasa: false,
-        rabu: false,
-        kamis: false,
-        jumat: false,
-        sabtu: false,
-        minggu: false,
-      });
+    const id_menu = 48;
+    const id_warung = 1;
+
+    const [formInput, setFormInput] = useState(datamenu);
+
+    const handleInput = (event) => {
+        setFormInput({ ...formInput, [event.target.name]: event.target.value });
+      };
+
+    const [state, setState] = useState(statedays);
     
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked });
+      };
+
+    const submitMenu = async() => {
+        let hari = []
+        if(state.senin){hari.push('senin')}
+        if(state.selasa){hari.push('selasa')}
+        if(state.rabu){hari.push('rabu')}
+        if(state.kamis){hari.push('kamis')}
+        if(state.jumat){hari.push('jumat')}
+        if(state.sabtu){hari.push('sabtu')}
+        if(state.minggu){hari.push('minggu')}
+
+        if(status === 'insert'){
+            console.log("Insert menu");
+            try {
+                console.log(formInput)
+                let data = JSON.parse(JSON.stringify(formInput))
+                data.id_warung = id_warung
+                data.hari = hari
+
+                console.log(data)
+                
+                let response = await insertMenu(data)
+                console.log(response)
+            }
+            catch (e) {
+                console.log(e)
+            }
+        }else if(status === 'edit'){
+            console.log("Edit menu");
+            try {
+                console.log(formInput)
+                let data = JSON.parse(JSON.stringify(formInput))
+                data.id = id_menu
+                data.hari = hari
+
+                console.log(data)
+                
+                let response = await editMenu(data)
+                console.log(response)
+            }
+            catch (e) {
+                console.log(e)
+            }
+        }
+    }
+
+    const handleSubmit = evt => {
+        evt.preventDefault();
+    
+        console.log(formInput);
+        console.log(state);
+
+        submitMenu();
+
+        window.location.reload();
       };
 
     const classes = useStyles();
@@ -132,7 +191,7 @@ const FormMenu = () => {
         <React.Fragment>
             <div className={classes.root}>
                 <h1 className={classes.title}>Add Item</h1>
-                <form>
+                <form id="formmenu">
                 <Grid container>
                     <Grid className={classes.gridItem} item xs={12} sm={12} md={6}>
                         <table>
@@ -140,30 +199,36 @@ const FormMenu = () => {
                                 <td className={classes.col1}>Item Name</td>
                                 <td className={classes.col2}>
                                     <InputBase
-                                        className={classes.input}/>
+                                        name="nama"
+                                        type="text"
+                                        defaultValue={formInput.nama}
+                                        className={classes.input}
+                                        onChange={handleInput}/>
                                 </td>
                             </tr>
                             <tr>
                                 <td className={classes.col1}>Price</td>
                                 <td className={classes.col2}>
                                     <InputBase
-                                        className={classes.input}/>
+                                        name="harga"
+                                        type="number"
+                                        defaultValue={formInput.harga}
+                                        className={classes.input}
+                                        onChange={handleInput}/>
                                 </td>
                             </tr>
                             <tr>
                                 <td className={classes.col1}>Description</td>
                                 <td className={classes.col2}>
-                                    {/* <TextField
-                                        id="desc"
+                                    <InputBase
+                                        name="desc_menu"
+                                        type="text"
                                         multiline
-                                        rows={4}
-                                        variant="filled"
-                                        className={classes.textarea}
-                                    /> */}
-                                    <textarea
                                         rows="4"
+                                        defaultValue={formInput.desc_menu}
                                         className={classes.textarea}
-                                    />
+                                        id="textaremenu"
+                                        onChange={handleInput}/>
                                 </td>
                             </tr>
                         </table>
@@ -174,7 +239,11 @@ const FormMenu = () => {
                                 <td className={classes.col1}>Choose Image</td>
                                 <td className={classes.colimage}>
                                     <InputBase
-                                        className={classes.inputimg}/>
+                                        name="pic"
+                                        type="text"
+                                        defaultValue={formInput.pic}
+                                        className={classes.inputimg}
+                                        onChange={handleInput}/>
                                     <Button className={classes.button} variant="contained" color="primary">
                                         Upload
                                     </Button>
@@ -272,7 +341,7 @@ const FormMenu = () => {
                                 </td>
                             </tr>
                         </table>
-                        <Button className={classes.btnsubmit} variant="contained" color="primary">
+                        <Button onClick={handleSubmit} className={classes.btnsubmit} variant="contained" color="primary">
                             Submit
                         </Button>
                     </Grid>

@@ -64,3 +64,27 @@ export const getDaysbyMenuId = async(menuid) =>
 
         return response
     }
+
+export const insertMenu = async(data) =>
+    {
+        const url = `${defaultAPIURL}/tambahmenu`
+        const response = await post(url,data)
+
+        return response
+    }
+
+export const editMenu = async(data) =>
+    {
+        const url = `${defaultAPIURL}/updatemenu`
+        const response = await post(url,data)
+
+        return response
+    }
+
+export const editProfile = async(data) =>
+    {
+        const url = `${defaultAPIURL}/editdatawarung`
+        const response = await post(url,data)
+
+        return response
+    }
