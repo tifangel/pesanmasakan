@@ -123,7 +123,7 @@ function MenuListPenjual({data}) {
   const classes = useStyles(); 
   return (
     <div className={classes.root}>
-      <h1>Informasi </h1>
+      <h1>Daftar Menu </h1>
       <DataGrid
         rows={data}
         columns={columns({

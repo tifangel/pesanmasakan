@@ -33,9 +33,9 @@ const MainContent = ({id, menuList}) => {
     if(id===0){
         content = "Menu 1";
     }else if(id===1){
-        content = "Menu 2";
-    }else if(id===2){
         content = <MenuListPenjual data={menuList} />;
+    }else if(id===2){
+        content = "Menu 3";
     }else if(id===3){
         content = <div>
                         { stateProfile === 'show' && (<Profile onClick={gotoEditProfile}/>)}
