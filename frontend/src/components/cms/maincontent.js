@@ -21,8 +21,10 @@ const useStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
   }));
 
-const MainContent = ({id}) => {
+const MainContent = ({id, username, idWarung}) => {
 
+    // Content Menu Profile
+    // Switch Profile to Edit Profile
     const [stateProfile, setStateProfile] = useState('show');
     const [stateEditProfile, setStateEditProfile] = useState('hide');
 
@@ -34,7 +36,20 @@ const MainContent = ({id}) => {
         setStateProfile('show');
         setStateEditProfile('hide');
     }
+    // Handling Form Edit Profile
+    const [dataFormProfile, setDataFormProfile] = useState({
+        nama_warung: "",
+        nama_owner: "jundullah",
+        no_hp: "081234568",
+        email: "jundu.lalapan@mail.com",
+        alamat: "",
+        kategori: "",
+        pic: "",
+    })
+
     
+    // Content Menu Products
+    // Handling Form Menu
     const [dataFormMenu, setDataFormMenu] = useState({
         nama: "",
         harga: 0,
@@ -61,6 +76,9 @@ const MainContent = ({id}) => {
         setStatusFormMenu('insert');
     }
 
+    
+    
+    // Handling Main Content
     var content;
 
     if(id===0){

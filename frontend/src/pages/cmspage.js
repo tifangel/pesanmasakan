@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const CMSPage = (props) => {
+    const [username, setUsername] = useState("jundu");
+    const [idWarung, setIdWarung] = useState(1);
+
     const [selectedMenu, setSelectedMenu] = useState(0);
 
     const handleListMenuClick = (event, id, mobile) => {
@@ -125,7 +128,7 @@ const CMSPage = (props) => {
                       </Drawer>
                   </Hidden>
                 </nav>
-                <MainContent id={selectedMenu}/>
+                <MainContent id={selectedMenu} username={username} idWarung={idWarung}/>
             </div>
         </React.Fragment>
     );
