@@ -76,7 +76,7 @@ const MainContent = ({ id, menuList }) => {
 
     const changeStatusFormtoEdit = (data) => {
         setStatusFormMenu('edit');
-        setDataFormMenu(data)
+        setDataFormMenu(data);
     }
 
     const resetStatusFormMenu = () => {
@@ -99,9 +99,10 @@ const MainContent = ({ id, menuList }) => {
                                 status={statusFormMenu}
                                 handleChange={handleChange}
                                 handleInput={handleInput}
+                                resetStatusFormMenu={resetStatusFormMenu}
                             />
                         </Paper>
-                        <Paper style={{ marginTop: 30 }}><MenuListPenjual data={menuList} /></Paper>
+                        <Paper style={{ marginTop: 30 }}><MenuListPenjual data={menuList} onEdit={changeStatusFormtoEdit} /></Paper>
                     </React.Fragment>;
     } else if (id === 2) {
         content = "Menu 3";

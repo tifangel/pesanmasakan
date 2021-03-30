@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const FormMenu = ({datamenu, statedays, status, handleChange, handleInput}) => {
+const FormMenu = ({datamenu, statedays, status, handleChange, handleInput, resetStatusFormMenu}) => {
 
     const id_menu = 48;
     const id_warung = 1;
@@ -155,6 +155,7 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput}) => {
                 
                 let response = await editMenu(data)
                 console.log(response)
+                resetStatusFormMenu()
             }
             catch (e) {
                 console.log(e)
@@ -178,7 +179,7 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput}) => {
     return(
         <React.Fragment>
             <div className={classes.root}>
-                <h1 className={classes.title}>Add Item</h1>
+                <h1 className={classes.title}>{status === 'insert'? "Add Item" : "Edit Item"}</h1>
                 <form id="formmenu">
                 <Grid container>
                     <Grid className={classes.gridItem} item xs={12} sm={12} md={6}>
@@ -189,7 +190,7 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput}) => {
                                     <InputBase
                                         name="nama"
                                         type="text"
-                                        defaultValue={datamenu.nama}
+                                        value={datamenu.nama}
                                         className={classes.input}
                                         onChange={handleInput}/>
                                 </td>
@@ -200,7 +201,7 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput}) => {
                                     <InputBase
                                         name="harga"
                                         type="number"
-                                        defaultValue={datamenu.harga}
+                                        value={datamenu.harga}
                                         className={classes.input}
                                         onChange={handleInput}/>
                                 </td>
@@ -213,7 +214,7 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput}) => {
                                         type="text"
                                         multiline
                                         rows="4"
-                                        defaultValue={datamenu.desc_menu}
+                                        value={datamenu.desc_menu}
                                         className={classes.textarea}
                                         id="textaremenu"
                                         onChange={handleInput}/>
@@ -229,7 +230,7 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput}) => {
                                     <InputBase
                                         name="pic"
                                         type="text"
-                                        defaultValue={datamenu.pic}
+                                        value={datamenu.pic}
                                         className={classes.inputimg}
                                         onChange={handleInput}/>
                                     <Button className={classes.button} variant="contained" color="primary">
