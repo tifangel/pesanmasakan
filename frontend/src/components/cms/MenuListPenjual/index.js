@@ -1,16 +1,13 @@
 import React, {useState} from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { DataGrid } from '@material-ui/data-grid';
-import { Link } from '@material-ui/core/Link';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
 const { defaultAPIURL } = require("../../../config");
@@ -144,7 +141,7 @@ function columns(props) {
       headerClassName: "header-style",
       renderCell: (params) => (
         <React.Fragment>
-          <EditIcon onClick={() => props.onClickEdit(params.row.id)} />
+          <EditIcon onClick={() => props.onClickEdit(params.row)} />
           <DeleteOutlineIcon onClick={() => props.onClickDelete(params.row.id)} />
         </React.Fragment>
       ),
@@ -176,7 +173,7 @@ function columns(props) {
   ];
 }
 
-function MenuListPenjual({data}) {
+function MenuListPenjual({data, onEdit}) {
   const classes = useStyles(); 
   const [search,setSearch] = useState("");
   return (
@@ -203,7 +200,7 @@ function MenuListPenjual({data}) {
       <DataGrid
         rows={data.filter(it => it.desc_menu.includes(search))}
         columns={columns({
-          onClickEdit: (id_menu) => {alert(`edit ${id_menu}`)},
+          onClickEdit: (dataformmenu) => {onEdit(dataformmenu)},
           onClickDelete: (id_menu) => {alert(`delete ${id_menu}`)},
           classes : classes,
         })}

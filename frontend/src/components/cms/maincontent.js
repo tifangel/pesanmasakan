@@ -50,11 +50,20 @@ const MainContent = ({ id, menuList }) => {
 
     // Content Menu Products
     // Handling Form Menu
+    const handleInput = (event) => {
+        setDataFormMenu({ ...dataFormMenu, [event.target.name]: event.target.value });
+      };
+
+    const handleChange = (event) => {
+        setDaysMenu({ ...daysMenu, [event.target.name]: event.target.checked });
+      };
     const [dataFormMenu, setDataFormMenu] = useState({
         nama: "",
         harga: 0,
         desc_menu: "",
         pic: "",
+        id: 48, // ID_MENU
+        id_warung: 1,
     });
     const [daysMenu, setDaysMenu] = useState({
         senin: false,
@@ -70,6 +79,7 @@ const MainContent = ({ id, menuList }) => {
     const changeStatusFormtoEdit = (data) => {
         setStatusFormMenu('edit');
         setDataFormMenu(data)
+        console.log(data)
     }
 
     const resetStatusFormMenu = () => {
@@ -90,10 +100,12 @@ const MainContent = ({ id, menuList }) => {
                                 datamenu={dataFormMenu}
                                 statedays={daysMenu}
                                 status={statusFormMenu}
-                                resetFormStatus={resetStatusFormMenu}
+                                handleChange={handleChange}
+                                handleInput={handleInput}
+                                resetStatusFormMenu={resetStatusFormMenu}
                             />
                         </Paper>
-                        <Paper style={{ marginTop: 30 }}><MenuListPenjual data={menuList} /></Paper>
+                        <Paper style={{ marginTop: 30 }}><MenuListPenjual data={menuList} onEdit={changeStatusFormtoEdit} /></Paper>
                     </React.Fragment>;
     } else if (id === 2) {
         content = "Menu 3";
