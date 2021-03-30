@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import FormMenu from './formmenu'
 import Profile from './profile'
 import Test from './test'
+import MenuListPenjual from './MenuListPenjual';
+import { Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
   }));
 
-const MainContent = ({id}) => {
+const MainContent = ({id, menuList}) => {
 
     const [stateProfile, setStateProfile] = useState('show');
     const [stateEditProfile, setStateEditProfile] = useState('hide');
@@ -40,7 +42,7 @@ const MainContent = ({id}) => {
     if(id===0){
         content = "Menu 1";
     }else if(id===1){
-        content = <FormMenu/>;
+        content = <React.Fragment><Paper><FormMenu/></Paper><Paper style={{marginTop: 30}}><MenuListPenjual data={menuList} /></Paper></React.Fragment>;
     }else if(id===2){
         content = "Menu 3";
     }else if(id===3){
