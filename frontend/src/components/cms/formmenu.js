@@ -112,38 +112,26 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
+const FormMenu = ({datamenu, statedays, status, handleChange, handleInput}) => {
 
     const id_menu = 48;
     const id_warung = 1;
 
-    const [formInput, setFormInput] = useState(datamenu);
-
-    const handleInput = (event) => {
-        setFormInput({ ...formInput, [event.target.name]: event.target.value });
-      };
-
-    const [state, setState] = useState(statedays);
-    
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
-      };
-
     const submitMenu = async() => {
         let hari = []
-        if(state.senin){hari.push('senin')}
-        if(state.selasa){hari.push('selasa')}
-        if(state.rabu){hari.push('rabu')}
-        if(state.kamis){hari.push('kamis')}
-        if(state.jumat){hari.push('jumat')}
-        if(state.sabtu){hari.push('sabtu')}
-        if(state.minggu){hari.push('minggu')}
+        if(statedays.senin){hari.push('senin')}
+        if(statedays.selasa){hari.push('selasa')}
+        if(statedays.rabu){hari.push('rabu')}
+        if(statedays.kamis){hari.push('kamis')}
+        if(statedays.jumat){hari.push('jumat')}
+        if(statedays.sabtu){hari.push('sabtu')}
+        if(statedays.minggu){hari.push('minggu')}
 
         if(status === 'insert'){
             console.log("Insert menu");
             try {
-                console.log(formInput)
-                let data = JSON.parse(JSON.stringify(formInput))
+                console.log(datamenu)
+                let data = JSON.parse(JSON.stringify(datamenu))
                 data.id_warung = id_warung
                 data.hari = hari
 
@@ -158,8 +146,8 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
         }else if(status === 'edit'){
             console.log("Edit menu");
             try {
-                console.log(formInput)
-                let data = JSON.parse(JSON.stringify(formInput))
+                console.log(datamenu)
+                let data = JSON.parse(JSON.stringify(datamenu))
                 data.id = id_menu
                 data.hari = hari
 
@@ -177,8 +165,8 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
     const handleSubmit = evt => {
         evt.preventDefault();
     
-        console.log(formInput);
-        console.log(state);
+        console.log(datamenu);
+        console.log(statedays);
 
         submitMenu();
 
@@ -201,7 +189,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                     <InputBase
                                         name="nama"
                                         type="text"
-                                        defaultValue={formInput.nama}
+                                        defaultValue={datamenu.nama}
                                         className={classes.input}
                                         onChange={handleInput}/>
                                 </td>
@@ -212,7 +200,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                     <InputBase
                                         name="harga"
                                         type="number"
-                                        defaultValue={formInput.harga}
+                                        defaultValue={datamenu.harga}
                                         className={classes.input}
                                         onChange={handleInput}/>
                                 </td>
@@ -225,7 +213,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                         type="text"
                                         multiline
                                         rows="4"
-                                        defaultValue={formInput.desc_menu}
+                                        defaultValue={datamenu.desc_menu}
                                         className={classes.textarea}
                                         id="textaremenu"
                                         onChange={handleInput}/>
@@ -241,7 +229,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                     <InputBase
                                         name="pic"
                                         type="text"
-                                        defaultValue={formInput.pic}
+                                        defaultValue={datamenu.pic}
                                         className={classes.inputimg}
                                         onChange={handleInput}/>
                                     <Button className={classes.button} variant="contained" color="primary">
@@ -257,7 +245,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                             className={classes.checkdays}
                                             control={
                                                 <Checkbox
-                                                  checked={state.senin}
+                                                  checked={statedays.senin}
                                                   onChange={handleChange}
                                                   name="senin"
                                                   color="primary"
@@ -269,7 +257,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                             className={classes.checkdays}
                                             control={
                                                 <Checkbox
-                                                  checked={state.selasa}
+                                                  checked={statedays.selasa}
                                                   onChange={handleChange}
                                                   name="selasa"
                                                   color="primary"
@@ -281,7 +269,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                             className={classes.checkdays}
                                             control={
                                                 <Checkbox
-                                                  checked={state.rabu}
+                                                  checked={statedays.rabu}
                                                   onChange={handleChange}
                                                   name="rabu"
                                                   color="primary"
@@ -293,7 +281,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                             className={classes.checkdays}
                                             control={
                                                 <Checkbox
-                                                  checked={state.kamis}
+                                                  checked={statedays.kamis}
                                                   onChange={handleChange}
                                                   name="kamis"
                                                   color="primary"
@@ -305,7 +293,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                             className={classes.checkfriday}
                                             control={
                                                 <Checkbox
-                                                  checked={state.jumat}
+                                                  checked={statedays.jumat}
                                                   onChange={handleChange}
                                                   name="jumat"
                                                   color="primary"
@@ -317,7 +305,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                             className={classes.checkdays}
                                             control={
                                                 <Checkbox
-                                                  checked={state.sabtu}
+                                                  checked={statedays.sabtu}
                                                   onChange={handleChange}
                                                   name="sabtu"
                                                   color="primary"
@@ -329,7 +317,7 @@ const FormMenu = ({datamenu, statedays, status, resetFormStatus}) => {
                                             className={classes.checkdays}
                                             control={
                                                 <Checkbox
-                                                  checked={state.minggu}
+                                                  checked={statedays.minggu}
                                                   onChange={handleChange}
                                                   name="minggu"
                                                   color="primary"

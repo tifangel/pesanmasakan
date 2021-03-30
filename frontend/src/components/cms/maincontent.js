@@ -50,6 +50,13 @@ const MainContent = ({ id, menuList }) => {
 
     // Content Menu Products
     // Handling Form Menu
+    const handleInput = (event) => {
+        setDataFormMenu({ ...dataFormMenu, [event.target.name]: event.target.value });
+      };
+
+    const handleChange = (event) => {
+        setDaysMenu({ ...daysMenu, [event.target.name]: event.target.checked });
+      };
     const [dataFormMenu, setDataFormMenu] = useState({
         nama: "",
         harga: 0,
@@ -90,7 +97,8 @@ const MainContent = ({ id, menuList }) => {
                                 datamenu={dataFormMenu}
                                 statedays={daysMenu}
                                 status={statusFormMenu}
-                                resetFormStatus={resetStatusFormMenu}
+                                handleChange={handleChange}
+                                handleInput={handleInput}
                             />
                         </Paper>
                         <Paper style={{ marginTop: 30 }}><MenuListPenjual data={menuList} /></Paper>
