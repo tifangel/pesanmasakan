@@ -1,14 +1,27 @@
-build-job:
-    stage: build
-    script:
-        - echo "Hello, $GITLAB_USER_LOGIN!"
+stages:
+  - build
+  - test
 
-test-job1:
-    stage: test
-    script:
-        - echo "This job tests something"
+build-frontend:
+  stage: build
+  image: node
+  script: 
+    - echo "Start building Frontend App"
+    - cd frontend
+    - npm install
+    - npm run-script build
+    - echo "Build successfully!"
+  artifacts:
+    expire_in: 1 hour
+    paths:
+    - frontend/build
+    - frontend/node_modules/
 
-deploy-prod:
-    stage: deploy
-    script:
-        - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+test-frontend:
+  stage: test
+  image: node
+  script:
+    - echo "Testing Frontend App"
+    - cd frontend
+    - CI=true npm test
+    - echo "Test successfully!"

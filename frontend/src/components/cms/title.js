@@ -30,14 +30,14 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const Title = (props) => {
+const Title = ({nama}) => {
 
     const classes = useStyles();
 
     return(
         <React.Fragment>
             <div className={classes.root}>
-                <h1 className={classes.title}>Hello, Lalapan Lahap!</h1>
+                <h1 className={classes.title}>Hello, {nama}!</h1>
                 <pre className={classes.date}>
                     Tuesday, 16 March 2021
                     <br/>
