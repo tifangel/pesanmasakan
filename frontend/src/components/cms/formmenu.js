@@ -1,13 +1,11 @@
-import React, {useState, useEffect, useReducer} from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/IconButton';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { useFormFields } from '../../lib';
 import {insertMenu, editMenu} from '../../resource';
 
 const useStyles = makeStyles((theme) => ({
@@ -114,9 +112,6 @@ const useStyles = makeStyles((theme) => ({
 
 const FormMenu = ({datamenu, statedays, status, handleChange, handleInput, resetStatusFormMenu}) => {
 
-    const id_menu = 48;
-    const id_warung = 1;
-
     const submitMenu = async() => {
         let hari = []
         if(statedays.senin){hari.push('senin')}
@@ -132,7 +127,7 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput, reset
             try {
                 console.log(datamenu)
                 let data = JSON.parse(JSON.stringify(datamenu))
-                data.id_warung = id_warung
+                data.id_warung = datamenu.id_warung
                 data.hari = hari
 
                 console.log(data)
@@ -148,7 +143,7 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput, reset
             try {
                 console.log(datamenu)
                 let data = JSON.parse(JSON.stringify(datamenu))
-                data.id = id_menu
+                data.id = datamenu.id
                 data.hari = hari
 
                 console.log(data)

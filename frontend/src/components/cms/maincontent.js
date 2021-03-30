@@ -62,6 +62,8 @@ const MainContent = ({ id, menuList }) => {
         harga: 0,
         desc_menu: "",
         pic: "",
+        id: 48, // ID_MENU
+        id_warung: 1,
     });
     const [daysMenu, setDaysMenu] = useState({
         senin: false,
@@ -76,7 +78,8 @@ const MainContent = ({ id, menuList }) => {
 
     const changeStatusFormtoEdit = (data) => {
         setStatusFormMenu('edit');
-        setDataFormMenu(data);
+        setDataFormMenu(data)
+        console.log(data)
     }
 
     const resetStatusFormMenu = () => {
