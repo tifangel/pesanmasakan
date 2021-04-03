@@ -240,7 +240,7 @@ exports.get_cooklist = function(req, res) {
         SELECT t.tgl_transaksi, m.id, m.nama, SUM(tm.jumlah_porsi)
         FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
             JOIN transaksi t ON (tm.id_transaksi = t.id)
-        WHERE m.id_warung = ${id}
+        WHERE m.id_warung = ${id} AND status = 0
         GROUP BY t.tgl_transaksi, m.nama;
     `;
 
@@ -397,16 +397,16 @@ exports.overview_order = function(req, res) {
     const query_order = `
         SELECT YEAR(tgl_transaksi) as year, MONTH(tgl_transaksi) as month, COUNT(*) as qty
         FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
-            JOIN transaksi
-        WHERE m.id_warung = ${id}
+            JOIN transaksi ON (t.id = tm.id_transaksi)
+        WHERE t.id_warung = ${id}
         GROUP BY year, month;
     `;
     const query_profit = `
         SELECT YEAR(tgl_transaksi) as year, MONTH(tgl_transaksi) as month, SUM(total) as profit
         FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
-            JOIN transaksi
-        WHERE m.id_warung = ${id}
-        GROUP BY m.id_warung, year, month; 
+            JOIN transaksi t ON (t.id = tm.id_transaksi)
+        WHERE t.id_warung = ${id}
+        GROUP BY year, month; 
     `;
 
     promises.push(new Promise((resolve, reject) => {
