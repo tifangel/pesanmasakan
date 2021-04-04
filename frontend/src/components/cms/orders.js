@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: theme.spacing(4),
         paddingRight: theme.spacing(4),
         borderRadius: 13,
+        flexGrow: 1,
     },
     title: {
         flex: '95%',
@@ -35,20 +36,14 @@ const Orders = () => {
         <React.Fragment>
             <Title nama={"Nama warung"} />
             <div className={classes.root}>
-                <Grid container spacing={3}>
-                    <Grid item xs={5}>
-                        <Paper className={classes.paper} elevation={0}>
-                            <h1 className={classes.title}>Cook List</h1>
-                            <CookList />
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={7}>
-                        <Paper className={classes.paper} elevation={0}>
-                            <h1 className={classes.title}>Ongoing Orders</h1>
-                            <OngoingOrders />
-                        </Paper>
-                    </Grid>
-                </Grid>
+                <Paper className={classes.paper} elevation={0}>
+                    <h1 className={classes.title}>Cook List</h1>
+                    <CookList />
+                </Paper>
+                <Paper className={classes.paper} elevation={0} style={{marginTop: 20}}>
+                    <h1 className={classes.title}>Ongoing Orders</h1>
+                    <OngoingOrders />
+                </Paper>
             </div>
         </React.Fragment>
     )

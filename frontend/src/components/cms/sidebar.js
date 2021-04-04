@@ -13,11 +13,11 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
         position: 'static',
-        width: '19.53125vw',
+        // width: '19.53125vw',
         flexShrink: 0,
     },
     drawerPaper: {
-        width: '19.53125vw',
+        // width: '19.53125vw',
         backgroundColor: '#08080C',
         color: '#9A7A18',
     },
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#717181',
     },
     listItemText: {
-        fontSize : '1.875em',
+        fontSize : '1.5em',
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
     },

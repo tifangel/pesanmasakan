@@ -11,7 +11,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { getMenuListByWarungId, getDaysbyMenuId } from "../resource";
 
-const drawerWidth = 300;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
     root: {
