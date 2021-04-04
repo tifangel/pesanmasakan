@@ -33,26 +33,7 @@ const OrderPage = (props) => {
   const [menuList, setMenuList] = useState([]);
 
   // untuk keranjang
-  const [keranjang, setKeranjang] = useState([
-    {
-      id: 1,
-      nama: "Sup Ayam Kepiting Jagung",
-      harga: 10000,
-      jumlah: 2,
-    },
-    {
-      id: 2,
-      nama: "Sup Ayam Kepiting Jagung",
-      harga: 10000,
-      jumlah: 2,
-    },
-    {
-      id: 3,
-      nama: "Sup Ayam Kepiting Jagung",
-      harga: 55000,
-      jumlah: 3,
-    },
-  ]);
+  const [keranjang, setKeranjang] = useState(props.location.state || []);
   const [ongkir, setOngkir] = useState(10000);
   const [subtotal, setSubtotal] = useState(
     keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)

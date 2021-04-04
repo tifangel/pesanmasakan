@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Link from "@material-ui/core/Link";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -20,10 +19,6 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 
 const { defaultAPIURL } = require("../../config");
-
-function preventDefault(event) {
-  event.preventDefault();
-}
 
 function formatMoney(money) {
   if (money >= 1000) {
@@ -73,7 +68,9 @@ export default function Keranjang({
   keranjang,
   ongkir,
   subtotal,
-  onItemCountChange}
+  onItemCountChange,
+  onBayar
+}
 ) {
   const classes = useStyles();
 
@@ -175,7 +172,7 @@ export default function Keranjang({
         <Button
           color="primary"
           href="#"
-          onClick={preventDefault}
+          onClick={onBayar}
           className={classes.button}
         >
           Bayar

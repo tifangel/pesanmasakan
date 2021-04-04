@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "light",
     position: "relative",
     top: "3px",
-    position: "relative",
     left: "18%",
   },
   title: {
@@ -127,6 +126,12 @@ const InfoPage = (props) => {
       keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)
     );
   };
+  const onBayar = () => {
+    history.push({
+        pathname: '/konfirmasi/',
+        state: keranjang
+      })
+  }
 
   async function loadDays(id) {
     try {
@@ -255,6 +260,7 @@ const InfoPage = (props) => {
                 ongkir={ongkir}
                 subtotal={subtotal}
                 onItemCountChange={updateJumlahItem}
+                onBayar={onBayar}
               />
             </Paper>
           </Grid>
