@@ -1,0 +1,54 @@
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import "./styleinfo.css";
+import { getMenuListByWarungId } from "../resource";
+import { Container, Divider, Paper, Typography } from "@material-ui/core";
+import Keranjang from "../components/konfirmasiorder/keranjang";
+
+const { defaultAPIURL } = require("../config");
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+    height: 500,
+  },
+}));
+
+const OrderPage = (props) => {
+  const [id, setID] = useState(0);
+  const classes = useStyles();
+
+  const [menuList, setMenuList] = useState([]);
+
+  return (
+    <div className={classes.root}>
+      <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={8}>
+              <Paper className={classes.paper}>
+                {/* <Chart /> */}
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Paper className={classes.paper}>
+                <Keranjang/>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Container>
+    </div>
+  );
+};
+
+export default OrderPage;

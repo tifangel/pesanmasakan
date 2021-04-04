@@ -5,6 +5,7 @@ import HomePage from './pages/homepage'
 import SearchPage from './pages/searchpage'
 import InfoPage from './pages/infopage'
 import CMSPage from './pages/cmspage'
+import OrderPage from './pages/orderpage'
 
 function App(){
     return(
@@ -14,6 +15,7 @@ function App(){
                 <Route exact path="/search" component={SearchPage}/>
                 <Route exact path="/warung/:id" component={InfoPage}/>
                 <Route exact path="/cms" component={CMSPage}/>
+                <Route exact path="/konfirmasi" component={OrderPage}/>
             </Switch>
         </BrowserRouter>
     );
