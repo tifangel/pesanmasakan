@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
   menuroot: {
     display: "flex",
     justifyContent: "center",
+    backgroundColor: ""
   },
 }));
 
@@ -87,7 +88,7 @@ export default function Keranjang() {
     },
   ]);
   const [ongkir, setOngkir] = useState(10000);
-  const [subtotal, setSubtotal] = useState(10000);
+  const [subtotal, setSubtotal] = useState(menuList.reduce((total, it) => total+it.harga*it.jumlah, 0));
 
   const updateMenu = (id, jumlah) => {
     setMenuList(

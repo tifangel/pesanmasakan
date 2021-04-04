@@ -13,6 +13,8 @@ import NearMeIcon from '@material-ui/icons/NearMe';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuList from '../components/MenuList/MenuList';
 import MenuPopUp from '../components/MenuList/MenuPopUp';
+import Keranjang from '../components/konfirmasiorder/keranjang';
+import { Paper } from '@material-ui/core';
 
 const { defaultAPIURL } = require("../config");
 
@@ -83,7 +85,10 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(3),
         border: '0.5px solid #C4C4C4',
         borderRadius: '5px',
-        height: '641px'
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
     },
   }));
 
@@ -193,16 +198,16 @@ const InfoPage = (props) => {
             )}
             </div>
             <Grid container spacing={0}>
-                <Grid item xs={12} sm={12} md={9}>
+                <Grid item xs={12} sm={12} md={8}>
                     <MenuList 
                         data={menuList}
                         onMenuClick={handleShowInfoMenu}
                     />
                 </Grid>
-                <Grid item xs={12} sm={12} md={3}>
-                    <Box className={classes.basket}>
-                        
-                    </Box>
+                <Grid item xs={12} sm={12} md={4}>
+                <Paper className={classes.basket}>
+                    <Keranjang/>
+                </Paper>
                 </Grid>
             </Grid>         
             <MenuPopUp 
