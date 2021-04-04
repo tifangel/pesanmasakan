@@ -93,7 +93,7 @@ export default function Keranjang({
         <React.Fragment>
           <Card elevation="0dp" className={classes.menuroot}>
             <CardMedia
-              image={`${defaultAPIURL}/menu/1-ayam-goreng.jpg`}
+              image={`${defaultAPIURL}${it.pic}`}
               alt="menupic"
               className={classes.menuimg}
             />

@@ -109,33 +109,14 @@ const InfoPage = (props) => {
   const [infoShowed, setInfoShowed] = useState(false);
 
   // untuk keranjang
-  const [keranjang, setKeranjang] = useState([
-    {
-      id: 1,
-      nama: "Sup Ayam Kepiting Jagung",
-      harga: 10000,
-      jumlah: 2,
-    },
-    {
-      id: 2,
-      nama: "Sup Ayam Kepiting Jagung",
-      harga: 10000,
-      jumlah: 2,
-    },
-    {
-      id: 3,
-      nama: "Sup Ayam Kepiting Jagung",
-      harga: 55000,
-      jumlah: 3,
-    },
-  ]);
+  const [keranjang, setKeranjang] = useState([]);
   const [ongkir, setOngkir] = useState(10000);
   const [subtotal, setSubtotal] = useState(
     keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)
   );
   const updateJumlahItem = (id, jumlah) => {
     setKeranjang(
-        keranjang
+      keranjang
         .map((it) => {
           if (it.id === id) it.jumlah = Math.min(Math.max(jumlah, 0), 9);
           return it;
@@ -143,7 +124,7 @@ const InfoPage = (props) => {
         .filter((it) => it.jumlah > 0)
     );
     setSubtotal(
-        keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)
+      keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)
     );
   };
 
@@ -164,7 +145,25 @@ const InfoPage = (props) => {
     setMenuInfo(menuData);
     loadDays(menuData.id);
   };
-  const handleCloseInfoMenu = (menuData) => {
+  const handleCloseInfoMenu = () => {
+    setInfoShowed(false);
+  };
+  const addToKeranjang = () => {
+    const alreadyHave = keranjang.reduce((alreadyHave, it) => (it.id===menuInfo.id)? it.jumlah : alreadyHave, 0);
+    if (alreadyHave){
+        updateJumlahItem(menuInfo.id, alreadyHave+1);
+    }else{
+        setKeranjang([
+          ...keranjang,
+          {
+            id: menuInfo.id,
+            nama: menuInfo.nama,
+            harga: menuInfo.harga,
+            jumlah: 1,
+            pic: menuInfo.pic
+          },
+        ]);
+    }
     setInfoShowed(false);
   };
 
@@ -265,6 +264,7 @@ const InfoPage = (props) => {
           days={days}
           open={infoShowed}
           onClose={handleCloseInfoMenu}
+          onPesan={addToKeranjang}
         />
       </div>
     </React.Fragment>
