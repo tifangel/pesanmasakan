@@ -263,7 +263,6 @@ exports.orderlist_penjual = function(req, res) {
         else {
             console.log(rows);
             var details = await orderlist_details(rows);
-            console.log("details", details);
             response.ok(details, res);
         }
 
@@ -285,12 +284,10 @@ var orderlist_details = async function(rows) {
                     JOIN transaksi t ON (t.id = tm.id_transaksi)
                 WHERE id_pembeli = ${row.id_pembeli} AND tgl_transaksi = "${tgl}";
             `;
-            console.log(query);
             connection.query(query, (error, rows, field) => {
-                if (error) reject("Orderlist details", row.id_pembeli, error);
+                if (error) reject(error);
                 else {
                     row.orders = rows;
-                    console.log(row);
                     resolve(row);
                 }
             });
@@ -412,18 +409,14 @@ exports.overview_order = function(req, res) {
     promises.push(new Promise((resolve, reject) => {
         connection.query(query_order, (error, rows, field) => {
             if (error) reject(error);
-            else {
-                resolve(rows, res);
-            }
+            else resolve(rows, res);
         });
     }));
 
     promises.push(new Promise((resolve, reject) => {
         connection.query(query_profit, (error, rows, field) => {
             if (error) reject(error);
-            else {
-                resolve(rows, res);
-            }
+            else resolve(rows, res);
         });
     }));
 
