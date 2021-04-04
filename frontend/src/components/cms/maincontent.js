@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import FormMenu from './formmenu'
 import Profile from './profile'
 import MenuListPenjual from './MenuListPenjual';
+import Orders from './orders';
 import { Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -108,7 +109,7 @@ const MainContent = ({ id, menuList }) => {
                         <Paper style={{ marginTop: 30 }}><MenuListPenjual data={menuList} onEdit={changeStatusFormtoEdit} /></Paper>
                     </React.Fragment>;
     } else if (id === 2) {
-        content = "Menu 3";
+        content = <Orders />
     } else if (id === 3) {
         content = <Profile data={dataFormProfile} />
     }
