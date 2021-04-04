@@ -4,13 +4,14 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-        paddingTop: theme.spacing(0),
+        paddingTop: theme.spacing(7),
         paddingBottom: theme.spacing(1),
+        alignItems:'space-between'
     },
     title: {
         flex: '50%',
         color: '#000000',
-        fontSize : '2.6vw',
+        fontSize : '2.5vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
         [theme.breakpoints.down('sm')]: {
@@ -18,10 +19,14 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     date: {
+        display:'flex',
+        flexDirection: 'column',
+        alignSelf: 'center',
+        justifyContent:'flex-end',
         flex: '50%',
         textAlign: 'right',
         color: '#000000',
-        fontSize : '1.3vw',
+        fontSize : '1vw',
         fontFamily : 'Inter',
         fontWeight : 'medium',
         [theme.breakpoints.down('sm')]: {

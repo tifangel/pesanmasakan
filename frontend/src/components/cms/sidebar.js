@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#717181',
     },
     listItemText: {
-        fontSize : '1.875em',
+        fontSize : '1.5em',
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
     },
