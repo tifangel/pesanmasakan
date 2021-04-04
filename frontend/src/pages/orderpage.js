@@ -5,6 +5,7 @@ import "./styleinfo.css";
 import { getMenuListByWarungId } from "../resource";
 import { Container, Divider, Paper, Typography } from "@material-ui/core";
 import Keranjang from "../components/konfirmasiorder/keranjang";
+import PilihPembayaran from "../components/konfirmasiorder/pilihpembayaran";
 
 const { defaultAPIURL } = require("../config");
 
@@ -37,7 +38,7 @@ const OrderPage = (props) => {
           <Grid container spacing={3}>
             <Grid item xs={12} md={8}>
               <Paper className={classes.paper}>
-                {/* <Chart /> */}
+                <PilihPembayaran/>
               </Paper>
             </Grid>
             <Grid item xs={12} md={4}>
