@@ -25,14 +25,18 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-function formatMoney(money){
-    if(money>=1000){
-        return `Rp${Math.floor(money/1000)}.${
-            (money%1000<10)? `00${money%1000}` : (money%1000<100)? `0${money%1000}` : money%1000 
-        }`;
-    }else{
-        return `Rp${money}`;
-    }
+function formatMoney(money) {
+  if (money >= 1000) {
+    return `Rp${Math.floor(money / 1000)}.${
+      money % 1000 < 10
+        ? `00${money % 1000}`
+        : money % 1000 < 100
+        ? `0${money % 1000}`
+        : money % 1000
+    }`;
+  } else {
+    return `Rp${money}`;
+  }
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -61,46 +65,17 @@ const useStyles = makeStyles((theme) => ({
   menuroot: {
     display: "flex",
     justifyContent: "center",
-    backgroundColor: ""
+    backgroundColor: "",
   },
 }));
 
-export default function Keranjang() {
+export default function Keranjang({
+  keranjang,
+  ongkir,
+  subtotal,
+  onItemCountChange}
+) {
   const classes = useStyles();
-  const [menuList, setMenuList] = useState([
-    {
-      id: 1,
-      nama: "Sup Ayam Kepiting Jagung",
-      harga: 10000,
-      jumlah: 2,
-    },
-    {
-      id: 2,
-      nama: "Sup Ayam Kepiting Jagung",
-      harga: 10000,
-      jumlah: 2,
-    },
-    {
-      id: 3,
-      nama: "Sup Ayam Kepiting Jagung",
-      harga: 55000,
-      jumlah: 3,
-    },
-  ]);
-  const [ongkir, setOngkir] = useState(10000);
-  const [subtotal, setSubtotal] = useState(menuList.reduce((total, it) => total+it.harga*it.jumlah, 0));
-
-  const updateMenu = (id, jumlah) => {
-    setMenuList(
-      menuList
-        .map((it) => {
-          if (it.id === id) it.jumlah = Math.min(Math.max(jumlah, 0), 9);
-          return it;
-        })
-        .filter((it) => it.jumlah > 0)
-    );
-    setSubtotal(menuList.reduce((total, it) => total+it.harga*it.jumlah, 0));
-  };
 
   return (
     <React.Fragment>
@@ -114,7 +89,7 @@ export default function Keranjang() {
         Keranjang Anda
       </Typography>
       <Divider style={{ marginTop: 10, marginBottom: 10 }} />
-      {menuList.map((it) => (
+      {keranjang.map((it) => (
         <React.Fragment>
           <Card elevation="0dp" className={classes.menuroot}>
             <CardMedia
@@ -134,19 +109,17 @@ export default function Keranjang() {
                 {it.nama}
               </Typography>
             </CardContent>
-            <CardContent
-              style={{ paddingRight: 0, paddingLeft: 0 }}
-            >
+            <CardContent style={{ paddingRight: 0, paddingLeft: 0 }}>
               <IconButton
                 size="small"
-                onClick={() => updateMenu(it.id, it.jumlah - 1)}
+                onClick={() => onItemCountChange(it.id, it.jumlah - 1)}
               >
                 <RemoveIcon />
               </IconButton>
               {it.jumlah}
               <IconButton
                 size="small"
-                onClick={() => updateMenu(it.id, it.jumlah + 1)}
+                onClick={() => onItemCountChange(it.id, it.jumlah + 1)}
               >
                 <AddIcon />
               </IconButton>
@@ -170,7 +143,7 @@ export default function Keranjang() {
                 padding="none"
                 align="right"
               >
-              {formatMoney(subtotal)}
+                {formatMoney(subtotal)}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -182,7 +155,7 @@ export default function Keranjang() {
                 padding="none"
                 align="right"
               >
-              {formatMoney(ongkir)}
+                {formatMoney(ongkir)}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -194,7 +167,7 @@ export default function Keranjang() {
                 padding="none"
                 align="right"
               >
-                {formatMoney(subtotal+ongkir)}
+                {formatMoney(subtotal + ongkir)}
               </TableCell>
             </TableRow>
           </TableBody>

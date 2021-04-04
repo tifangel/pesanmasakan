@@ -1,224 +1,274 @@
-import React, {useState, useEffect} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import './styleinfo.css';
-import InfoTambahan from '../components/InfoTambahan';
-import {getWarung, getMenuListByWarungId, getDaysbyMenuId} from '../resource';
-import IconButton from '@material-ui/core/IconButton';
-import StarIcon from '@material-ui/icons/Star';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import NearMeIcon from '@material-ui/icons/NearMe';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MenuList from '../components/MenuList/MenuList';
-import MenuPopUp from '../components/MenuList/MenuPopUp';
-import Keranjang from '../components/konfirmasiorder/keranjang';
-import { Paper } from '@material-ui/core';
+import React, { useState, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import "./styleinfo.css";
+import InfoTambahan from "../components/InfoTambahan";
+import { getWarung, getMenuListByWarungId, getDaysbyMenuId } from "../resource";
+import IconButton from "@material-ui/core/IconButton";
+import StarIcon from "@material-ui/icons/Star";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import NearMeIcon from "@material-ui/icons/NearMe";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import MenuList from "../components/MenuList/MenuList";
+import MenuPopUp from "../components/MenuList/MenuPopUp";
+import Keranjang from "../components/konfirmasiorder/keranjang";
+import { Paper } from "@material-ui/core";
 
 const { defaultAPIURL } = require("../config");
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-      boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .3)',
-    },
-    iconback: {
-        margin: '3% 0 0 3%',
-        backgroundColor: '#FDCB35',
-    },
-    info: {
-        padding: '6.5% 0 13% 0',
-    },
-    cat: {
-        display: 'inline',
-        padding: 0,
-        backgroundColor: '#FDCB35',
-        fontSize: '1.95vw',
-        fontFamily : 'Inter',
-        fontWeight : 'light',
-        position: 'relative',
-        top: '3px',
-        position: 'relative',
-        left: '18%',
-    },
-    title: {
-        color: '#FDCB35',
-        fontSize: '4.5vw',
-        fontFamily : 'Roboto Slab',
-        fontWeight : 'black',
-        width: '73vw',
-        margin: 0,
-        paddingTop: '0.2vw',
-        paddingBottom: '0.2vw',
-        backgroundColor: '#08080C',
-        borderRadius: '25px',
-        textAlign: 'center',
-        position: 'relative',
-        left: '50%',
-        transform: 'translateX(-50%)',
-    },
-    detail: {
-        width: '68vw',
-        position: 'relative',
-        left: '50%',
-        transform: 'translateX(-50%)',
-    },
-    boxdetail: {
-        padding: 0,
-        margin: 0,
-        paddingTop: 0.3,
-        paddingLeft: 6,
-        fontSize: '1.17vw',
-        fontFamily : 'Inter',
-        fontWeight : 'light',
-    },
-    basket: {
-        marginTop: theme.spacing(8),
-        marginBottom: theme.spacing(4),
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(3),
-        border: '0.5px solid #C4C4C4',
-        borderRadius: '5px',
-        padding: theme.spacing(2),
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
-    },
-  }));
-
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+    boxShadow: "0 3px 5px 2px rgba(0, 0, 0, .3)",
+  },
+  iconback: {
+    margin: "3% 0 0 3%",
+    backgroundColor: "#FDCB35",
+  },
+  info: {
+    padding: "6.5% 0 13% 0",
+  },
+  cat: {
+    display: "inline",
+    padding: 0,
+    backgroundColor: "#FDCB35",
+    fontSize: "1.95vw",
+    fontFamily: "Inter",
+    fontWeight: "light",
+    position: "relative",
+    top: "3px",
+    position: "relative",
+    left: "18%",
+  },
+  title: {
+    color: "#FDCB35",
+    fontSize: "4.5vw",
+    fontFamily: "Roboto Slab",
+    fontWeight: "black",
+    width: "73vw",
+    margin: 0,
+    paddingTop: "0.2vw",
+    paddingBottom: "0.2vw",
+    backgroundColor: "#08080C",
+    borderRadius: "25px",
+    textAlign: "center",
+    position: "relative",
+    left: "50%",
+    transform: "translateX(-50%)",
+  },
+  detail: {
+    width: "68vw",
+    position: "relative",
+    left: "50%",
+    transform: "translateX(-50%)",
+  },
+  boxdetail: {
+    padding: 0,
+    margin: 0,
+    paddingTop: 0.3,
+    paddingLeft: 6,
+    fontSize: "1.17vw",
+    fontFamily: "Inter",
+    fontWeight: "light",
+  },
+  basket: {
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(4),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(3),
+    border: "0.5px solid #C4C4C4",
+    borderRadius: "5px",
+    padding: theme.spacing(2),
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
+  },
+}));
 
 const InfoPage = (props) => {
-    const [id, setID] = useState(0);
-    const [result, setResult] = useState([]);
-    const [pathpic, setpathpic] = useState('');
-    const classes = useStyles();
+  const [id, setID] = useState(0);
+  const [result, setResult] = useState([]);
+  const [pathpic, setpathpic] = useState("");
+  const classes = useStyles();
 
-    let location = useLocation();
-    let history = useHistory();
+  let location = useLocation();
+  let history = useHistory();
 
-    const [prevLocation, setPrevLocation] = useState('');
-    const [menuList, setMenuList] = useState([]);
+  const [prevLocation, setPrevLocation] = useState("");
+  const [menuList, setMenuList] = useState([]);
 
-    const [menuInfo, setMenuInfo] = useState({});
-    const[days, setDays] = useState([]);
-    const [infoShowed, setInfoShowed] = useState(false);
+  const [menuInfo, setMenuInfo] = useState({});
+  const [days, setDays] = useState([]);
+  const [infoShowed, setInfoShowed] = useState(false);
 
-    async function loadDays(id){
-        try{
-            let response = await getDaysbyMenuId(id);
-            
-            if (response.status === 200) {
-                setDays(response.data.values);
-            }
-        }
-        catch (e) {
-            console.log(e);
-        }
-    }
-
-    const handleShowInfoMenu = (menuData) => {
-        setInfoShowed(true);
-        setMenuInfo(menuData);
-        loadDays(menuData.id);
-    }
-    const handleCloseInfoMenu = (menuData) => {
-        setInfoShowed(false);
-    }
-    
-
-    useEffect(() => {
-        async function loadWarung(){
-            try{
-                setID(props.match.params.id);
-    
-                let response = await getWarung(id);
-                
-                if (response.status === 200) {
-                    setResult(response.data.values);
-                    setpathpic(response.data.values[0].pic);
-                }
-
-                let responseMenu = await getMenuListByWarungId(id);
-                if (responseMenu.status === 200) {
-                    setMenuList(responseMenu.data.values);
-                }
-            }
-            catch (e) {
-                console.log(e);
-            }
-        }
-        let path = '/';
-        if(location.state){
-            path = location.state.prevLocation.concat(location.state.searchPath);
-        }
-        setPrevLocation(path);
-        loadWarung();
-    }, [id,location,prevLocation,props.match.params.id,pathpic]);
-
-    return (
-        <React.Fragment>
-        <InfoTambahan />
-        <div className={classes.root}>
-            <div style={{
-                        backgroundImage: `url(${defaultAPIURL+pathpic})`, 
-                        backgroundRepeat: 'no-repeat', 
-                        backgroundSize: 'cover'}}>
-            <IconButton 
-                className={classes.iconback}
-                onClick = {()=>{
-                    history.push(prevLocation);
-            }}>
-                <ArrowBackIcon style={{color: '#08080C', fontSize: '1em'}}/>
-            </IconButton>
-            {result.map(result => 
-                <div className={classes.info}>
-                    <div className={classes.cat}>{result.kategori}</div>
-                    <div className={classes.title}>{result.nama}</div>
-                    <Box className={classes.detail} display="flex" flexDirection="row-reverse" p={0} m={0} bgcolor="#FFFFFF">
-                        <Box display="flex" p={1} marginLeft="5%" marginRight="2%">
-                            <NearMeIcon style={{color: '#FDCB35', fontSize: '1.5vw'}}/>
-                            <Box className={classes.boxdetail}>{result.alamat}</Box>
-                        </Box>
-                        <Box display="flex" p={1} marginLeft="5%">
-                            <LocationOnIcon style={{color: '#FDCB35', fontSize: '1.5vw'}}/>
-                            <Box className={classes.boxdetail}>1.2km</Box>
-                        </Box>
-                        <Box display="flex" p={1}>
-                            <StarIcon style={{color: '#FDCB35', fontSize: '1.5vw'}}/>
-                            <Box className={classes.boxdetail}>3</Box>
-                        </Box>
-                    </Box>
-                </div>
-            )}
-            </div>
-            <Grid container spacing={0}>
-                <Grid item xs={12} sm={12} md={8}>
-                    <MenuList 
-                        data={menuList}
-                        onMenuClick={handleShowInfoMenu}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={12} md={4}>
-                <Paper className={classes.basket}>
-                    <Keranjang/>
-                </Paper>
-                </Grid>
-            </Grid>         
-            <MenuPopUp 
-                data={menuInfo}
-                days={days} 
-                open={infoShowed}
-                onClose={handleCloseInfoMenu}
-            />
-        </div>
-        </React.Fragment>
+  // untuk keranjang
+  const [keranjang, setKeranjang] = useState([
+    {
+      id: 1,
+      nama: "Sup Ayam Kepiting Jagung",
+      harga: 10000,
+      jumlah: 2,
+    },
+    {
+      id: 2,
+      nama: "Sup Ayam Kepiting Jagung",
+      harga: 10000,
+      jumlah: 2,
+    },
+    {
+      id: 3,
+      nama: "Sup Ayam Kepiting Jagung",
+      harga: 55000,
+      jumlah: 3,
+    },
+  ]);
+  const [ongkir, setOngkir] = useState(10000);
+  const [subtotal, setSubtotal] = useState(
+    keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)
+  );
+  const updateJumlahItem = (id, jumlah) => {
+    setKeranjang(
+        keranjang
+        .map((it) => {
+          if (it.id === id) it.jumlah = Math.min(Math.max(jumlah, 0), 9);
+          return it;
+        })
+        .filter((it) => it.jumlah > 0)
     );
-}
+    setSubtotal(
+        keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)
+    );
+  };
+
+  async function loadDays(id) {
+    try {
+      let response = await getDaysbyMenuId(id);
+
+      if (response.status === 200) {
+        setDays(response.data.values);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const handleShowInfoMenu = (menuData) => {
+    setInfoShowed(true);
+    setMenuInfo(menuData);
+    loadDays(menuData.id);
+  };
+  const handleCloseInfoMenu = (menuData) => {
+    setInfoShowed(false);
+  };
+
+  useEffect(() => {
+    async function loadWarung() {
+      try {
+        setID(props.match.params.id);
+
+        let response = await getWarung(id);
+
+        if (response.status === 200) {
+          setResult(response.data.values);
+          setpathpic(response.data.values[0].pic);
+        }
+
+        let responseMenu = await getMenuListByWarungId(id);
+        if (responseMenu.status === 200) {
+          setMenuList(responseMenu.data.values);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    let path = "/";
+    if (location.state) {
+      path = location.state.prevLocation.concat(location.state.searchPath);
+    }
+    setPrevLocation(path);
+    loadWarung();
+  }, [id, location, prevLocation, props.match.params.id, pathpic]);
+
+  return (
+    <React.Fragment>
+      <InfoTambahan />
+      <div className={classes.root}>
+        <div
+          style={{
+            backgroundImage: `url(${defaultAPIURL + pathpic})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
+        >
+          <IconButton
+            className={classes.iconback}
+            onClick={() => {
+              history.push(prevLocation);
+            }}
+          >
+            <ArrowBackIcon style={{ color: "#08080C", fontSize: "1em" }} />
+          </IconButton>
+          {result.map((result) => (
+            <div className={classes.info}>
+              <div className={classes.cat}>{result.kategori}</div>
+              <div className={classes.title}>{result.nama}</div>
+              <Box
+                className={classes.detail}
+                display="flex"
+                flexDirection="row-reverse"
+                p={0}
+                m={0}
+                bgcolor="#FFFFFF"
+              >
+                <Box display="flex" p={1} marginLeft="5%" marginRight="2%">
+                  <NearMeIcon style={{ color: "#FDCB35", fontSize: "1.5vw" }} />
+                  <Box className={classes.boxdetail}>{result.alamat}</Box>
+                </Box>
+                <Box display="flex" p={1} marginLeft="5%">
+                  <LocationOnIcon
+                    style={{ color: "#FDCB35", fontSize: "1.5vw" }}
+                  />
+                  <Box className={classes.boxdetail}>1.2km</Box>
+                </Box>
+                <Box display="flex" p={1}>
+                  <StarIcon style={{ color: "#FDCB35", fontSize: "1.5vw" }} />
+                  <Box className={classes.boxdetail}>3</Box>
+                </Box>
+              </Box>
+            </div>
+          ))}
+        </div>
+        <Grid container spacing={0}>
+          <Grid item xs={12} sm={12} md={8}>
+            <MenuList data={menuList} onMenuClick={handleShowInfoMenu} />
+          </Grid>
+          <Grid item xs={12} sm={12} md={4}>
+            <Paper className={classes.basket}>
+              <Keranjang
+                keranjang={keranjang}
+                ongkir={ongkir}
+                subtotal={subtotal}
+                onItemCountChange={updateJumlahItem}
+              />
+            </Paper>
+          </Grid>
+        </Grid>
+        <MenuPopUp
+          data={menuInfo}
+          days={days}
+          open={infoShowed}
+          onClose={handleCloseInfoMenu}
+        />
+      </div>
+    </React.Fragment>
+  );
+};
 
 export default InfoPage;
