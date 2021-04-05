@@ -6,7 +6,8 @@ module.exports = function(app) {
     app.get("/", (req, res) => {
         res.json({ message: "Welcome to pesanmasakan application." });
       });
-
+    
+    // WARUNG
     app.route('/daftarwarung')
         .get(pesanmasakan.daftar_warung);
 
@@ -18,7 +19,17 @@ module.exports = function(app) {
 
     app.route('/categories')
         .get(pesanmasakan.lihat_kategori);
-        
+
+    app.route('/editdatawarung')
+        .post(pesanmasakan.ubah_data_warung);
+ 
+     app.route('/tambahwarung')
+        .post(pesanmasakan.tambah_warung);
+ 
+     app.route('/hapuswarung')
+        .post(pesanmasakan.hapus_warung);
+    
+    // MENU
     app.route('/daftarmenu')
         .get(pesanmasakan.daftar_menu);
     // query params : id_warung
@@ -41,12 +52,30 @@ module.exports = function(app) {
     app.route('/updatemenu')
         .post(pesanmasakan.update_menu);
 
-    app.route('/editdatawarung')
-       .post(pesanmasakan.ubah_data_warung);
+    // ORDER
+    app.route('/cooklist/:id')
+        .get(pesanmasakan.get_cooklist);
+        // params: id warung
 
-    app.route('/tambahwarung')
-       .post(pesanmasakan.tambah_warung);
+    // the following routes has status as an attribute
+    // 0 = in process / cooking
+    // 1 = completed / sent
+    // 2 = cancelled
+    app.route('/orderlist/penjual/:id')
+        .get(pesanmasakan.orderlist_penjual);
 
-    app.route('/hapuswarung')
-       .post(pesanmasakan.hapus_warung);
+    app.route('/orderlist/pembeli/:id')
+        .get(pesanmasakan.orderlist_pembeli);
+
+    app.route('/tambahorder')
+        .post(pesanmasakan.add_order);
+
+    app.route('/updateorder')
+        .post(pesanmasakan.update_order);
+
+    app.route('/updateordermenu')
+        .post(pesanmasakan.update_ordermenu);
+
+    app.route('/overvieworder/:id')
+        .get(pesanmasakan.overview_order);
 };
