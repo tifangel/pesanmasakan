@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
     title:{
         marginBottom: theme.spacing(0),
         fontFamily: 'Roboto Slab',
-        fontWeight: 'normal',
-        fontSize: '1vw'
+        fontWeight: 'regular',
+        fontSize: '1.2vw'
     },
     count:{
         marginTop: theme.spacing(0),

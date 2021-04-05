@@ -6,6 +6,7 @@ import Title from './title'
 import MenuListPenjual from './MenuListPenjual';
 import { Paper } from '@material-ui/core';
 import DashboardInfo from './dashboardinfo';
+import DashboardPlot from './dashboardplot';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -97,6 +98,7 @@ const MainContent = ({ id, menuList }) => {
         content = <React.Fragment>
                     <Title nama={dataFormProfile.nama_warung}/>
                     <DashboardInfo></DashboardInfo>
+                    <DashboardPlot id_warung={dataFormProfile.id_warung}></DashboardPlot>
                 </React.Fragment>;
     } else if (id === 1) {
         content =   <React.Fragment>
