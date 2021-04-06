@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const MenuPopUp = ({data, days, open, onClose}) => {
+const MenuPopUp = ({data, days, open, onClose, onPesan}) => {
 
     const classes = useStyles();
 
@@ -128,7 +128,7 @@ const MenuPopUp = ({data, days, open, onClose}) => {
                     <Typography className={classes.menuPrice} variant="body2" color="textSecondary" component="p">
                         Rp {data.harga}
                     </Typography>
-                    <Button className={classes.menuOrder}>Pesan</Button>
+                    <Button className={classes.menuOrder} onClick={onPesan}>Pesan</Button>
                 </CardContent>
             </Card>
         </Dialog>

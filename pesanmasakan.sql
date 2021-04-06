@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `hari_menu`;
 CREATE TABLE `hari_menu` (
   `id_menu` int NOT NULL,
   `hari` varchar(10) NOT NULL,
+  `porsi` int DEFAULT NULL,
   PRIMARY KEY (`id_menu`,`hari`),
   CONSTRAINT `hari_menu_ibfk_1` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -36,7 +37,7 @@ CREATE TABLE `hari_menu` (
 
 LOCK TABLES `hari_menu` WRITE;
 /*!40000 ALTER TABLE `hari_menu` DISABLE KEYS */;
-INSERT INTO `hari_menu` VALUES (1,'jumat'),(1,'senin'),(2,'selasa'),(3,'rabu'),(4,'kamis'),(4,'senin'),(5,'jumat'),(6,'sabtu'),(7,'senin'),(8,'sabtu'),(8,'selasa'),(9,'rabu'),(9,'sabtu'),(10,'kamis'),(10,'rabu'),(11,'jumat'),(12,'kamis'),(12,'sabtu'),(13,'minggu'),(14,'senin'),(15,'jumat'),(15,'selasa'),(16,'rabu'),(17,'kamis'),(18,'jumat'),(18,'senin'),(19,'minggu'),(19,'sabtu'),(19,'selasa'),(20,'rabu'),(21,'kamis'),(22,'jumat'),(23,'kamis'),(23,'sabtu'),(24,'minggu'),(24,'selasa'),(25,'minggu'),(26,'sabtu'),(27,'rabu'),(28,'minggu'),(28,'senin'),(29,'kamis'),(30,'jumat'),(31,'rabu'),(31,'sabtu'),(32,'jumat'),(32,'selasa'),(33,'selasa'),(34,'jumat'),(35,'senin');
+INSERT INTO `hari_menu` VALUES (1,'jumat',21),(1,'senin',21),(2,'selasa',22),(3,'rabu',23),(4,'kamis',24),(4,'senin',24),(5,'jumat',25),(6,'sabtu',26),(7,'senin',27),(8,'sabtu',28),(8,'selasa',28),(9,'rabu',29),(9,'sabtu',29),(10,'kamis',30),(10,'rabu',30),(11,'jumat',31),(12,'kamis',32),(12,'sabtu',32),(13,'minggu',33),(14,'senin',34),(15,'jumat',35),(15,'selasa',35),(16,'rabu',36),(17,'kamis',37),(18,'jumat',38),(18,'senin',38),(19,'minggu',39),(19,'sabtu',39),(19,'selasa',39),(20,'rabu',40),(21,'kamis',41),(22,'jumat',42),(23,'kamis',43),(23,'sabtu',43),(24,'minggu',44),(24,'selasa',44),(25,'minggu',45),(26,'sabtu',26),(27,'rabu',27),(28,'minggu',28),(28,'senin',28),(29,'kamis',29),(30,'jumat',30),(31,'rabu',31),(31,'sabtu',31),(32,'jumat',32),(32,'selasa',32),(33,'selasa',33),(34,'jumat',34),(35,'senin',35);
 /*!40000 ALTER TABLE `hari_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,7 +58,7 @@ CREATE TABLE `menu` (
   PRIMARY KEY (`id`),
   KEY `id_warung` (`id_warung`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`id_warung`) REFERENCES `warung` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,31 +72,6 @@ INSERT INTO `menu` VALUES (1,1,'ayam goreng',15000,'lalapan ayam goreng dengan n
 UNLOCK TABLES;
 
 --
--- Table structure for table `pembeli`
---
-
-DROP TABLE IF EXISTS `pembeli`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pembeli` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nama` varchar(255) NOT NULL,
-  `telp` varchar(14) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pembeli`
---
-
-LOCK TABLES `pembeli` WRITE;
-/*!40000 ALTER TABLE `pembeli` DISABLE KEYS */;
-INSERT INTO `pembeli` VALUES (1,'Tifany','081234567890'),(2,'Anindya','081345123789'),(3,'Raras','082890234652'),(4,'Jundu','085234678306'),(5,'Iqbal','082098634716');
-/*!40000 ALTER TABLE `pembeli` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `transaksi`
 --
 
@@ -104,16 +80,20 @@ DROP TABLE IF EXISTS `transaksi`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transaksi` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_pembeli` int DEFAULT NULL,
   `tgl_transaksi` date DEFAULT NULL,
   `total` int DEFAULT NULL,
   `alamat_tujuan` varchar(255) DEFAULT NULL,
   `longitude` double(10,6) DEFAULT NULL,
   `latitude` double(10,6) DEFAULT NULL,
+  `status` int DEFAULT NULL,
+  `id_warung` int DEFAULT NULL,
+  `username_pembeli` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_pembeli` (`id_pembeli`),
-  CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_pembeli`) REFERENCES `pembeli` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_id_warung` (`id_warung`),
+  KEY `username_pembeli` (`username_pembeli`),
+  CONSTRAINT `fk_id_warung` FOREIGN KEY (`id_warung`) REFERENCES `warung` (`id`),
+  CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`username_pembeli`) REFERENCES `user_pembeli` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +102,7 @@ CREATE TABLE `transaksi` (
 
 LOCK TABLES `transaksi` WRITE;
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
-INSERT INTO `transaksi` VALUES (1,1,'2021-02-24',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779),(2,2,'2021-02-26',17000,'Jl Dieng Kawi no 76',-6.931036,107.596800),(3,3,'2021-02-25',40000,'Jl Raya Langsep no 32',-7.383062,108.534895);
+INSERT INTO `transaksi` VALUES (1,'2021-02-24',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,1,3,'indy'),(2,'2021-02-26',17000,'Jl Dieng Kawi no 76',-6.931036,107.596800,0,4,'raras'),(3,'2021-02-25',40000,'Jl Raya Langsep no 32',-7.383062,108.534895,2,2,'raras'),(8,'2021-04-02',45000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,4,'indy'),(9,'2021-04-03',135000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'raras'),(10,'2021-05-03',100000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'indy');
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,6 +117,7 @@ CREATE TABLE `transaksi_menu` (
   `id_transaksi` int DEFAULT NULL,
   `id_menu` int DEFAULT NULL,
   `jumlah_porsi` int DEFAULT NULL,
+  `status` int DEFAULT NULL,
   KEY `id_transaksi` (`id_transaksi`),
   KEY `id_menu` (`id_menu`),
   CONSTRAINT `transaksi_menu_ibfk_1` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id`),
@@ -150,7 +131,7 @@ CREATE TABLE `transaksi_menu` (
 
 LOCK TABLES `transaksi_menu` WRITE;
 /*!40000 ALTER TABLE `transaksi_menu` DISABLE KEYS */;
-INSERT INTO `transaksi_menu` VALUES (1,28,1),(1,16,1),(2,34,1),(3,9,2);
+INSERT INTO `transaksi_menu` VALUES (1,28,1,1),(1,16,1,1),(2,34,1,0),(3,9,2,2),(8,32,1,0),(8,33,2,0),(9,1,4,0),(9,2,5,0),(10,5,10,1);
 /*!40000 ALTER TABLE `transaksi_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -249,4 +230,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-19 11:12:21
+-- Dump completed on 2021-04-06 11:32:38

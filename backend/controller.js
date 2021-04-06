@@ -232,3 +232,195 @@ exports.hapus_warung = function(req,res){
         }
     });
 }
+
+exports.get_cooklist = function(req, res) {
+    const id = req.params.id;
+    // TODO: tgl_transaksi perlu diganti jadi buat tgl berapa order ini
+    const query = `
+        SELECT t.tgl_transaksi, m.id, m.nama, SUM(tm.jumlah_porsi) as qty
+        FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
+            JOIN transaksi t ON (tm.id_transaksi = t.id)
+        WHERE m.id_warung = ${id} AND tm.status = 0
+        GROUP BY t.tgl_transaksi, m.nama;
+    `;
+
+    connection.query(query, (error, rows, field) => {
+        if (error) console.log("Get cooklist", error);
+        else response.ok(rows, res);
+    });
+}
+
+exports.orderlist_penjual = function(req, res) {
+    const id = req.params.id;
+    const query = `
+        SELECT id_pembeli, tgl_transaksi, alamat_tujuan, total, status, id_warung
+        FROM transaksi
+        WHERE id_warung = ${id}
+    `;
+
+    connection.query(query, async (error, rows, field) => {
+        if (error) console.log("Orderlist penjual", error);
+        else {
+            console.log(rows);
+            var details = await orderlist_details(rows);
+            response.ok(details, res);
+        }
+
+    });
+}
+
+var orderlist_details = async function(rows) {
+    var promises = [];
+    for (var i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        promises.push(new Promise((resolve, reject) => {
+            var date = ("0" + row.tgl_transaksi.getDate()).slice(-2);
+            var month = ("0" + (row.tgl_transaksi.getMonth() + 1)).slice(-2);
+            var year = row.tgl_transaksi.getFullYear();
+            var tgl = `${year}-${month}-${date}`;
+            var query = `
+                SELECT jumlah_porsi, m.nama, m.harga, tm.status
+                FROM menu m JOIN transaksi_menu tm ON (m.id = tm.id_menu)
+                    JOIN transaksi t ON (t.id = tm.id_transaksi)
+                WHERE id_pembeli = ${row.id_pembeli} AND tgl_transaksi = "${tgl}";
+            `;
+            connection.query(query, (error, rows, field) => {
+                if (error) reject(error);
+                else {
+                    row.orders = rows;
+                    resolve(row);
+                }
+            });
+        }));
+    }
+    return Promise.all(promises).then((values) => values).catch((error) => console.log(error));
+}
+
+exports.orderlist_pembeli = function(req, res) {
+    const id = req.params.id;
+    // TODO: waktu
+    const query = `
+        SELECT w.nama, SUM(tm.jumlah_porsi), t.tgl_transaksi, 
+            t.total, t.status 
+        FROM transaksi t JOIN transaksi_menu tm ON (t.id = tm.id_transaksi)
+            JOIN menu m ON (tm.id_menu = m.id)
+            JOIN warung w ON (w.id = m.id_warung)
+        WHERE id_pembeli = ${id}
+        GROUP BY w.nama;
+    `;        
+
+    connection.query(query, (error, rows, field) => {
+        if (error) console.log("Orderlist pembeli", error);
+        else response.ok(rows, res);
+    });
+}
+
+exports.add_order = function(req, res) {
+    const id_pembeli = req.body.id_pembeli;
+    const tgl_transaksi = req.body.tgl_transaksi;
+    const total = req.body.total;
+    const alamat = req.body.alamat;
+    const longitude = req.body.longitude;
+    const latitude = req.body.latitude;
+    const orders = req.body.orders;
+    const id_warung = req.body.id_warung;
+    // contoh orders = [
+    //     { "id_menu": "1", "qty": 5},
+    //     { "id_menu": "5", "qty": 9},
+    // ]
+
+    const query_transaksi = `
+        INSERT INTO transaksi VALUES (
+            DEFAULT, ${id_pembeli}, "${tgl_transaksi}", ${total}, 
+            "${alamat}", ${longitude}, ${latitude}, 0, ${id_warung}
+        );
+    `;
+
+    connection.query(query_transaksi, (error, rows, field) => {
+        if (error) console.log("Add order", error);
+        else {
+            console.log(rows);
+            var query_menu = `INSERT INTO transaksi_menu VALUES`;
+
+            for (var i = 0; i < orders.length; i++) {
+                query_menu += ` (${rows.insertId}, ${orders[i].id_menu}, ${orders[i].qty}, 0)`
+                if (i < orders.length-1) query_menu += `,`;
+            }
+
+            connection.query(query_menu, (error, rows, field) => {
+                if (error) console.log("Add transaksi menu", error);
+                else response.ok(rows, res);
+            });
+        }
+    });
+}
+
+exports.update_order = function(req, res) {
+    // Mengubah status order menjadi completed / cancelled
+    // Prereq: semua menu dalam order ini harus berstatus 1 kalau mau jadi completed
+    const status = req.body.status;
+    const id_order = req.body.id;
+
+    const query = `
+        UPDATE transaksi SET status = ${status} WHERE id = ${id_order};
+    `;
+
+    connection.query(query, (error, rows, field) => {
+        if (error) console.log("Update order", error);
+        else response.ok(rows, res);
+    });
+}
+
+exports.update_ordermenu = function(req, res) {
+    // Mengubah status pemasakan menu menjadi completed
+    const id_menu = req.body.id;
+    const tanggal = req.body.tanggal;
+
+    const query = `
+        UPDATE transaksi_menu tm JOIN transaksi t ON (tm.id_transaksi = t.id)
+        SET tm.status = 1
+        WHERE tm.id_menu = ${id_menu} AND tgl_transaksi = "${tanggal}";
+    `;
+
+    connection.query(query, (error, rows, field) => {
+        if (error) console.log("Update order", error);
+        else response.ok(rows, res);
+    });
+}
+
+exports.overview_order = function(req, res) {
+    const id = req.params.id;
+    var promises = [];
+    const query_order = `
+        SELECT YEAR(tgl_transaksi) as year, MONTH(tgl_transaksi) as month, COUNT(*) as qty
+        FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
+            JOIN transaksi t ON (t.id = tm.id_transaksi)
+        WHERE t.id_warung = ${id}
+        GROUP BY year, month;
+    `;
+    const query_profit = `
+        SELECT YEAR(tgl_transaksi) as year, MONTH(tgl_transaksi) as month, SUM(total) as profit
+        FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
+            JOIN transaksi t ON (t.id = tm.id_transaksi)
+        WHERE t.id_warung = ${id}
+        GROUP BY year, month; 
+    `;
+
+    promises.push(new Promise((resolve, reject) => {
+        connection.query(query_order, (error, rows, field) => {
+            if (error) reject(error);
+            else resolve(rows, res);
+        });
+    }));
+
+    promises.push(new Promise((resolve, reject) => {
+        connection.query(query_profit, (error, rows, field) => {
+            if (error) reject(error);
+            else resolve(rows, res);
+        });
+    }));
+
+    Promise.all(promises)
+        .then((values) => response.ok(values, res))
+        .catch((error) => console.log(error));
+}
