@@ -98,7 +98,9 @@ const MainContent = ({ id, menuList }) => {
         content = <React.Fragment>
                     <Title nama={dataFormProfile.nama_warung}/>
                     <DashboardInfo></DashboardInfo>
-                    <DashboardPlot id_warung={dataFormProfile.id_warung}></DashboardPlot>
+                    <Paper style={{ marginTop: 30 }}>
+                        <DashboardPlot id_warung={dataFormProfile.id_warung}></DashboardPlot>
+                    </Paper>
                 </React.Fragment>;
     } else if (id === 1) {
         content =   <React.Fragment>
