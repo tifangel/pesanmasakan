@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Plot from 'react-plotly.js';
 import { makeStyles} from '@material-ui/core';
 import { getOverviewOrder } from "../../resource";
-import { GridColumnsToolbarButton } from '@material-ui/data-grid';
 
 const useStyles = makeStyles((theme) => ({
     root:{
@@ -13,9 +12,6 @@ const useStyles = makeStyles((theme) => ({
 )
 
 const DashboardPlot = ({id_warung}) =>{
-    const [revenue, setRevenueArray] = useState([]);
-    const [date, setDateArray] = useState([]);
-    const [order, setOrderArray] = useState([]);
     const [data, setData] = useState([]);
     
 
@@ -46,13 +42,7 @@ const DashboardPlot = ({id_warung}) =>{
             orderArr.push(orderArray[i].qty);
             revenueArr.push(revenueArray[i].profit);
         }
-        setDateArray(dateArray);
-        setRevenueArray(revenueArr);
-        setOrderArray(orderArr);
 
-        console.log(dateArray);
-        console.log(revenueArr);
-        console.log(orderArr);
         var trace1 = {
             x: dateArray,
             y: orderArr,
@@ -81,21 +71,23 @@ const DashboardPlot = ({id_warung}) =>{
             
                 if (response.status === 200) {
                     setArrays(response.data.values);
+
                 }
     
             } catch (e) {
                 console.log(e);
             }
-        } 
+        }
         loadData();
     }, []);
 
     const classes = useStyles();
+
     return (
         <Plot className={classes.root}
             data={data}
             layout={{
-                        width:1000,
+                        width: 1000,
                         height: 400,
                         title: 'Overview',
                         yaxis: {
@@ -115,11 +107,9 @@ const DashboardPlot = ({id_warung}) =>{
                             x:0.5
                         }
                     }}
-            config = {{responsive: true}}
-                
+
         />
-        
-)
+    )
 }
 
 export default DashboardPlot

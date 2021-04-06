@@ -96,3 +96,11 @@ export const getOverviewOrder = async(warungId) =>
 
         return response
     }
+
+export const getOrderSummary = async(warungId) =>
+    {
+        const url = `${defaultAPIURL}/ordersummary/${warungId}`
+        const response = await get(url)
+
+        return response
+    }

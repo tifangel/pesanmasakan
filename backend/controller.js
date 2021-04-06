@@ -424,3 +424,41 @@ exports.overview_order = function(req, res) {
         .then((values) => response.ok(values, res))
         .catch((error) => console.log(error));
 }
+
+exports.ordersummary = function(req, res){
+    const id = req.params.id;
+    var promises = [];
+    // the following routes has status as an attribute
+    // 0 = in process / cooking
+    // 1 = completed / sent
+    // 2 = cancelled
+
+    const query_success = `SELECT * FROM transaksi WHERE status = 1 and id_warung =  ${id};`;
+    const query_process = `SELECT * FROM transaksi WHERE status = 0 and id_warung =  ${id};`;
+    const query_cancelled = `SELECT * FROM transaksi WHERE status = 2 and id_warung =  ${id};`;
+
+    promises.push(new Promise((resolve, reject) => {
+        connection.query(query_success, (error, rows, field) => {
+            if (error) reject(error);
+            else resolve(rows, res);
+        });
+    }));
+
+    promises.push(new Promise((resolve, reject) => {
+        connection.query(query_cancelled, (error, rows, field) => {
+            if (error) reject(error);
+            else resolve(rows, res);
+        });
+    }));
+
+    promises.push(new Promise((resolve, reject) => {
+        connection.query(query_process, (error, rows, field) => {
+            if (error) reject(error);
+            else resolve(rows, res);
+        });
+    }));
+
+    Promise.all(promises)
+        .then((values) => response.ok(values, res))
+        .catch((error) => console.log(error));
+}
