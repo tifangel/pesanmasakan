@@ -232,6 +232,44 @@ exports.hapus_warung = function(req,res){
         }
     });
 }
+exports.tambah_user_pembeli = function(req, res){
+    const username = req.body.username
+    const password = req.body.password
+    const email = req.body.email
+    const no_hp = req.body.no_hp
+    const nama = req.body.nama
+
+    const query_add_user_pembeli = 'INSERT INTO user_pembeli VALUES ("' + username + '", "' + password + '", "' + email + '", "' + no_hp + '", "' + nama + '")'
+    console.log(query_add_user_pembeli)
+
+    connection.query(query_add_user_pembeli, function (error, rows, fields){
+        if (error){
+            console.log(error)
+        } else {
+            response.ok(rows, res)
+        }
+    });
+}
+
+exports.tambah_user_penjual = function(req, res){
+    const username = req.body.username
+    const password = req.body.password
+    const email = req.body.email
+    const no_hp = req.body.no_hp
+    const id_warung = req.body.id
+    const nama = req.body.nama
+
+    const query_add_user_penjual = 'INSERT INTO user_penjual VALUES ("' + username + '", "' + password + '", "' + email + '", "' + no_hp + '", ' + id_warung + ', "' + nama + '")'
+    console.log(query_add_user_penjual)
+
+    connection.query(query_add_user_penjual, function (error, rows, fields){
+        if (error){
+            console.log(error)
+        } else {
+            response.ok(rows, res)
+        }
+    });
+}
 
 exports.get_cooklist = function(req, res) {
     const id = req.params.id;

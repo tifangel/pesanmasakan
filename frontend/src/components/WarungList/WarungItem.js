@@ -55,7 +55,7 @@ const WarungItem = ({data}) => {
                                     history.push({
                                         pathname : `/warung/${data.id}`,
                                         state: {prevLocation : prevLocation,
-                                                searchPath: searchPath}
+                                                searchPath: searchPath,}
                                     });
                                 }
                             }> 

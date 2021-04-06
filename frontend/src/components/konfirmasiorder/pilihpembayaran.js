@@ -40,10 +40,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PilihPembayaran() {
+export default function PilihPembayaran({kurir, setKurir, carabayar, setCarabayar}) {
   const classes = useStyles();
-  const [kurir, setKurir] = useState(0);
-  const [carabayar, setCarabayar] = useState(0);
   return (
     <React.Fragment>
       <Typography

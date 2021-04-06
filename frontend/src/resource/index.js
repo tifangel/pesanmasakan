@@ -101,6 +101,11 @@ export const getOrderSummary = async(warungId) =>
     {
         const url = `${defaultAPIURL}/ordersummary/${warungId}`
         const response = await get(url)
+    
+export const insertPesanan = async(data) =>
+    {
+        const url = `${defaultAPIURL}/tambahorder`
+        const response = await post(url,data)
 
         return response
     }

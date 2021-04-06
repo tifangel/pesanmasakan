@@ -75,6 +75,12 @@ module.exports = function(app) {
 
     app.route('/updateordermenu')
         .post(pesanmasakan.update_ordermenu);
+    
+    app.route('/registerpembeli')
+        .post(pesanmasakan.tambah_user_pembeli);
+    
+    app.route('/registerpenjual')
+        .post(pesanmasakan.tambah_user_penjual);
 
     app.route('/overvieworder/:id')
         .get(pesanmasakan.overview_order);
