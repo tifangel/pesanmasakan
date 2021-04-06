@@ -88,3 +88,11 @@ export const editProfile = async(data) =>
 
         return response
     }
+    
+export const insertPesanan = async(data) =>
+    {
+        const url = `${defaultAPIURL}/tambahorder`
+        const response = await post(url,data)
+
+        return response
+    }
