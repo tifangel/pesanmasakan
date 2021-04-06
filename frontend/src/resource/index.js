@@ -101,6 +101,7 @@ export const getOrderSummary = async(warungId) =>
     {
         const url = `${defaultAPIURL}/ordersummary/${warungId}`
         const response = await get(url)
+    }
     
 export const insertPesanan = async(data) =>
     {
