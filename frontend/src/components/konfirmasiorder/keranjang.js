@@ -69,9 +69,8 @@ export default function Keranjang({
   ongkir,
   subtotal,
   onItemCountChange,
-  onBayar
-}
-) {
+  onBayar,
+}) {
   const classes = useStyles();
 
   return (
@@ -143,30 +142,34 @@ export default function Keranjang({
                 {formatMoney(subtotal)}
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell className={classes.tablecell} padding="none">
-                Delivery Fee
-              </TableCell>
-              <TableCell
-                className={classes.tablecell}
-                padding="none"
-                align="right"
-              >
-                {formatMoney(ongkir)}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className={classes.tablecell} padding="none">
-                Total
-              </TableCell>
-              <TableCell
-                className={classes.tablecell}
-                padding="none"
-                align="right"
-              >
-                {formatMoney(subtotal + ongkir)}
-              </TableCell>
-            </TableRow>
+            {(ongkir || ongkir===0) ? (
+              <React.Fragment>
+                <TableRow>
+                  <TableCell className={classes.tablecell} padding="none">
+                    Delivery Fee
+                  </TableCell>
+                  <TableCell
+                    className={classes.tablecell}
+                    padding="none"
+                    align="right"
+                  >
+                    {ongkir? formatMoney(ongkir) : "Free"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className={classes.tablecell} padding="none">
+                    Total
+                  </TableCell>
+                  <TableCell
+                    className={classes.tablecell}
+                    padding="none"
+                    align="right"
+                  >
+                    {formatMoney(subtotal + ongkir)}
+                  </TableCell>
+                </TableRow>
+              </React.Fragment>
+            ) : null}
           </TableBody>
         </Table>
         <Button

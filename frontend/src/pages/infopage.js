@@ -109,7 +109,6 @@ const InfoPage = (props) => {
 
   // untuk keranjang
   const [keranjang, setKeranjang] = useState([]);
-  const [ongkir, setOngkir] = useState(10000);
   const [subtotal, setSubtotal] = useState(
     keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)
   );
@@ -127,10 +126,36 @@ const InfoPage = (props) => {
     );
   };
   const onBayar = () => {
-    history.push({
-        pathname: '/konfirmasi/',
-        state: keranjang
-      })
+    if (!keranjang.length) return;
+    const userId = prompt("Anda harus login", 1);
+    if(!Number(userId)){
+      alert("Login gagal");
+      return;
+    }
+    const alamat = prompt("Alamat anda?", "alamat");
+    if(!alamat){
+      alert("Login gagal");
+      return;
+    }
+    const handleSuccess = (position) => {
+      history.push({
+          pathname: '/konfirmasi/',
+          state: {
+            userId: Number(userId),
+            alamat: alamat,
+            keranjang: keranjang,
+            warung_id: props.match.params.id,
+            user_position: {
+              longitude: position.coords.longitude,
+              latitude: position.coords.latitude,
+            }
+          }
+        })
+    }
+    const handleError = (err) => {
+      alert("Izin akses lokasi dibutuhkan!")
+    }
+    navigator.geolocation.getCurrentPosition(handleSuccess,handleError, { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 });
   }
 
   async function loadDays(id) {
@@ -168,6 +193,9 @@ const InfoPage = (props) => {
             pic: menuInfo.pic
           },
         ]);
+        setSubtotal(
+          subtotal + menuInfo.harga
+        );
     }
     setInfoShowed(false);
   };
@@ -257,7 +285,6 @@ const InfoPage = (props) => {
             <Paper className={classes.basket}>
               <Keranjang
                 keranjang={keranjang}
-                ongkir={ongkir}
                 subtotal={subtotal}
                 onItemCountChange={updateJumlahItem}
                 onBayar={onBayar}
