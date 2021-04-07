@@ -11,6 +11,52 @@ import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
+/* DELETE FROM HERE */
+var datadummy = [ 
+        {
+            "id": 9,
+            "username_pembeli": "raras",
+            "tgl_transaksi": "2021-04-02T17:00:00.000Z",
+            "alamat_tujuan": "Jl Ijen Nirwana no 12",
+            "total": 135000,
+            "status": 0,
+            "id_warung": 1,
+            "orders": [
+                {
+                    "jumlah_porsi": 4,
+                    "nama": "ayam goreng",
+                    "harga": 15000,
+                    "status": 0
+                },
+                {
+                    "jumlah_porsi": 5,
+                    "nama": "bebek goreng",
+                    "harga": 15000,
+                    "status": 0
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "username_pembeli": "indy",
+            "tgl_transaksi": "2021-05-02T17:00:00.000Z",
+            "alamat_tujuan": "Jl Ijen Nirwana no 12",
+            "total": 100000,
+            "status": 1,
+            "id_warung": 1,
+            "orders": [
+                {
+                    "jumlah_porsi": 10,
+                    "nama": "tahu & tempe goreng",
+                    "harga": 10000,
+                    "status": 1
+                }
+            ]
+        }
+    ]
+/* DELETE UP TO HERE */
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -35,12 +81,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const useRowStyles = makeStyles((theme) => ({
+    root: {
+        fontFamily: 'Inter',
+    },
     orderTitle: {
         backgroundColor: "#fafafa",
     },
-    // orderDetails: {
-    //     borderBottom:
-    // }
+    green: {
+        color: "#31CE36",
+    },
+    red: {
+        color: "#D85450",
+    },
+    yellow: {
+        color: "#FDCB35",
+    }
 }));
 
 const TableCell = withStyles({
@@ -50,46 +105,96 @@ const TableCell = withStyles({
     }
 })(MuiTableCell);
 
+function formatMoney(money) {
+    if (money >= 1000) {
+      return `Rp${Math.floor(money / 1000)}.${
+        money % 1000 < 10
+          ? `00${money % 1000}`
+          : money % 1000 < 100
+          ? `0${money % 1000}`
+          : money % 1000
+      }`;
+    } else {
+      return `Rp${money}`;
+    }
+  }
+
+function formatDate(date) {
+    var day = ("0" + date.getDate()).slice(-2);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var year = (""+ date.getFullYear()).slice(2);
+    return `${day}/${month}/${year}`;
+}
+
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
+    const setButton = function(status) {
+        if (status === 0) {
+            return (<Button className={classes.yellow} disabled>Send</Button>);
+        } else if (status === 1) {
+            return (<Button className={classes.green}>Send</Button>);
+        } else if (status === 2) {
+            return (<Button className={classes.red} disabled>Cancelled</Button>)
+        }
+    }
+
+    const setMenuStatus = function(status) {
+        if (status === 0) {
+            return (<b className={classes.yellow}>Cooking</b>);
+        } else if (status === 1) { 
+            return (<b className={classes.green}>Done</b>);
+        }
+    }
+    
+    const createOrderDetails = function(order) {
+        var details = [];
+        for (var i = 0; i < order.length; i++) {
+            details.push(
+                <TableRow className={classes.orderDetails}>
+                    <TableCell>{order[i].jumlah_porsi} porsi</TableCell>
+                    <TableCell>{order[i].nama}</TableCell>
+                    <TableCell>{formatMoney(order[i].harga)}</TableCell>
+                    <TableCell>{setMenuStatus(order[i].status)}</TableCell>
+                </TableRow>
+            )
+        }
+        return details;
+    }
+
     return (
         <React.Fragment>
-            <TableRow className={classes.orderTitle}>
-                <TableCell>
-                    <IconButton size="small" onClick={() => setOpen(!open)}>
-                        { open? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </TableCell>
-                <TableCell> date </TableCell>
-                <TableCell> addr </TableCell>
-                <TableCell> total </TableCell>
-                <TableCell> <Button> Done </Button></TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0}} colSpan={5}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box margin={1}>
-                            <Table size="small">
-                                <TableRow>
-                                    <TableCell>1 porsi</TableCell>
-                                    <TableCell>Ayam goreng</TableCell>
-                                    <TableCell>15.000</TableCell>
-                                    <TableCell><Button> Done </Button></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>1 porsi</TableCell>
-                                    <TableCell>Ayam goreng</TableCell>
-                                    <TableCell>15.000</TableCell>
-                                    <TableCell><Button> Done </Button></TableCell>
-                                </TableRow>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
+        { /* ORDER TITLE */ }
+        <TableRow className={classes.orderTitle}>
+            <TableCell>
+                <IconButton size="small" onClick={() => setOpen(!open)}>
+                    { open? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </IconButton>
+            </TableCell>
+            <TableCell> {formatDate(new Date(row.tgl_transaksi.slice(0, -1)))} </TableCell>
+            <TableCell> 
+                { row.username_pembeli } <br />
+                { row.alamat_tujuan }
+            </TableCell>
+            <TableCell> {formatMoney(row.total)} </TableCell>
+            <TableCell> 
+                { setButton(row.status) }
+            </TableCell>
+        </TableRow>
+        { /* ORDER DETAILS */ }
+        <TableRow>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0}} colSpan={5}>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Box margin={1}>
+                        <Table size="small">
+                            { createOrderDetails(row.orders) }
+                        </Table>
+                    </Box>
+                </Collapse>
+            </TableCell>
+        </TableRow>
         </React.Fragment>
     )
 }
@@ -109,8 +214,9 @@ const OngoingOrders = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <Row />
-                    <Row />
+                    { datadummy.map((row) => (
+                        <Row key={row.id} row={row} />
+                    ))} 
                 </TableBody>
             </Table>
         </React.Fragment>

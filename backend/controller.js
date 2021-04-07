@@ -253,7 +253,7 @@ exports.get_cooklist = function(req, res) {
 exports.orderlist_penjual = function(req, res) {
     const id = req.params.id;
     const query = `
-        SELECT id_pembeli, tgl_transaksi, alamat_tujuan, total, status, id_warung
+        SELECT id, username_pembeli, tgl_transaksi, alamat_tujuan, total, status, id_warung
         FROM transaksi
         WHERE id_warung = ${id}
     `;
@@ -282,7 +282,7 @@ var orderlist_details = async function(rows) {
                 SELECT jumlah_porsi, m.nama, m.harga, tm.status
                 FROM menu m JOIN transaksi_menu tm ON (m.id = tm.id_menu)
                     JOIN transaksi t ON (t.id = tm.id_transaksi)
-                WHERE id_pembeli = ${row.id_pembeli} AND tgl_transaksi = "${tgl}";
+                WHERE username_pembeli = "${row.username_pembeli}" AND tgl_transaksi = "${tgl}";
             `;
             connection.query(query, (error, rows, field) => {
                 if (error) reject(error);
@@ -297,7 +297,7 @@ var orderlist_details = async function(rows) {
 }
 
 exports.orderlist_pembeli = function(req, res) {
-    const id = req.params.id;
+    const username = req.params.username;
     // TODO: waktu
     const query = `
         SELECT w.nama, SUM(tm.jumlah_porsi), t.tgl_transaksi, 
@@ -305,7 +305,7 @@ exports.orderlist_pembeli = function(req, res) {
         FROM transaksi t JOIN transaksi_menu tm ON (t.id = tm.id_transaksi)
             JOIN menu m ON (tm.id_menu = m.id)
             JOIN warung w ON (w.id = m.id_warung)
-        WHERE id_pembeli = ${id}
+        WHERE username_pembeli = "${username}"
         GROUP BY w.nama;
     `;        
 
@@ -316,7 +316,7 @@ exports.orderlist_pembeli = function(req, res) {
 }
 
 exports.add_order = function(req, res) {
-    const id_pembeli = req.body.id_pembeli;
+    const username_pembeli = req.body.username_pembeli;
     const tgl_transaksi = req.body.tgl_transaksi;
     const total = req.body.total;
     const alamat = req.body.alamat;
@@ -331,7 +331,7 @@ exports.add_order = function(req, res) {
 
     const query_transaksi = `
         INSERT INTO transaksi VALUES (
-            DEFAULT, ${id_pembeli}, "${tgl_transaksi}", ${total}, 
+            DEFAULT, "${username_pembeli}", "${tgl_transaksi}", ${total}, 
             "${alamat}", ${longitude}, ${latitude}, 0, ${id_warung}
         );
     `;
