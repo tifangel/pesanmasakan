@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { DataGrid } from '@material-ui/data-grid';
-import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import { IconButton } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 
@@ -50,8 +50,7 @@ const convertDataToColumns = function(data) {
 const CookList = () => {
     const classes = useStyles();
 
-    const columns = [ // date, id, item name, portions ordered, button
-        // in params: decide for onclick function
+    const columns = [
         { field: 'id', headerName:' ', flex: 0.16, sortable: false, disableClickEventBubbling: true,
             renderCell: (params) => {
                 const onClick = function(id) {
@@ -59,9 +58,11 @@ const CookList = () => {
                 }
                 
                 return (
-                    <IconButton variant="contained" disableElevation className={classes.green} size="small" key={params.getValue('id')} onClick={onClick} >
-                        <DoneIcon/>
-                    </IconButton>
+                    <Tooltip title="Cooking is done">
+                        <IconButton className={classes.green} size="small" key={params.getValue('id')} onClick={onClick} >
+                            <DoneIcon/>
+                        </IconButton>
+                    </Tooltip>
                 );
             }
             },

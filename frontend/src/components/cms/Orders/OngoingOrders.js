@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import MuiTableCell from '@material-ui/core/TableCell';
-import { Table, TableBody, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableHead, TableRow } from '@material-ui/core';
 import Collapse from '@material-ui/core/Collapse';
 import Box from '@material-ui/core/Box';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -87,6 +88,18 @@ const useRowStyles = makeStyles((theme) => ({
     orderTitle: {
         backgroundColor: "#fafafa",
     },
+    greenbg: {
+        backgroundColor: "#31CE36",
+        color: 'white',
+    },
+    redbg: {
+        backgroundColor: "#D85450",
+        color: 'white',
+    },
+    yellowbg: {
+        backgroundColor: "#FDCB35",
+        color: 'white',
+    },
     green: {
         color: "#31CE36",
     },
@@ -132,12 +145,29 @@ function Row(props) {
     const classes = useRowStyles();
 
     const setButton = function(status) {
+        // Integration tip: buat di ongoing orders, tunjukin yang status transaksinya 0 aja
+        // Terus cek status menu di ordernya, kalo masih ada yang 0 send buttonnya di disable
+        // kalo ternyata udah 1 semua enable send button
+        // kalo send buttonnya di click, disable lagi tapi textnya ganti "Sent!" terus ubah status di db jadi 1
+        // Downside: ownernya gabakal tau kalo ada yang cancel order
         if (status === 0) {
-            return (<Button className={classes.yellow} disabled>Send</Button>);
+            return (
+                <Tooltip title="Cook their orders first before sending!">
+                    <span> <Button variant="contained" disableElevation className={classes.yellowbg} disabled>Send</Button> </span>
+                </Tooltip>
+            );
         } else if (status === 1) {
-            return (<Button className={classes.green}>Send</Button>);
+            return (
+                <Tooltip title="Send dishes to customer">
+                    <Button variant="contained" disableElevation className={classes.greenbg}>Send</Button>
+                </Tooltip>
+            );
         } else if (status === 2) {
-            return (<Button className={classes.red} disabled>Cancelled</Button>)
+            return (
+                <Tooltip title="Customer has cancelled their order.">
+                    <span> <Button variant="contained" disableElevation className={classes.redbg} disabled>Cancelled</Button> </span>
+                </Tooltip>
+            );
         }
     }
 
@@ -206,11 +236,11 @@ const OngoingOrders = () => {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>{/*Collapse button*/}</TableCell>
+                        <TableCell>{/*Column for collapse button*/}</TableCell>
                         <TableCell>Date</TableCell>
                         <TableCell>Name/Address</TableCell>
                         <TableCell>Total</TableCell>
-                        <TableCell>{/*Send button*/}</TableCell>
+                        <TableCell>{/*Column for send button*/}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

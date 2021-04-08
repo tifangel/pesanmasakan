@@ -255,7 +255,8 @@ exports.orderlist_penjual = function(req, res) {
     const query = `
         SELECT id, username_pembeli, tgl_transaksi, alamat_tujuan, total, status, id_warung
         FROM transaksi
-        WHERE id_warung = ${id}
+        WHERE id_warung = ${id} and status = 0
+        ORDER BY tgl_transaksi;
     `;
 
     connection.query(query, async (error, rows, field) => {
