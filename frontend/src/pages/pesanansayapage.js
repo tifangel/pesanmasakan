@@ -96,13 +96,13 @@ function columns(props) {
     {
       field: "nama_warung",
       headerName: "Nama Warung",
-      width: 208,
+      width: 285,
       headerClassName: "header-style",
     },
     {
       field: "jumlah",
       headerName: "Jumlah",
-      width: 140,
+      width: 180,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         return `${value} Item`;
@@ -111,7 +111,7 @@ function columns(props) {
     {
       field: "tanggal",
       headerName: "Tanggal",
-      width: 160,
+      width: 200,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         const time = new Date(value);
@@ -123,7 +123,7 @@ function columns(props) {
     {
       field: "jam",
       headerName: "Jam",
-      width: 160,
+      width: 200,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         const time = new Date(value);
@@ -133,13 +133,26 @@ function columns(props) {
     {
       field: "total",
       headerName: "Total",
-      width: 160,
+      width: 200,
       headerClassName: "header-style",
+      valueFormatter: ({ value }) => {
+        if (value >= 1000) {
+          return `Rp ${Math.floor(value / 1000)}.${
+            value % 1000 < 10
+              ? `00${value % 1000}`
+              : value % 1000 < 100
+              ? `0${value % 1000}`
+              : value % 1000
+          }`;
+        } else {
+          return `Rp${value}`;
+        }
+      },
     },
     {
       field: "status",
       headerName: "Status",
-      width: 230,
+      width: 250,
       headerClassName: "header-style",
       renderCell: (params) => {
         switch (params.value) {
@@ -190,15 +203,25 @@ function columns(props) {
 function PesananSayaPage(props) {
   
   const [data, setData] = useState([])
+
+  function rows(data){
+    if(data.length > 0){
+      for(var i=0; i<data.length; i++){
+        var date = new Date(data[i].tgl_transaksi)
+        data[i].tanggal = date
+        data[i].jam = date
+      }
+      setData(data)
+    }
+  }
   
   useEffect(() => {
     async function loadPesanan() {
       try {
         
-        let response = await getPesananPembeli(props.match.params.id_pembeli)
+        let response = await getPesananPembeli(props.match.params.username_pembeli)
         if (response.status === 200) {
-          setData(response.data.values)
-          console.log(data)
+          rows(response.data.values)
         }
 
       } catch (e) {
@@ -206,66 +229,9 @@ function PesananSayaPage(props) {
       }
     }
     loadPesanan()
-  }, [props.match.params.id_pembeli]);
+  }, [props.match.params.username_pembeli]);
 
   const classes = useStyles();
-  
-  // data = [
-  //   {
-  //     id: 1,
-  //     nama_warung: "pesanan1",
-  //     jumlah: 2,
-  //     tanggal: new Date(),
-  //     jam: new Date(),
-  //     total: 100000,
-  //     status: 2,
-  //   },
-  //   {
-  //     id: 2,
-  //     nama_warung: "pesanan1",
-  //     jumlah: 2,
-  //     tanggal: new Date(),
-  //     jam: new Date(),
-  //     total: 100000,
-  //     status: 1,
-  //   },
-  //   {
-  //     id: 3,
-  //     nama_warung: "pesanan1",
-  //     jumlah: 2,
-  //     tanggal: new Date(),
-  //     jam: new Date(),
-  //     total: 100000,
-  //     status: 0,
-  //   },
-  //   {
-  //     id: 4,
-  //     nama_warung: "pesanan1",
-  //     jumlah: 2,
-  //     tanggal: new Date(),
-  //     jam: new Date(),
-  //     total: 100000,
-  //     status: 2,
-  //   },
-  //   {
-  //     id: 5,
-  //     nama_warung: "pesanan1",
-  //     jumlah: 2,
-  //     tanggal: new Date(),
-  //     jam: new Date(),
-  //     total: 100000,
-  //     status: 1,
-  //   },
-  //   {
-  //     id: 6,
-  //     nama_warung: "pesanan1",
-  //     jumlah: 2,
-  //     tanggal: new Date(),
-  //     jam: new Date(),
-  //     total: 100000,
-  //     status: 0,
-  //   },
-  // ];
 
   return (
     <div className={classes.root}>

@@ -97,9 +97,9 @@ export const insertPesanan = async(data) =>
         return response
     }
 
-export const getPesananPembeli = async(id) =>
+export const getPesananPembeli = async(username) =>
     {
-        const url =`${defaultAPIURL}/orderlist/pembeli/${id}`
+        const url =`${defaultAPIURL}/orderlist/pembeli/${username}`
         const response = await get(url)
 
         return response
