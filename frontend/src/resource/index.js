@@ -96,3 +96,11 @@ export const insertPesanan = async(data) =>
 
         return response
     }
+
+export const getPesananPembeli = async(id) =>
+    {
+        const url =`${defaultAPIURL}/orderlist/pembeli/${id}`
+        const response = await get(url)
+
+        return response
+    }

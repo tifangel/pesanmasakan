@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from 'react';
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@material-ui/data-grid";
 import Typography from "@material-ui/core/Typography";
@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import { Chip, Paper } from "@material-ui/core";
 
-const { defaultAPIURL } = require("../config");
+import { getPesananPembeli } from "../resource";
 
 const months = [
   "Jan",
@@ -187,64 +187,86 @@ function columns(props) {
   ];
 }
 
-function PesananSayaPage({ data }) {
+function PesananSayaPage(props) {
+  
+  const [data, setData] = useState([])
+  
+  useEffect(() => {
+    async function loadPesanan() {
+      try {
+        
+        let response = await getPesananPembeli(props.match.params.id_pembeli)
+        if (response.status === 200) {
+          setData(response.data.values)
+          console.log(data)
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    loadPesanan()
+  }, [props.match.params.id_pembeli]);
+
   const classes = useStyles();
-  data = [
-    {
-      id: 1,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 2,
-    },
-    {
-      id: 2,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 1,
-    },
-    {
-      id: 3,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 0,
-    },
-    {
-      id: 4,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 2,
-    },
-    {
-      id: 5,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 1,
-    },
-    {
-      id: 6,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 0,
-    },
-  ];
+  
+  // data = [
+  //   {
+  //     id: 1,
+  //     nama_warung: "pesanan1",
+  //     jumlah: 2,
+  //     tanggal: new Date(),
+  //     jam: new Date(),
+  //     total: 100000,
+  //     status: 2,
+  //   },
+  //   {
+  //     id: 2,
+  //     nama_warung: "pesanan1",
+  //     jumlah: 2,
+  //     tanggal: new Date(),
+  //     jam: new Date(),
+  //     total: 100000,
+  //     status: 1,
+  //   },
+  //   {
+  //     id: 3,
+  //     nama_warung: "pesanan1",
+  //     jumlah: 2,
+  //     tanggal: new Date(),
+  //     jam: new Date(),
+  //     total: 100000,
+  //     status: 0,
+  //   },
+  //   {
+  //     id: 4,
+  //     nama_warung: "pesanan1",
+  //     jumlah: 2,
+  //     tanggal: new Date(),
+  //     jam: new Date(),
+  //     total: 100000,
+  //     status: 2,
+  //   },
+  //   {
+  //     id: 5,
+  //     nama_warung: "pesanan1",
+  //     jumlah: 2,
+  //     tanggal: new Date(),
+  //     jam: new Date(),
+  //     total: 100000,
+  //     status: 1,
+  //   },
+  //   {
+  //     id: 6,
+  //     nama_warung: "pesanan1",
+  //     jumlah: 2,
+  //     tanggal: new Date(),
+  //     jam: new Date(),
+  //     total: 100000,
+  //     status: 0,
+  //   },
+  // ];
+
   return (
     <div className={classes.root}>
       <Toolbar style={{ padding: 0 }}>
