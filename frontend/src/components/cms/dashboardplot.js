@@ -9,10 +9,13 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(5),
         padding: theme.spacing(5),
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center'
-
+        flexDirection: 'column',
+        alignItems: 'center'
     },
+    title:{
+        fontFamily: "Roboto Slab",
+        fontSize:"large"
+    }
 })
 )
 
@@ -69,6 +72,7 @@ const DashboardPlot = ({id_warung}) =>{
     const classes = useStyles();
     return (
         <Paper className={classes.root}>
+            <p className={classes.title}> Summary</p>
             <LineChart
             width={500}
             height={300}
