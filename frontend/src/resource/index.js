@@ -88,6 +88,21 @@ export const editProfile = async(data) =>
 
         return response
     }
+
+export const getOverviewOrder = async(warungId) =>
+    {
+        const url = `${defaultAPIURL}/overvieworder/${warungId}`
+        const response = await get(url)
+
+        return response
+    }
+
+export const getOrderSummary = async(warungId) =>
+    {
+        const url = `${defaultAPIURL}/ordersummary/${warungId}`
+        const response = await get(url)
+        return response
+    }
     
 export const insertPesanan = async(data) =>
     {

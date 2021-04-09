@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormMenu from './formmenu'
 import Profile from './profile'
+import Title from './title'
 import MenuListPenjual from './MenuListPenjual';
 import Orders from './orders';
 import { Paper } from '@material-ui/core';
+import DashboardInfo from './dashboardinfo';
+import DashboardPlot from './dashboardplot';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,7 +96,11 @@ const MainContent = ({ id, menuList }) => {
     var content;
 
     if (id === 0) {
-        content = "Menu 1";
+        content = <React.Fragment>
+                    <Title nama={dataFormProfile.nama_warung}/>
+                    <DashboardInfo id_warung={dataFormProfile.id_warung}></DashboardInfo>
+                    <DashboardPlot id_warung={dataFormProfile.id_warung}></DashboardPlot>
+                </React.Fragment>;
     } else if (id === 1) {
         content =   <React.Fragment>
                         <Paper>
@@ -106,7 +113,9 @@ const MainContent = ({ id, menuList }) => {
                                 resetStatusFormMenu={resetStatusFormMenu}
                             />
                         </Paper>
-                        <Paper style={{ marginTop: 30 }}><MenuListPenjual data={menuList} onEdit={changeStatusFormtoEdit} /></Paper>
+                        <Paper style={{ marginTop: 30 }}>
+                            <MenuListPenjual data={menuList} onEdit={changeStatusFormtoEdit} />
+                        </Paper>
                     </React.Fragment>;
     } else if (id === 2) {
         content = <Orders />

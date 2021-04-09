@@ -84,4 +84,7 @@ module.exports = function(app) {
 
     app.route('/overvieworder/:id')
         .get(pesanmasakan.overview_order);
+
+    app.route('/ordersummary/:id')
+        .get(pesanmasakan.ordersummary);
 };
