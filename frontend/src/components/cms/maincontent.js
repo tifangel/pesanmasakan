@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormMenu from './formmenu'
 import Profile from './profile'
@@ -9,6 +9,8 @@ import History from './history';
 import { Paper } from '@material-ui/core';
 import DashboardInfo from './dashboardinfo';
 import DashboardPlot from './dashboardplot';
+import { getMenuListByWarungId, getDaysbyMenuId } from "../../resource";
+import { deleteMenu } from '../../resource';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
 }));
 
-const MainContent = ({ id, menuList }) => {
+const MainContent = ({ id, id_warung }) => {
 
     // Content Menu Profile
     // useEffect(() => {
@@ -90,8 +92,33 @@ const MainContent = ({ id, menuList }) => {
     const resetStatusFormMenu = () => {
         setStatusFormMenu('insert');
     }
+    
+    // Daftar menu (masakan)
+    const [menuList, setMenuList] = useState([]);
+    useEffect(() => {
+      async function loadMenu() {
+        try {
+  
+          let responseMenu = await getMenuListByWarungId(id_warung || 1);
+          if (responseMenu.status === 200) {
+            setMenuList(responseMenu.data.values);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      loadMenu();
+    }, []);
 
-
+    const onDeleteMenu = (id) => {
+        if(window.confirm("Anda yakin ingin menghapus menu?")){
+            const deleteAsync = async() => {
+                await deleteMenu({id: id});
+                setMenuList(menuList.filter(it => it.id !== id));
+            };
+            deleteAsync();
+        }
+    }
 
     // Handling Main Content
     var content;
@@ -115,7 +142,7 @@ const MainContent = ({ id, menuList }) => {
                             />
                         </Paper>
                         <Paper style={{ marginTop: 30 }}>
-                            <MenuListPenjual data={menuList} onEdit={changeStatusFormtoEdit} />
+                            <MenuListPenjual data={menuList} onEdit={changeStatusFormtoEdit} onDelete={onDeleteMenu}/>
                         </Paper>
                     </React.Fragment>;
     } else if (id === 2) {

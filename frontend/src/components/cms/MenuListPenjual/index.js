@@ -146,34 +146,10 @@ function columns(props) {
         </React.Fragment>
       ),
     },
-    // {
-    //   field: "timestamp",
-    //   headerName: "Waktu Pengambilan",
-    //   width: 180,
-    //   headerClassName: "header-style",
-    //   valueFormatter: ({ value }) => {
-    //     const time =  new Date(value);
-    //     return `${time.getDate()} ${bulanList[time.getMonth()]} ${time.getFullYear()}`;
-    //   },
-    // },
-    // {
-    //   field: "local_id",
-    //   headerName: "Rute",
-    //   width: 100,
-    //   renderCell: (params) => (
-    //     <Link
-    //       onClick={() => props.onClickRute(params.row._id)}
-    //       component="button"
-    //     >
-    //       klik disini
-    //     </Link>
-    //   ),
-    //   headerClassName: "header-style",
-    // },
   ];
 }
 
-function MenuListPenjual({data, onEdit}) {
+function MenuListPenjual({data, onEdit, onDelete}) {
   const classes = useStyles(); 
   const [search,setSearch] = useState("");
   return (
@@ -201,7 +177,7 @@ function MenuListPenjual({data, onEdit}) {
         rows={data.filter(it => it.desc_menu.includes(search))}
         columns={columns({
           onClickEdit: (dataformmenu) => {onEdit(dataformmenu)},
-          onClickDelete: (id_menu) => {alert(`delete ${id_menu}`)},
+          onClickDelete: (id_menu) => {onDelete(id_menu)},
           classes : classes,
         })}
         pageSize={20}
