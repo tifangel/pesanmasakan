@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+
 import { DataGrid } from '@material-ui/data-grid';
 import Tooltip from '@material-ui/core/Tooltip';
+import Snackbar from '@material-ui/core/Snackbar';
+
 import { IconButton } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
 
-/* DELETE LATER */
-const dummydata = [
-    {date: "21/05/21", id: "1", itemname: "Ayam goreng", qty:"5",},
-    {date: "21/06/21", id: "2", itemname: "Sup kepiting jagung", qty:"5",},
-    {date: "21/07/21", id: "3", itemname: "Cumi saos tiram", qty:"5",},
-    {date: "21/08/21", id: "4", itemname: "Ini nama masakan yang panjang banget", qty:"5",},
-]
-/* DELETE UP TO HERE */
+import { getCooklist, updateOrderMenu } from '../../../resource';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,35 +31,104 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const convertDataToColumns = function(data) {
+const convertDataToRows = function(data) {
     var res = [];
     for (var i = 0; i < data.length; i++) {
         var row = {};
-        row.id = data.id;
-        row.date = data.tgl_transaksi;
-        row.qty = data.qty;
-        row.itemname = data.nama;
+        row.id = data[i].id;
+        row.date = formatDate(data[i].tgl_transaksi);
+        row.qty = data[i].qty;
+        row.itemname = data[i].nama;
         res.push(row);
     }
     return res;
 }
 
-const CookList = () => {
-    const classes = useStyles();
+function formatDate(date) {
+    date = new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Jakarta'});
+    date = date.slice(0, date.indexOf(","));
+    date = date.split("/");
 
+    var month = date[0].length < 2 ? `0${date[0]}` : date[0];
+    var day = date[1].length < 2 ? `0${date[1]}` : date[1];
+    var year = date[2];
+    return `${day}/${month}/${year.slice(-2)}`
+}
+
+const Markdone = (props) => {
+    var date = props.tgl;
+    var id = props.id;
+
+    const [open, setOpen] = useState(false);
+    const [disabled, setDisabled] = useState(false); 
+    const [snackbarMsg, setSnackbarMsg] = useState("");
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+    const handleClick = async function() {
+        var day, month, year, tgl;
+        day = date.slice(0, 2);
+        month = date.slice(3, 5);
+        year = date.slice(6, 8);
+        tgl = `20${year}-${month}-${day}`;
+
+        console.log("data", id, tgl);
+        var data = {
+            id: id,
+            tanggal: tgl
+        };
+
+        var res = await updateOrderMenu(data);
+        // var res = true;
+        if (res) { 
+            console.log(res);
+            setDisabled(true);
+            setOpen(true);
+            setSnackbarMsg("Dish marked as cooked!");
+        } else {
+            setOpen(true);
+            setSnackbarMsg("An error has occured, please try again later");
+        }
+    }
+
+    const classes = useStyles();
+    return (
+        <React.Fragment>
+            <Tooltip title="Cooking is done">
+                <IconButton className={classes.green} size="small" key={id} onClick={handleClick} disabled={disabled}>
+                    <DoneIcon/>
+                </IconButton>
+            </Tooltip>
+            <Snackbar open={open} message={snackbarMsg} autoHideDuration={1000} 
+                action={
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                }
+            />
+        </React.Fragment>
+    )
+}
+
+const CookList = ({data}) => {
+    const [cooklist, setCooklist] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            var res = await getCooklist(data.id_warung);
+            setCooklist(res.data.values);
+        })();
+    }, []);
+    const rows = convertDataToRows(cooklist);
+
+    const classes = useStyles();
     const columns = [
         { field: 'id', headerName:' ', flex: 0.16, sortable: false, disableClickEventBubbling: true,
-            renderCell: (params) => {
-                const onClick = function(id) {
-                    console.log(`Clicked done on menu ${params.getValue('id')}`);
-                }
-                
+            renderCell: (params) => {                
                 return (
-                    <Tooltip title="Cooking is done">
-                        <IconButton className={classes.green} size="small" key={params.getValue('id')} onClick={onClick} >
-                            <DoneIcon/>
-                        </IconButton>
-                    </Tooltip>
+                    <Markdone key={params.getValue('id')} id={params.getValue('id')} tgl={params.getValue('date')}/>
                 );
             }
             },
@@ -74,7 +140,7 @@ const CookList = () => {
     return(
         <div style={{display: 'flex', height: '100%' }}>
             <div style={{ flexGrow: 1 }}>
-                <DataGrid rows={dummydata} columns={columns} 
+                <DataGrid rows={rows} columns={columns} 
                     pageSize={5}
                     autoHeight />
             </div>

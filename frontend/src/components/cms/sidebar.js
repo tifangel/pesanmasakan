@@ -8,6 +8,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import StorefrontIcon from '@material-ui/icons/Storefront';
+import HistoryIcon from '@material-ui/icons/History';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -96,6 +97,16 @@ const Sidebar = ({id, mobile, onMenuClick}) => {
                 <ListItem button 
                     selected={id === 3}
                     onClick={event => onMenuClick(event, 3, mobile)}
+                >
+                    <ListItemIcon>
+                        <HistoryIcon className={classes.icon}/>
+                    </ListItemIcon>
+                    <ListItemText classes={{primary:classes.listItemText}} primary="History"/>
+                </ListItem>
+                <Divider classes={{root: classes.dividerColor}}/>
+                <ListItem button 
+                    selected={id === 4}
+                    onClick={event => onMenuClick(event, 4, mobile)}
                 >
                     <ListItemIcon>
                         <StorefrontIcon className={classes.icon}/>

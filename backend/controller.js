@@ -296,6 +296,7 @@ exports.orderlist_penjual = function(req, res) {
         WHERE id_warung = ${id} and status = 0
         ORDER BY tgl_transaksi;
     `;
+    console.log(query);
 
     connection.query(query, async (error, rows, field) => {
         if (error) console.log("Orderlist penjual", error);
@@ -303,6 +304,28 @@ exports.orderlist_penjual = function(req, res) {
             console.log(rows);
             var details = await orderlist_details(rows);
             response.ok(details, res);
+        }
+
+    });
+}
+
+exports.history_penjual = function(req, res) {
+    const id = req.params.id;
+    const query = `
+        SELECT id, username_pembeli, tgl_transaksi, alamat_tujuan, total, status, id_warung
+        FROM transaksi
+        WHERE id_warung = ${id} and (status = 1 OR status = 2)
+        ORDER BY tgl_transaksi DESC;
+    `;
+    console.log(query);
+
+    connection.query(query, async (error, rows, field) => {
+        if (error) console.log("History penjual", error);
+        else {
+            console.log(rows);
+            var details = await orderlist_details(rows);
+            response.ok(details, res);
+            console.log(details);
         }
 
     });
@@ -318,7 +341,7 @@ var orderlist_details = async function(rows) {
             var year = row.tgl_transaksi.getFullYear();
             var tgl = `${year}-${month}-${date}`;
             var query = `
-                SELECT jumlah_porsi, m.nama, m.harga, tm.status
+                SELECT m.id, jumlah_porsi, m.nama, m.harga, tm.status
                 FROM menu m JOIN transaksi_menu tm ON (m.id = tm.id_menu)
                     JOIN transaksi t ON (t.id = tm.id_transaksi)
                 WHERE username_pembeli = "${row.username_pembeli}" AND tgl_transaksi = "${tgl}";
@@ -403,6 +426,7 @@ exports.update_order = function(req, res) {
     const query = `
         UPDATE transaksi SET status = ${status} WHERE id = ${id_order};
     `;
+    console.log(query);
 
     connection.query(query, (error, rows, field) => {
         if (error) console.log("Update order", error);
@@ -420,6 +444,7 @@ exports.update_ordermenu = function(req, res) {
         SET tm.status = 1
         WHERE tm.id_menu = ${id_menu} AND tgl_transaksi = "${tanggal}";
     `;
+    console.log(query);
 
     connection.query(query, (error, rows, field) => {
         if (error) console.log("Update order", error);

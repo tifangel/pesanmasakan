@@ -6,9 +6,6 @@ import Title from './title';
 import CookList from './Orders/CookList';
 import OrderList from './Orders/OrderList';
 
-import IconButton from '@material-ui/core/IconButton';
-import RefreshIcon from '@material-ui/icons/Refresh';
-
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -33,38 +30,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Orders = ({data}) => {
-    const [refresh, setRefresh] = useState(false);
-
-    const handleRefresh = () => {
-        setRefresh(!refresh);
-    }
-
+const History = ({ data }) => {
+    console.log("history", data);
     const classes = useStyles();
     return(
         <React.Fragment>
             <Title nama={data.nama_warung} />
             <div className={classes.root}>
-                <Paper className={classes.paper} elevation={0}>
-                    <h1 className={classes.title}>Cook List</h1>
-                    <CookList data={data}/>
-                </Paper>
                 <Paper className={classes.paper} elevation={0} style={{marginTop: 20}}>
-                    <Grid container>
-                        <Grid item xs={11}>
-                            <h1 className={classes.title}>Ongoing Orders</h1>
-                        </Grid>
-                        <Grid item xs={1} align="center">
-                            <IconButton onClick={handleRefresh}>
-                                <RefreshIcon />
-                            </IconButton>
-                        </Grid>
-                    </Grid>
-                    <OrderList data={data} type="ongoing" refresh={refresh}/>
+                    <h1 className={classes.title}>Order History</h1>
+                    <OrderList data={data} type="history"/>
                 </Paper>
             </div>
         </React.Fragment>
     )
 }
 
-export default Orders
+export default History
