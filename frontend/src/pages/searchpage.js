@@ -10,6 +10,7 @@ import {getWarungList, getMenuList} from '../resource';
 import WarungList from '../components/WarungList/WarungList';
 import MenuList from '../components/MenuList/MenuList';
 import Filter from '../components/filter/Filter';
+import AppHeader from '../components/header'
 import './styleSearchpage.css';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -153,7 +154,7 @@ const SearchPage = (props) => {
     // setDistance(fullData);
     return(
         <React.Fragment>
-            <InfoTambahan />
+            <AppHeader />
             <Searchbar/>
             <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
             <WarungList data={result}/>

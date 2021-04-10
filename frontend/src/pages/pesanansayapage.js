@@ -2,6 +2,7 @@ import React from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@material-ui/data-grid";
 import Typography from "@material-ui/core/Typography";
+import AppHeader from "../components/header";
 
 import Toolbar from "@material-ui/core/Toolbar";
 import { Chip, Paper } from "@material-ui/core";
@@ -246,25 +247,28 @@ function PesananSayaPage({ data }) {
     },
   ];
   return (
-    <div className={classes.root}>
-      <Toolbar style={{ padding: 0 }}>
-        <Typography className={classes.title} variant="h4" noWrap>
-          Pesanan Saya
-        </Typography>
-      </Toolbar>
-      <Paper style={{ padding: "40px 60px" }}>
-        <DataGrid
-          rows={data}
-          columns={columns({
-            classes: classes,
-          })}
-          pageSize={5}
-          disableColumnMenu
-          autoHeight
-          rowHeight={55}
-        />
-      </Paper>
-    </div>
+    <React.Fragment>
+    <AppHeader username="Jundu" />
+      <div className={classes.root}>
+        <Toolbar style={{ padding: 0 }}>
+          <Typography className={classes.title} variant="h4" noWrap>
+            Pesanan Saya
+          </Typography>
+        </Toolbar>
+        <Paper style={{ padding: "40px 60px" }}>
+          <DataGrid
+            rows={data}
+            columns={columns({
+              classes: classes,
+            })}
+            pageSize={5}
+            disableColumnMenu
+            autoHeight
+            rowHeight={55}
+          />
+        </Paper>
+      </div>
+    </React.Fragment>
   );
 }
 

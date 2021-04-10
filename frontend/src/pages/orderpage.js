@@ -6,6 +6,7 @@ import { getMenuListByWarungId, insertPesanan } from "../resource";
 import { Container, Paper } from "@material-ui/core";
 import Keranjang from "../components/konfirmasiorder/keranjang";
 import PilihPembayaran from "../components/konfirmasiorder/pilihpembayaran";
+import AppHeader from "../components/header";
 import { useHistory } from "react-router-dom";
 import { getWarung } from "../resource/index";
 
@@ -115,33 +116,36 @@ const OrderPage = (props) => {
   }, []);
 
   return (
-    <div className={classes.root}>
-      <Container maxWidth="lg" className={classes.container}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            <Paper className={classes.paper}>
-              <PilihPembayaran
-                kurir={kurir}
-                carabayar={carabayar}
-                setKurir={setKurir}
-                setCarabayar={setCarabayar}
-              />
-            </Paper>
+    <React.Fragment>
+      <AppHeader username="Jundu" />
+      <div className={classes.root}>
+        <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={8}>
+              <Paper className={classes.paper}>
+                <PilihPembayaran
+                  kurir={kurir}
+                  carabayar={carabayar}
+                  setKurir={setKurir}
+                  setCarabayar={setCarabayar}
+                />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Paper className={classes.paper}>
+                <Keranjang
+                  keranjang={keranjang}
+                  ongkir={kurir === 1 ? 0 : ongkir}
+                  subtotal={subtotal}
+                  onItemCountChange={updateJumlahItem}
+                  onBayar={onBayar}
+                />
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Paper className={classes.paper}>
-              <Keranjang
-                keranjang={keranjang}
-                ongkir={kurir === 1 ? 0 : ongkir}
-                subtotal={subtotal}
-                onItemCountChange={updateJumlahItem}
-                onBayar={onBayar}
-              />
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
-    </div>
+        </Container>
+      </div>
+    </React.Fragment>
   );
 };
 

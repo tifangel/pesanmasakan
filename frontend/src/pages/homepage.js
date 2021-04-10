@@ -5,6 +5,7 @@ import WarungList from '../components/WarungList/WarungList';
 import {getAllWarungList} from "../resource/index";
 // import { setDistance } from '../components/WarungList/Distance';
 import Filter from '../components/filter/Filter'
+import AppHeader from '../components/header'
 
 const HomePage = (props) => {
     
@@ -71,6 +72,7 @@ const HomePage = (props) => {
     
     return(
         <div>
+            <AppHeader />
             <InfoTambahan />
             <Searchbar/>
             <WarungList data={warungList}/>
