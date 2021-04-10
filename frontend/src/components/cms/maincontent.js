@@ -5,6 +5,7 @@ import Profile from './profile'
 import Title from './title'
 import MenuListPenjual from './MenuListPenjual';
 import Orders from './orders';
+import History from './history';
 import { Paper } from '@material-ui/core';
 import DashboardInfo from './dashboardinfo';
 import DashboardPlot from './dashboardplot';
@@ -118,8 +119,10 @@ const MainContent = ({ id, menuList }) => {
                         </Paper>
                     </React.Fragment>;
     } else if (id === 2) {
-        content = <Orders />
+        content = <Orders data={dataFormProfile} />;
     } else if (id === 3) {
+        content = <History data={dataFormProfile} />;
+    } else if (id === 4) {
         content = <Profile data={dataFormProfile} />
     }
 

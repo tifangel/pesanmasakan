@@ -111,3 +111,34 @@ export const insertPesanan = async(data) =>
 
         return response
     }
+
+export const getCooklist = async(id) => {
+    const url = `${defaultAPIURL}/cooklist/${id}`;
+    const response = await get(url);
+    return response;
+}
+
+export const getOrderlistPenjual = async(id) => {
+    const url = `${defaultAPIURL}/orderlist/penjual/${id}`;
+    const response = await get(url);
+    return response;
+}
+
+export const getHistoryPenjual = async(id) => {
+    const url = `${defaultAPIURL}/history/penjual/${id}`;
+    const response = await get(url);
+    console.log(response);
+    return response;
+}
+
+export const updateOrder = async(data) => {
+    const url = `${defaultAPIURL}/updateorder`;
+    const response = await post(url, data);
+    return response;
+}
+
+export const updateOrderMenu = async(data) => {
+    const url = `${defaultAPIURL}/updateordermenu`;
+    const response = await post(url, data);
+    return response;
+}

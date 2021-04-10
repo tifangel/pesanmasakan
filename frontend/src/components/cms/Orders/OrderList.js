@@ -6,57 +6,16 @@ import { Table, TableBody, TableHead, TableRow } from '@material-ui/core';
 import Collapse from '@material-ui/core/Collapse';
 import Box from '@material-ui/core/Box';
 import Tooltip from '@material-ui/core/Tooltip';
+import Chip from  '@material-ui/core/Chip';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import CloseIcon from '@material-ui/icons/Close';
 
-/* DELETE FROM HERE */
-var datadummy = [ 
-        {
-            "id": 9,
-            "username_pembeli": "raras",
-            "tgl_transaksi": "2021-04-02T17:00:00.000Z",
-            "alamat_tujuan": "Jl Ijen Nirwana no 12",
-            "total": 135000,
-            "status": 0,
-            "id_warung": 1,
-            "orders": [
-                {
-                    "jumlah_porsi": 4,
-                    "nama": "ayam goreng",
-                    "harga": 15000,
-                    "status": 0
-                },
-                {
-                    "jumlah_porsi": 5,
-                    "nama": "bebek goreng",
-                    "harga": 15000,
-                    "status": 0
-                }
-            ]
-        },
-        {
-            "id": 10,
-            "username_pembeli": "indy",
-            "tgl_transaksi": "2021-05-02T17:00:00.000Z",
-            "alamat_tujuan": "Jl Ijen Nirwana no 12",
-            "total": 100000,
-            "status": 1,
-            "id_warung": 1,
-            "orders": [
-                {
-                    "jumlah_porsi": 10,
-                    "nama": "tahu & tempe goreng",
-                    "harga": 10000,
-                    "status": 1
-                }
-            ]
-        }
-    ]
-/* DELETE UP TO HERE */
-
+import { getHistoryPenjual, getOrderlistPenjual, updateOrder } from "../../../resource";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -103,9 +62,6 @@ const useRowStyles = makeStyles((theme) => ({
     green: {
         color: "#31CE36",
     },
-    red: {
-        color: "#D85450",
-    },
     yellow: {
         color: "#FDCB35",
     }
@@ -133,41 +89,84 @@ function formatMoney(money) {
   }
 
 function formatDate(date) {
-    var day = ("0" + date.getDate()).slice(-2);
-    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    var year = (""+ date.getFullYear()).slice(2);
-    return `${day}/${month}/${year}`;
+    date = new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Jakarta'});
+    return date.slice(0, date.indexOf(","));
 }
 
 function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-    const classes = useRowStyles();
+    var row = props.row;
+    var type = props.type;
+    const [open, setOpen] = useState(false);
+    const [allCooked, setAllCooked] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+    useEffect(() => {
+        var allCookedTemp = true;
+        var orders = row.orders;
+        for (var i = 0; i < orders.length; i++) {
+            if (orders[i].status === 0) allCookedTemp = false;
+            setAllCooked(allCookedTemp);
+        }
+    }, [props]);
+
+    const sendOrder = async function() {
+        var id = row.id;
+        var data = {
+            status: 1,
+            id: id
+        }
+        var res = await updateOrder(data);
+        if (res) {
+            setDisabled(true);
+            setSnackbarOpen(true);
+        } else {
+            // TODO: show error message
+        }
+    }
+
+    const handleClose = () => {
+        setSnackbarOpen(false);
+    }
+    
     const setButton = function(status) {
-        // Integration tip: buat di ongoing orders, tunjukin yang status transaksinya 0 aja
-        // Terus cek status menu di ordernya, kalo masih ada yang 0 send buttonnya di disable
-        // kalo ternyata udah 1 semua enable send button
-        // kalo send buttonnya di click, disable lagi tapi textnya ganti "Sent!" terus ubah status di db jadi 1
-        // Downside: ownernya gabakal tau kalo ada yang cancel order
-        if (status === 0) {
-            return (
-                <Tooltip title="Cook their orders first before sending!">
-                    <span> <Button variant="contained" disableElevation className={classes.yellowbg} disabled>Send</Button> </span>
-                </Tooltip>
-            );
-        } else if (status === 1) {
-            return (
-                <Tooltip title="Send dishes to customer">
-                    <Button variant="contained" disableElevation className={classes.greenbg}>Send</Button>
-                </Tooltip>
-            );
-        } else if (status === 2) {
-            return (
-                <Tooltip title="Customer has cancelled their order.">
-                    <span> <Button variant="contained" disableElevation className={classes.redbg} disabled>Cancelled</Button> </span>
-                </Tooltip>
-            );
+        if (type === "ongoing") {
+            if (!allCooked) {
+                return (
+                    <Tooltip title="Cook all their orders first before sending!">
+                        <span> <Button variant="contained" disableElevation className={classes.yellowbg} disabled>Send</Button> </span>
+                    </Tooltip>
+                );
+            } else {
+                return (
+                    <React.Fragment>
+                        <Tooltip title="Send dish to customer">
+                            <Button variant="contained" disableElevation className={classes.greenbg} onClick={sendOrder} disabled={disabled}>Send</Button>
+                        </Tooltip>
+                        <Snackbar open={snackbarOpen} message="Dish sent!" autoHideDuration={1000} 
+                            action={
+                                <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                                    <CloseIcon fontSize="small" />
+                                </IconButton>
+                                }
+                            />
+                    </React.Fragment>
+                );
+            }
+        } else if (type === "history") {
+            if (status === 1) {
+                return (
+                    <Tooltip title="Dish has sent to the customer.">
+                        <Chip label="Sent" className={classes.greenbg}/>
+                    </Tooltip>
+                );
+            } else if (status === 2) {
+                return (
+                    <Tooltip title="Customer has cancelled their order.">
+                        <Chip label="Cancelled" className={classes.redbg}/> 
+                    </Tooltip>
+                );
+            }
         }
     }
 
@@ -194,6 +193,7 @@ function Row(props) {
         return details;
     }
 
+    const classes = useRowStyles();
     return (
         <React.Fragment>
         { /* ORDER TITLE */ }
@@ -203,7 +203,7 @@ function Row(props) {
                     { open? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
             </TableCell>
-            <TableCell> {formatDate(new Date(row.tgl_transaksi.slice(0, -1)))} </TableCell>
+            <TableCell> {formatDate(row.tgl_transaksi)} </TableCell>
             <TableCell> 
                 { row.username_pembeli } <br />
                 { row.alamat_tujuan }
@@ -229,7 +229,27 @@ function Row(props) {
     )
 }
 
-const OngoingOrders = () => {
+const OrderList = (props) => {
+    var data = props.data;
+    var type = props.type;
+    var ref = props.refresh;
+
+    const [orderlist, setOrderlist] = useState([]);
+    useEffect(() => {
+        (async () => {
+            if (type === "history") {
+                var res = await getHistoryPenjual(data.id_warung);
+            } else if (type === "ongoing") {
+                var res = await getOrderlistPenjual(data.id_warung);
+            }
+            if (res) {
+                console.log("res", res.data.values);
+                console.log(new Date("2021-04-02T17:00:00.000Z").toLocaleString('en-US', { timeZone: 'Asia/Jakarta'}) )
+                setOrderlist(res.data.values);
+            }
+        })();
+    }, [ref]);
+
     const classes = useStyles();
     return(
         <React.Fragment>
@@ -244,8 +264,8 @@ const OngoingOrders = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    { datadummy.map((row) => (
-                        <Row key={row.id} row={row} />
+                    { orderlist.map((order) => (
+                        <Row key={order.id} row={order} type={type}/>
                     ))} 
                 </TableBody>
             </Table>
@@ -253,4 +273,4 @@ const OngoingOrders = () => {
     )
 }
 
-export default OngoingOrders
+export default OrderList

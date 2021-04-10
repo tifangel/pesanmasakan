@@ -64,6 +64,9 @@ module.exports = function(app) {
     app.route('/orderlist/penjual/:id')
         .get(pesanmasakan.orderlist_penjual);
 
+    app.route('/history/penjual/:id')
+        .get(pesanmasakan.history_penjual);
+
     app.route('/orderlist/pembeli/:id')
         .get(pesanmasakan.orderlist_pembeli);
 
