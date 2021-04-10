@@ -80,6 +80,14 @@ export const editMenu = async(data) =>
 
         return response
     }
+    
+export const deleteMenu = async(data) =>
+    {
+        const url = `${defaultAPIURL}/deletemenu`
+        const response = await post(url,data)
+
+        return response
+    }
 
 export const editProfile = async(data) =>
     {

@@ -9,7 +9,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { getMenuListByWarungId, getDaysbyMenuId } from "../resource";
 
 const drawerWidth = 220;
 
@@ -68,24 +67,6 @@ const CMSPage = (props) => {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
-    
-    // Daftar menu (masakan)
-    const [menuList, setMenuList] = useState([]);
-    useEffect(() => {
-      async function loadMenu() {
-        try {
-  
-          let responseMenu = await getMenuListByWarungId(props.match.params.id || 1);
-          if (responseMenu.status === 200) {
-            setMenuList(responseMenu.data.values);
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      loadMenu();
-    }, [props.match.params.id]);
 
     const classes = useStyles();
 
@@ -146,7 +127,7 @@ const CMSPage = (props) => {
                       </Drawer>
                   </Hidden>
                 </nav>
-                <MainContent id={selectedMenu} menuList={menuList}/>
+                <MainContent id={selectedMenu} id_warung={1}/>
             </div>
         </React.Fragment>
     );

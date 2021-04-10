@@ -128,19 +128,12 @@ exports.add_menu = function(req,res){
 exports.delete_menu = function(req, res){
     const id_menu = req.body.id;
 
-    const query_delete_menu = "DELETE FROM menu WHERE id = " + id_menu
-    const query_delete_hari_menu = "DELETE FROM hari_menu WHERE id_menu = " + id_menu
-    connection.query(query_delete_hari_menu, function (error, rows, fields){
+    const query_delete_menu = "UPDATE menu SET id_warung=NULL WHERE id = " + id_menu
+    connection.query(query_delete_menu, function (error, rows, fields){
         if(error){
             console.log(error)
         } else{
-            connection.query(query_delete_menu, function (error, rows, fields){
-                if(error){
-                    console.log(error)
-                }else{
-                    response.ok(rows, res)
-                }
-            });
+            response.ok(rows, res)
         }
     });
 }
