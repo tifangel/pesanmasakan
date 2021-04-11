@@ -51,7 +51,14 @@ module.exports = function(app) {
 
     app.route('/updatemenu')
         .post(pesanmasakan.update_menu);
-
+    
+    // USER
+    app.route('/getpembeli')
+        .post(pesanmasakan.get_pembeli);
+    app.route('/getpenjual')
+        .post(pesanmasakan.get_penjual);    
+    
+    
     // ORDER
     app.route('/cooklist/:id')
         .get(pesanmasakan.get_cooklist);
