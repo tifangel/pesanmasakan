@@ -120,17 +120,17 @@ export const insertPesanan = async(data) =>
         return response
     }
 
-export const getPembeli = async(username, password) =>
+export const getPembeli = async(data) =>
     {
-        const url = `${defaultAPIURL}/getpembeli?username=${username}&password=${password}`
-        const response = await get(url)
+        const url = `${defaultAPIURL}/getpembeli`
+        const response = await post(url, data)
         return response
     }
 
-export const getPenjual = async(username, password) =>
+export const getPenjual = async(data) =>
     {
-        const url = `${defaultAPIURL}/getpenjual?username=${username}&password=${password}`
-        const response = await get(url)
+        const url = `${defaultAPIURL}/getpenjual`
+        const response = await post(url, data)
         return response
     }
 
