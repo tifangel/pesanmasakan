@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from 'react';
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@material-ui/data-grid";
 import Typography from "@material-ui/core/Typography";
@@ -7,7 +7,7 @@ import AppHeader from "../components/header";
 import Toolbar from "@material-ui/core/Toolbar";
 import { Chip, Paper } from "@material-ui/core";
 
-const { defaultAPIURL } = require("../config");
+import { getPesananPembeli } from "../resource";
 
 const months = [
   "Jan",
@@ -97,13 +97,13 @@ function columns(props) {
     {
       field: "nama_warung",
       headerName: "Nama Warung",
-      width: 208,
+      width: 285,
       headerClassName: "header-style",
     },
     {
       field: "jumlah",
       headerName: "Jumlah",
-      width: 140,
+      width: 180,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         return `${value} Item`;
@@ -112,7 +112,7 @@ function columns(props) {
     {
       field: "tanggal",
       headerName: "Tanggal",
-      width: 160,
+      width: 200,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         const time = new Date(value);
@@ -124,23 +124,48 @@ function columns(props) {
     {
       field: "jam",
       headerName: "Jam",
-      width: 160,
+      width: 200,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         const time = new Date(value);
-        return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()} WIB`;
+        return `
+          ${
+            time.getHours() < 10 ? `0${time.getHours()}` : time.getHours()
+          }
+          :
+          ${
+            time.getMinutes() < 10 ? `0${time.getMinutes()}` : time.getMinutes()
+          }
+          :
+          ${
+            time.getSeconds() < 10 ? `0${time.getSeconds()}` : time.getSeconds()
+          } 
+          WIB`;
       },
     },
     {
       field: "total",
       headerName: "Total",
-      width: 160,
+      width: 200,
       headerClassName: "header-style",
+      valueFormatter: ({ value }) => {
+        if (value >= 1000) {
+          return `Rp ${Math.floor(value / 1000)}.${
+            value % 1000 < 10
+              ? `00${value % 1000}`
+              : value % 1000 < 100
+              ? `0${value % 1000}`
+              : value % 1000
+          }`;
+        } else {
+          return `Rp${value}`;
+        }
+      },
     },
     {
       field: "status",
       headerName: "Status",
-      width: 230,
+      width: 250,
       headerClassName: "header-style",
       renderCell: (params) => {
         switch (params.value) {
@@ -188,64 +213,39 @@ function columns(props) {
   ];
 }
 
-function PesananSayaPage({ data }) {
+function PesananSayaPage(props) {
+  
+  const [data, setData] = useState([])
+
+  function rows(data){
+    if(data.length > 0){
+      for(var i=0; i<data.length; i++){
+        var date = new Date(data[i].tgl_transaksi)
+        data[i].tanggal = date
+        data[i].jam = date
+      }
+      setData(data)
+    }
+  }
+  
+  useEffect(() => {
+    async function loadPesanan() {
+      try {
+        
+        let response = await getPesananPembeli(props.match.params.username_pembeli)
+        if (response.status === 200) {
+          rows(response.data.values)
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    loadPesanan()
+  }, [props.match.params.username_pembeli]);
+
   const classes = useStyles();
-  data = [
-    {
-      id: 1,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 2,
-    },
-    {
-      id: 2,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 1,
-    },
-    {
-      id: 3,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 0,
-    },
-    {
-      id: 4,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 2,
-    },
-    {
-      id: 5,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 1,
-    },
-    {
-      id: 6,
-      nama_warung: "pesanan1",
-      jumlah: 2,
-      tanggal: new Date(),
-      jam: new Date(),
-      total: 100000,
-      status: 0,
-    },
-  ];
+
   return (
     <React.Fragment>
     <AppHeader username="Jundu" />

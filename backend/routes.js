@@ -74,7 +74,7 @@ module.exports = function(app) {
     app.route('/history/penjual/:id')
         .get(pesanmasakan.history_penjual);
 
-    app.route('/orderlist/pembeli/:id')
+    app.route('/orderlist/pembeli/:username')
         .get(pesanmasakan.orderlist_pembeli);
 
     app.route('/tambahorder')

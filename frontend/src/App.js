@@ -15,7 +15,7 @@ function App(){
                 <Route exact={true} path="/" component={HomePage}/>
                 <Route exact path="/search" component={SearchPage}/>
                 <Route exact path="/warung/:id" component={InfoPage}/>
-                <Route exact path="/pesanan/:id_pembeli" component={PesananSayaPage}/>
+                <Route exact path="/pesanan/:username_pembeli" component={PesananSayaPage}/>
                 <Route exact path="/cms" component={CMSPage}/>
                 <Route exact path="/konfirmasi" component={OrderPage}/>
                 <Route exact path="/login" component={LoginPage}/>

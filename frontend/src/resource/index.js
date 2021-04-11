@@ -164,3 +164,11 @@ export const updateOrderMenu = async(data) => {
     const response = await post(url, data);
     return response;
 }
+
+export const getPesananPembeli = async(username) =>
+    {
+        const url =`${defaultAPIURL}/orderlist/pembeli/${username}`
+        const response = await get(url)
+
+        return response
+    }

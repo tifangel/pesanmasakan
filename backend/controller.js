@@ -355,7 +355,7 @@ exports.orderlist_pembeli = function(req, res) {
     const username = req.params.username;
     // TODO: waktu
     const query = `
-        SELECT w.nama, SUM(tm.jumlah_porsi), t.tgl_transaksi, 
+        SELECT t.id, w.nama nama_warung, SUM(tm.jumlah_porsi) jumlah, t.tgl_transaksi, 
             t.total, t.status 
         FROM transaksi t JOIN transaksi_menu tm ON (t.id = tm.id_transaksi)
             JOIN menu m ON (tm.id_menu = m.id)
