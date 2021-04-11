@@ -519,3 +519,29 @@ exports.ordersummary = function(req, res){
         .then((values) => response.ok(values, res))
         .catch((error) => console.log(error));
 }
+
+exports.get_pembeli = function(req, res){
+    const username = req.body.username;
+    const password = req.body.password;
+
+    connection.query("SELECT * FROM user_pembeli WHERE username = '" + username + "' and password = '" + password + "'", function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            response.ok(rows, res)
+        }
+    });
+}
+
+exports.get_penjual = function(req, res){
+    const username = req.body.username;
+    const password = req.body.password;
+
+    connection.query("SELECT * FROM user_penjual WHERE username = '" + username + "' and password = '" + password + "'", function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            response.ok(rows, res)
+        }
+    });
+}

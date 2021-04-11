@@ -120,6 +120,20 @@ export const insertPesanan = async(data) =>
         return response
     }
 
+export const getPembeli = async(username, password) =>
+    {
+        const url = `${defaultAPIURL}/getpembeli?username=${username}&password=${password}`
+        const response = await get(url)
+        return response
+    }
+
+export const getPenjual = async(username, password) =>
+    {
+        const url = `${defaultAPIURL}/getpenjual?username=${username}&password=${password}`
+        const response = await get(url)
+        return response
+    }
+
 export const getCooklist = async(id) => {
     const url = `${defaultAPIURL}/cooklist/${id}`;
     const response = await get(url);
