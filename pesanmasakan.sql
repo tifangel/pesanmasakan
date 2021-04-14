@@ -83,11 +83,12 @@ CREATE TABLE `transaksi` (
   `tgl_transaksi` date DEFAULT NULL,
   `total` int DEFAULT NULL,
   `alamat_tujuan` varchar(255) DEFAULT NULL,
-  `longitude` double(10,6) DEFAULT NULL,
-  `latitude` double(10,6) DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
   `status` int DEFAULT NULL,
   `id_warung` int DEFAULT NULL,
   `username_pembeli` varchar(255) DEFAULT NULL,
+  `tgl_kirim` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_id_warung` (`id_warung`),
   KEY `username_pembeli` (`username_pembeli`),
@@ -102,7 +103,7 @@ CREATE TABLE `transaksi` (
 
 LOCK TABLES `transaksi` WRITE;
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
-INSERT INTO `transaksi` VALUES (1,'2021-02-24',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,1,3,'indy'),(2,'2021-02-26',17000,'Jl Dieng Kawi no 76',-6.931036,107.596800,0,4,'raras'),(3,'2021-02-25',40000,'Jl Raya Langsep no 32',-7.383062,108.534895,2,2,'raras'),(8,'2021-04-02',45000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,4,'indy'),(9,'2021-04-03',135000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'raras'),(10,'2021-05-03',100000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'indy');
+INSERT INTO `transaksi` VALUES (1,'2021-02-24',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,1,3,'indy','2021-02-24'),(2,'2021-02-26',17000,'Jl Dieng Kawi no 76',-6.931036,107.5968,0,4,'raras','2021-02-26'),(3,'2021-02-25',40000,'Jl Raya Langsep no 32',-7.383062,108.534895,2,2,'raras','2021-02-25'),(8,'2021-04-02',45000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,4,'indy','2021-04-02'),(9,'2021-04-03',135000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'raras','2021-04-03'),(10,'2021-05-03',100000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'indy','2021-05-03');
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,8 +206,8 @@ CREATE TABLE `warung` (
   `alamat` varchar(255) NOT NULL,
   `kategori` varchar(30) DEFAULT NULL,
   `pic` varchar(300) DEFAULT NULL,
-  `longitude` double(10,6) DEFAULT NULL,
-  `latitude` double(10,6) DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -230,4 +231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-06 11:32:38
+-- Dump completed on 2021-04-13 21:16:27
