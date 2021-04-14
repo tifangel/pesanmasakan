@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, InputBase, Button, Grid, } from '@material-ui/core'
+import { insertPembeli, insertPenjual, insertWarung } from '../../resource';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -243,7 +244,7 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
         currpassword: "",
         nama_warung: "",
         alamat: "",
-        kategori: "",
+        kategori: "Chicken Duck",
         nama_owner: "",
         pic: "",
     })
@@ -256,27 +257,43 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
         setFormCreateWarung('show')
     }
 
-    const submitData = async() => {
-        try {
-            let data = JSON.parse(JSON.stringify(dataRegis))
-
-            console.log(data)
+    const handleSubmit = async() => {
+        let response = 0
+        if(status === 'customer'){
+            response = await insertPembeli({
+                username: dataRegis.username,
+                password: dataRegis.password,
+                email: dataRegis.email,
+                no_hp: dataRegis.phone,
+                nama: dataRegis.fullname,
+            })
             
-            let response
-            // status === 'customer'? response = await regiscustomer(data) : response = await regiswarung(data)
-            // console.log(response)
+            if(response) history.push('/');
+            else window.alert('terjadi kesalahan')
+        }else{
+            navigator.geolocation.getCurrentPosition(async(position) => {
+                response = await insertWarung({
+                    nama: dataRegis.nama_warung,
+                    alamat: dataRegis.alamat,
+                    cat: dataRegis.kategori ,
+                    pic: dataRegis.pic,
+                    lat: position.coords.latitude,
+                    long: position.coords.longitude,
+                })
+                response = await insertPenjual({
+                    username: dataRegis.username,
+                    password: dataRegis.password,
+                    email: dataRegis.email,
+                    no_hp: dataRegis.phone,
+                    nama: dataRegis.nama_owner,
+                    id: response.data.values.insertId
+                })
+                
+                if(response) history.push('/');
+                else window.alert('terjadi kesalahan')
+            }, () => alert('please allow location'), { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 });
         }
-        catch (e) {
-            console.log(e)
-        }
-    }
 
-    const handleSubmit = () => {
-        console.log(dataRegis)
-
-        // submitData()
-
-        history.push('/');
     }
 
     const classes = useStyles();
