@@ -231,7 +231,7 @@ function PesananSayaPage(props) {
   useEffect(() => {
     async function loadPesanan() {
       try {
-        
+        console.log(props.match.params.username_pembeli);
         let response = await getPesananPembeli(props.match.params.username_pembeli)
         if (response.status === 200) {
           rows(response.data.values)
@@ -248,7 +248,7 @@ function PesananSayaPage(props) {
 
   return (
     <React.Fragment>
-    <AppHeader username="Jundu" />
+    <AppHeader username="indy" />
       <div className={classes.root}>
         <Toolbar style={{ padding: 0 }}>
           <Typography className={classes.title} variant="h4" noWrap>

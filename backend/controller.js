@@ -272,7 +272,7 @@ exports.get_cooklist = function(req, res) {
         FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
             JOIN transaksi t ON (tm.id_transaksi = t.id)
         WHERE m.id_warung = ${id} AND tm.status = 0
-        GROUP BY t.tgl_transaksi, m.nama;
+        GROUP BY t.tgl_transaksi, m.nama, m.id;
     `;
 
     connection.query(query, (error, rows, field) => {
@@ -361,7 +361,7 @@ exports.orderlist_pembeli = function(req, res) {
             JOIN menu m ON (tm.id_menu = m.id)
             JOIN warung w ON (w.id = m.id_warung)
         WHERE username_pembeli = "${username}"
-        GROUP BY w.nama;
+        GROUP BY w.nama, t.id;
     `;        
 
     connection.query(query, (error, rows, field) => {
@@ -371,8 +371,10 @@ exports.orderlist_pembeli = function(req, res) {
 }
 
 exports.add_order = function(req, res) {
+    console.log(req.body.username_pembeli);
     const username_pembeli = req.body.username_pembeli;
     const tgl_transaksi = req.body.tgl_transaksi;
+    console.log(tgl_transaksi);
     const total = req.body.total;
     const alamat = req.body.alamat;
     const longitude = req.body.longitude;
@@ -386,8 +388,8 @@ exports.add_order = function(req, res) {
 
     const query_transaksi = `
         INSERT INTO transaksi VALUES (
-            DEFAULT, "${username_pembeli}", "${tgl_transaksi}", ${total}, 
-            "${alamat}", ${longitude}, ${latitude}, 0, ${id_warung}
+            DEFAULT, '${tgl_transaksi}', ${total}, 
+            "${alamat}", ${longitude}, ${latitude}, 0, ${id_warung}, '${username_pembeli}'
         );
     `;
 

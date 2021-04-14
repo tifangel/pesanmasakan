@@ -53,9 +53,11 @@ const OrderPage = (props) => {
   const [carabayar, setCarabayar] = useState(0);
   console.log(props.location.state);
 
+  const username = "indy";
   const onBayar = () => {
     let orderData = {
       id_pembeli: state.userId,
+      username_pembeli: username,
       tgl_transaksi: new Date().toISOString().split("T")[0],
       total: subtotal + ongkir,
       alamat: state.alamat,
@@ -117,7 +119,7 @@ const OrderPage = (props) => {
 
   return (
     <React.Fragment>
-      <AppHeader username="Jundu" />
+      <AppHeader username={username} />
       <div className={classes.root}>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
