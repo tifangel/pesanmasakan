@@ -133,6 +133,27 @@ export const getPenjual = async(data) =>
         const response = await post(url, data)
         return response
     }
+    
+export const insertPembeli = async(data) =>
+    {
+        const url = `${defaultAPIURL}/registerpembeli`
+        const response = await post(url, data)
+        return response
+    }
+
+export const insertPenjual = async(data) =>
+    {
+        const url = `${defaultAPIURL}/registerpenjual`
+        const response = await post(url, data)
+        return response
+    }
+
+export const insertWarung = async(data) =>
+    {
+        const url = `${defaultAPIURL}/tambahwarung`
+        const response = await post(url, data)
+        return response
+    }
 
 export const getCooklist = async(id) => {
     const url = `${defaultAPIURL}/cooklist/${id}`;

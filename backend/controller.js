@@ -230,8 +230,8 @@ exports.ubah_data_warung = function(req,res){
 }
 
 exports.tambah_warung = function(req,res){
-    connection.query('INSERT INTO warung SET (nama,alamat,kategori,pic,longitude,langitude) VALUES ("' + 
-                     req.body.nama + '", "' + req.body.alamat + '", "' + req.body.cat + '", "' + req.body.pic + '", ' + parseFloat(req.body.long) + ', ' + parseFloat(req.body.lang) + 
+    connection.query('INSERT INTO warung (nama,alamat,kategori,pic,latitude,longitude) VALUES ("' + 
+                     req.body.nama + '", "' + req.body.alamat + '", "' + req.body.cat + '", "' + req.body.pic + '", ' + parseFloat(req.body.lat) + ', ' + parseFloat(req.body.long) + 
                      ')', function (error, rows, fields){
         if(error){
             console.log(error)
