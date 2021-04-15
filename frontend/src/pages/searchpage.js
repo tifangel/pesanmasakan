@@ -154,7 +154,7 @@ const SearchPage = (props) => {
     // setDistance(fullData);
     return(
         <React.Fragment>
-            <AppHeader />
+            <AppHeader/>
             <Searchbar/>
             <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
             <WarungList data={result}/>

@@ -57,7 +57,8 @@ module.exports = function(app) {
         .post(pesanmasakan.get_pembeli);
     app.route('/getpenjual')
         .post(pesanmasakan.get_penjual);    
-    
+    app.route('/myprofile')
+        .get(pesanmasakan.get_my_profile);
     
     // ORDER
     app.route('/cooklist/:id')

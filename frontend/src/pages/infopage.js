@@ -92,6 +92,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const InfoPage = (props) => {
+
+  const [isAuthenticated, userHasAuthenticated] = useState(
+      localStorage.getItem("token") ? true : false
+  );
+
   const [id, setID] = useState(0);
   const [result, setResult] = useState([]);
   const [pathpic, setpathpic] = useState("");
@@ -127,9 +132,8 @@ const InfoPage = (props) => {
   };
   const onBayar = () => {
     if (!keranjang.length) return;
-    const userId = prompt("Anda harus login", 1);
-    if(!Number(userId)){
-      alert("Login gagal");
+    if(!isAuthenticated){
+      alert("Anda harus login");
       return;
     }
     const alamat = prompt("Alamat anda?", "alamat");
@@ -141,7 +145,6 @@ const InfoPage = (props) => {
       history.push({
           pathname: '/konfirmasi/',
           state: {
-            userId: Number(userId),
             alamat: alamat,
             keranjang: keranjang,
             warung_id: props.match.params.id,
@@ -230,7 +233,7 @@ const InfoPage = (props) => {
 
   return (
     <React.Fragment>
-      <AppHeader />
+      <AppHeader/>
       <div className={classes.root}>
         <div
           style={{

@@ -72,7 +72,7 @@ const HomePage = (props) => {
     
     return(
         <div>
-            <AppHeader />
+            <AppHeader/>
             <InfoTambahan />
             <Searchbar/>
             <WarungList data={warungList}/>

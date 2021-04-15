@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import {useAppContext} from '../../lib/contextLib'
 import { makeStyles } from '@material-ui/core/styles';
 import FormMenu from './formmenu'
 import Profile from './profile'
@@ -29,30 +30,17 @@ const useStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
 }));
 
-const MainContent = ({ id, id_warung }) => {
+const MainContent = ({ id}) => {
 
     // Content Menu Profile
-    // useEffect(() => {
-    //     async function loadWarungList(){
-    //         try{
+    const { user } = useAppContext();
+    const [dataFormProfile, setDataFormProfile] = useState({})
 
-    //         }
-    //         catch (e) {
-    //             console.log(e)
-    //         }
-    //     }
-    // },[])
-    const [dataFormProfile, setDataFormProfile] = useState({
-        username: "jundu",
-        id_warung: 1,
-        nama_warung: "Lalapan Lahap",
-        nama_owner: "jundullah",
-        no_hp: "081234568",
-        email: "jundu.lalapan@mail.com",
-        alamat: "Jl peternakan no 45",
-        kategori: "chicken & duck",
-        pic: "/warung/lalapan-lahap.jpg",
-    })
+    useEffect(() => {
+        if (user) {
+            setDataFormProfile(user)
+        }
+    }, [user])
 
 
     // Content Menu Products
@@ -99,7 +87,7 @@ const MainContent = ({ id, id_warung }) => {
       async function loadMenu() {
         try {
   
-          let responseMenu = await getMenuListByWarungId(id_warung || 1);
+          let responseMenu = await getMenuListByWarungId(dataFormProfile.id_warung);
           if (responseMenu.status === 200) {
             setMenuList(responseMenu.data.values);
           }

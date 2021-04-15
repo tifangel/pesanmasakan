@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
+import {logincustomer, loginwarung} from '../../resource/auth'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, InputBase, Button } from '@material-ui/core'
-import StorefrontIcon from '@material-ui/icons/Storefront';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import StorefrontIcon from '@material-ui/icons/Storefront'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -101,7 +102,7 @@ const FormLogin = ({status, changeForm, changeStatusForm}) => {
 
     const [dataLogin, setDataLogin] = useState({
         username: "",
-        password: "",
+        password: ""
     })
 
     let location = useLocation();
@@ -111,27 +112,24 @@ const FormLogin = ({status, changeForm, changeStatusForm}) => {
         setDataLogin({ ...dataLogin, [event.target.name]: event.target.value });
     }
 
-    const submitData = async() => {
+    const handleSubmit = async() => {
         try {
             let data = JSON.parse(JSON.stringify(dataLogin))
-
-            console.log(data)
+            data.role = status
 
             let response
-            // status === 'customer'? response = await logincustomer(data) : response = await loginwarung(data)
-            // console.log(response)
+            status === 'customer'? response = await logincustomer(data) : response = await loginwarung(data)
+            console.log(response)
+
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('role', response.role);
+            status === 'customer'? history.push('/') : history.push('/cms');
+            window.location.reload();
         }
         catch (e) {
             console.log(e)
+            alert("Username or password incorrect")
         }
-    }
-
-    const handleSubmit = () => {
-        console.log(dataLogin)
-
-        // submitData()
-
-        history.push('/');
     }
 
     const classes = useStyles();

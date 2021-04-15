@@ -298,13 +298,13 @@ const Profile = ({data}) => {
                                 <td className={classes.col1}>Warung Owner</td>
                                 <td className={classes.col2}>
                                     { statusForm === 'hide' && (
-                                        data.nama_owner
+                                        data.nama
                                     )}
                                     { statusForm === 'show' && (
                                         <InputBase
-                                        name="nama_owner"
+                                        name="nama"
                                         type="text"
-                                        defaultValue={formInput.nama_owner}
+                                        defaultValue={formInput.nama}
                                         className={classes.input}
                                         onChange={handleInput}/>
                                     )}

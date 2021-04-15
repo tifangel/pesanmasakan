@@ -9,6 +9,8 @@ import PilihPembayaran from "../components/konfirmasiorder/pilihpembayaran";
 import AppHeader from "../components/header";
 import { useHistory } from "react-router-dom";
 import { getWarung } from "../resource/index";
+import Authenticated from '../layout/Authenticated'
+import { useAppContext } from '../lib/contextLib'
 
 const { defaultAPIURL } = require("../config");
 
@@ -46,6 +48,17 @@ function hitungOngkir(lat1, lon1, lat2, lon2) {
 }
 
 const OrderPage = (props) => {
+
+  const { user } = useAppContext();
+  const [pageUser, setPageUser] = useState({})
+
+  useEffect(() => {
+      if (user) {
+          setPageUser(user)
+      }
+  }, [user])
+
+
   const classes = useStyles();
   const history = useHistory();
   const [state, setState] = useState(props.location.state);
@@ -55,7 +68,7 @@ const OrderPage = (props) => {
 
   const onBayar = () => {
     let orderData = {
-      id_pembeli: state.userId,
+      username_pembeli: pageUser.username,
       tgl_transaksi: new Date().toISOString().split("T")[0],
       total: subtotal + ongkir,
       alamat: state.alamat,
@@ -66,9 +79,10 @@ const OrderPage = (props) => {
       }),
       id_warung: state.warung_id,
     };
+    console.log(orderData);
     insertPesanan(orderData);
     history.push({
-      pathname: "/pesanan/0",
+      pathname: '/pesanan',
       state: keranjang,
     });
   };
@@ -116,36 +130,40 @@ const OrderPage = (props) => {
   }, []);
 
   return (
-    <React.Fragment>
-      <AppHeader username="Jundu" />
-      <div className={classes.root}>
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
-              <Paper className={classes.paper}>
-                <PilihPembayaran
-                  kurir={kurir}
-                  carabayar={carabayar}
-                  setKurir={setKurir}
-                  setCarabayar={setCarabayar}
-                />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper className={classes.paper}>
-                <Keranjang
-                  keranjang={keranjang}
-                  ongkir={kurir === 1 ? 0 : ongkir}
-                  subtotal={subtotal}
-                  onItemCountChange={updateJumlahItem}
-                  onBayar={onBayar}
-                />
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
-      </div>
-    </React.Fragment>
+    <Authenticated>
+      { pageUser &&
+          <React.Fragment>
+              <AppHeader/>
+              <div className={classes.root}>
+                <Container maxWidth="lg" className={classes.container}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={8}>
+                      <Paper className={classes.paper}>
+                        <PilihPembayaran
+                          kurir={kurir}
+                          carabayar={carabayar}
+                          setKurir={setKurir}
+                          setCarabayar={setCarabayar}
+                        />
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <Paper className={classes.paper}>
+                        <Keranjang
+                          keranjang={keranjang}
+                          ongkir={kurir === 1 ? 0 : ongkir}
+                          subtotal={subtotal}
+                          onItemCountChange={updateJumlahItem}
+                          onBayar={onBayar}
+                        />
+                      </Paper>
+                    </Grid>
+                  </Grid>
+                </Container>
+              </div>
+          </React.Fragment>
+      }
+    </Authenticated>
   );
 };
 
