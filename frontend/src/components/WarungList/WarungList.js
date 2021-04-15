@@ -7,11 +7,11 @@ import WarungItem from './WarungItem';
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
   cardItem:{
-    padding : 0
+    padding: 0,
   }
 }));
 
