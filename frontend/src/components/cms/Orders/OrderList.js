@@ -89,8 +89,25 @@ function formatMoney(money) {
   }
 
 function formatDate(date) {
-    date = new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Jakarta'});
-    return date.slice(0, date.indexOf(","));
+    const d = new Date(date);
+    var month = (d.getMonth()+1) < 10 ? `0${(d.getMonth()+1)}` : (d.getMonth()+1);
+    var day = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
+    var year = d.getFullYear().toString().slice(-2);
+    return `${day}/${month}/${year}`;
+    
+    // date = new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Jakarta'});
+    // return date = date.slice(0, date.indexOf(","));
+}
+
+function formatTime(date) {
+    const d = new Date(date);
+    var jam = d.getHours() < 10 ? `0${d.getHours()}` : d.getHours();
+    var menit = d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes();
+    var detik = d.getSeconds() < 10 ? `0${d.getSeconds()}` : d.getSeconds();
+    return `${jam}:${menit}:${detik} WIB`;
+    
+    // date = new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Jakarta'});
+    // return date = date.slice(0, date.indexOf(","));
 }
 
 function Row(props) {
@@ -183,6 +200,7 @@ function Row(props) {
         for (var i = 0; i < order.length; i++) {
             details.push(
                 <TableRow className={classes.orderDetails}>
+                    <TableCell></TableCell>
                     <TableCell>{order[i].jumlah_porsi} porsi</TableCell>
                     <TableCell>{order[i].nama}</TableCell>
                     <TableCell>{formatMoney(order[i].harga)}</TableCell>
@@ -204,6 +222,7 @@ function Row(props) {
                 </IconButton>
             </TableCell>
             <TableCell> {formatDate(row.tgl_transaksi)} </TableCell>
+            <TableCell> {formatTime(row.tgl_transaksi)} </TableCell>
             <TableCell> 
                 { row.username_pembeli } <br />
                 { row.alamat_tujuan }
@@ -258,6 +277,7 @@ const OrderList = (props) => {
                     <TableRow>
                         <TableCell>{/*Column for collapse button*/}</TableCell>
                         <TableCell>Date</TableCell>
+                        <TableCell>Time</TableCell>
                         <TableCell>Name/Address</TableCell>
                         <TableCell>Total</TableCell>
                         <TableCell>{/*Column for send button*/}</TableCell>

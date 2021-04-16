@@ -268,11 +268,11 @@ exports.get_cooklist = function(req, res) {
     const id = req.params.id;
     // TODO: tgl_transaksi perlu diganti jadi buat tgl berapa order ini
     const query = `
-        SELECT t.tgl_transaksi, m.id, m.nama, SUM(tm.jumlah_porsi) as qty
-        FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
-            JOIN transaksi t ON (tm.id_transaksi = t.id)
+        SELECT DATE(t.tgl_transaksi) as tanggal, m.nama, SUM(tm.jumlah_porsi) as qty, m.id
+        FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id) 
+            JOIN transaksi t ON (tm.id_transaksi = t.id) 
         WHERE m.id_warung = ${id} AND tm.status = 0
-        GROUP BY t.tgl_transaksi, m.nama, m.id;
+        GROUP BY tanggal, m.nama, m.id;
     `;
 
     connection.query(query, (error, rows, field) => {
@@ -332,7 +332,10 @@ var orderlist_details = async function(rows) {
             var date = ("0" + row.tgl_transaksi.getDate()).slice(-2);
             var month = ("0" + (row.tgl_transaksi.getMonth() + 1)).slice(-2);
             var year = row.tgl_transaksi.getFullYear();
-            var tgl = `${year}-${month}-${date}`;
+            var hour = row.tgl_transaksi.getHours();
+            var mins = row.tgl_transaksi.getMinutes();
+            var secs = row.tgl_transaksi.getSeconds();
+            var tgl = `${year}-${month}-${date} ${hour}:${mins}:${secs}`;
             var query = `
                 SELECT m.id, jumlah_porsi, m.nama, m.harga, tm.status
                 FROM menu m JOIN transaksi_menu tm ON (m.id = tm.id_menu)
@@ -438,7 +441,7 @@ exports.update_ordermenu = function(req, res) {
     const query = `
         UPDATE transaksi_menu tm JOIN transaksi t ON (tm.id_transaksi = t.id)
         SET tm.status = 1
-        WHERE tm.id_menu = ${id_menu} AND tgl_transaksi = "${tanggal}";
+        WHERE tm.id_menu = ${id_menu} AND DATE(tgl_transaksi) = "${tanggal}";
     `;
     console.log(query);
 

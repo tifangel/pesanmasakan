@@ -80,7 +80,7 @@ DROP TABLE IF EXISTS `transaksi`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transaksi` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `tgl_transaksi` date DEFAULT NULL,
+  `tgl_transaksi` datetime DEFAULT NULL,
   `total` int DEFAULT NULL,
   `alamat_tujuan` varchar(255) DEFAULT NULL,
   `longitude` double(10,6) DEFAULT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE `transaksi` (
 
 LOCK TABLES `transaksi` WRITE;
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
-INSERT INTO `transaksi` VALUES (1,'2021-02-24',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,1,3,'indy'),(2,'2021-02-26',17000,'Jl Dieng Kawi no 76',-6.931036,107.596800,0,4,'raras'),(3,'2021-02-25',40000,'Jl Raya Langsep no 32',-7.383062,108.534895,2,2,'raras'),(8,'2021-04-02',45000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,4,'indy'),(9,'2021-04-03',135000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'raras'),(10,'2021-05-03',100000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'indy');
+INSERT INTO `transaksi` VALUES (1,'2021-02-24 10:23:55',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,1,3,'indy'),(2,'2021-02-26 08:16:54',17000,'Jl Dieng Kawi no 76 13:32:47',-6.931036,107.596800,0,4,'raras'),(3,'2021-02-25 12:05:39',40000,'Jl Raya Langsep no 32',-7.383062,108.534895,2,2,'raras'),(8,'2021-04-02 10:25:32',45000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,4,'indy'),(9,'2021-04-03 19:53:02',135000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'raras'),(10,'2021-05-03 10:03:24',100000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'indy');
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 UNLOCK TABLES;
 
