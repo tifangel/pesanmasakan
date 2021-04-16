@@ -120,20 +120,6 @@ export const insertPesanan = async(data) =>
         return response
     }
 
-export const getPembeli = async(data) =>
-    {
-        const url = `${defaultAPIURL}/getpembeli`
-        const response = await post(url, data)
-        return response
-    }
-
-export const getPenjual = async(data) =>
-    {
-        const url = `${defaultAPIURL}/getpenjual`
-        const response = await post(url, data)
-        return response
-    }
-    
 export const insertPembeli = async(data) =>
     {
         const url = `${defaultAPIURL}/registerpembeli`

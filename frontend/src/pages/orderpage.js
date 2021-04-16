@@ -78,13 +78,11 @@ const OrderPage = (props) => {
         return { id_menu: it.id, qty: it.jumlah };
       }),
       id_warung: state.warung_id,
+      tgl_kirim: new Date,
     };
     console.log(orderData);
     insertPesanan(orderData);
-    history.push({
-      pathname: '/pesanan',
-      state: keranjang,
-    });
+    history.push('/pesanan');
   };
 
   // untuk keranjang

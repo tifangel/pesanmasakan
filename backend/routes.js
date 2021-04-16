@@ -2,6 +2,7 @@
 
 module.exports = function(app) {
     var pesanmasakan = require('./controller');
+    var auth = require('./controllerAuthentication');
 
     app.get("/", (req, res) => {
         res.json({ message: "Welcome to pesanmasakan application." });
@@ -54,11 +55,15 @@ module.exports = function(app) {
     
     // USER
     app.route('/getpembeli')
-        .post(pesanmasakan.get_pembeli);
+        .post(auth.get_pembeli);
     app.route('/getpenjual')
-        .post(pesanmasakan.get_penjual);    
+        .post(auth.get_penjual);    
     app.route('/myprofile')
-        .get(pesanmasakan.get_my_profile);
+        .get(auth.get_my_profile);
+    app.route('/registerpembeli')
+        .post(auth.tambah_user_pembeli);
+    app.route('/registerpenjual')
+        .post(auth.tambah_user_penjual);
     
     // ORDER
     app.route('/cooklist/:id')
@@ -86,12 +91,6 @@ module.exports = function(app) {
 
     app.route('/updateordermenu')
         .post(pesanmasakan.update_ordermenu);
-    
-    app.route('/registerpembeli')
-        .post(pesanmasakan.tambah_user_pembeli);
-    
-    app.route('/registerpenjual')
-        .post(pesanmasakan.tambah_user_penjual);
 
     app.route('/overvieworder/:id')
         .get(pesanmasakan.overview_order);
