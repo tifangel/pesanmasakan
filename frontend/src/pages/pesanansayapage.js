@@ -231,7 +231,6 @@ function PesananSayaPage(props) {
   useEffect(() => {
     async function loadPesanan() {
       try {
-        console.log(props.match.params.username_pembeli);
         let response = await getPesananPembeli(props.match.params.username_pembeli)
         if (response.status === 200) {
           rows(response.data.values)

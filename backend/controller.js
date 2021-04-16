@@ -361,7 +361,8 @@ exports.orderlist_pembeli = function(req, res) {
             JOIN menu m ON (tm.id_menu = m.id)
             JOIN warung w ON (w.id = m.id_warung)
         WHERE username_pembeli = "${username}"
-        GROUP BY w.nama, t.id;
+        GROUP BY w.nama, t.id
+        ORDER BY t.tgl_transaksi DESC;
     `;        
 
     connection.query(query, (error, rows, field) => {

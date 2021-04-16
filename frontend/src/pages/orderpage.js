@@ -51,15 +51,31 @@ const OrderPage = (props) => {
   const [state, setState] = useState(props.location.state);
   const [kurir, setKurir] = useState(0);
   const [carabayar, setCarabayar] = useState(0);
-  console.log(props.location.state);
+  const [keranjang, setKeranjang] = useState(state.keranjang || []);
+  const [ongkir, setOngkir] = useState(0);
 
-  const username = "indy";
+
   const onBayar = () => {
+    const total = kurir === 1 ? 0 + subtotal : ongkir + subtotal;
+
+    var tanggal_jam = '';
+    const d = new Date();
+    var tanggal = d.toISOString().split("T")[0];
+    var jam = d.getHours();
+    var menit = d.getMinutes();
+    var detik = d.getSeconds();
+    tanggal_jam = tanggal_jam.concat(tanggal);
+    tanggal_jam = tanggal_jam.concat(' ');
+    tanggal_jam = tanggal_jam.concat(jam);
+    tanggal_jam = tanggal_jam.concat(':');
+    tanggal_jam = tanggal_jam.concat(menit);
+    tanggal_jam = tanggal_jam.concat(':');
+    tanggal_jam = tanggal_jam.concat(detik);
+    
     let orderData = {
-      id_pembeli: state.userId,
-      username_pembeli: username,
-      tgl_transaksi: new Date().toISOString().split("T")[0],
-      total: subtotal + ongkir,
+      username_pembeli: state.username_pembeli,
+      tgl_transaksi: tanggal_jam,
+      total: total,
       alamat: state.alamat,
       longitude: state.user_position.longitude,
       latitude: state.user_position.latitude,
@@ -70,14 +86,13 @@ const OrderPage = (props) => {
     };
     insertPesanan(orderData);
     history.push({
-      pathname: "/pesanan/0",
+      pathname: `/pesanan/${state.username_pembeli}`,
       state: keranjang,
     });
   };
 
   // untuk keranjang
-  const [keranjang, setKeranjang] = useState(state.keranjang || []);
-  const [ongkir, setOngkir] = useState(0);
+  
   const [subtotal, setSubtotal] = useState(
     keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)
   );
@@ -119,7 +134,7 @@ const OrderPage = (props) => {
 
   return (
     <React.Fragment>
-      <AppHeader username={username} />
+      <AppHeader username={state.username_pembeli} />
       <div className={classes.root}>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
