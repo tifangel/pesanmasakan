@@ -51,21 +51,23 @@ exports.lihat_kategori = function(req, res) {
 
 exports.daftar_menu = function(req, res) {
     const sql = req.query.id_warung? `SELECT * FROM menu WHERE id_warung=${req.query.id_warung}` : 'SELECT * FROM menu';
-    connection.query(sql, function (error, rows, fields){
+    connection.query(sql, async function (error, rows, fields){
         if(error){
-            console.log(error)
+            console.log("daftar menu", error)
         } else{
-            response.ok(rows, res)
+            var full_menu = await hari_menu(rows);
+            response.ok(full_menu, res)
         }
     });
 };
 
 exports.lihat_menu = function(req, res) {
-    connection.query("SELECT * FROM menu WHERE id = " + req.params.id, function (error, rows, fields){
-        if(error){
-            console.log(error)
-        } else{
-            response.ok(rows, res)
+    connection.query("SELECT * FROM menu WHERE id = " + req.params.id, async function (error, rows, fields){
+        if (error){
+            console.log("lihat menu", error)
+        } else {
+            var full_menu = await hari_menu(rows);
+            response.ok(full_menu, res)
         }
     });
 };
@@ -73,23 +75,46 @@ exports.lihat_menu = function(req, res) {
 exports.cari_menu = function(req,res, next) {
     const title = req.query.title;
 
-    connection.query("SELECT * FROM menu WHERE nama LIKE '%" + title + "%'", function (error, rows, fields){
+    connection.query("SELECT * FROM menu WHERE nama LIKE '%" + title + "%'", async function (error, rows, fields){
         if(error){
-            console.log(error)
+            console.log("cari menu", error)
         } else{
-            response.ok(rows, res)
+            var full_menu = await hari_menu(rows);
+            response.ok(full_menu, res);
         }
     });
 };
 
-exports.daftar_hari_menu = function(req,res){
-    connection.query("SELECT hari FROM hari_menu WHERE id_menu = " + req.query.id, function (error, rows, fields){
+exports.daftar_hari_menu = function(req, res) {
+    connection.query("SELECT hari FROM hari_menu WHERE id_menu = " + req.query.id, async function (error, rows, fields){
         if(error){
             console.log(error)
         } else{
             response.ok(rows, res)
         }
     });
+}
+
+var hari_menu = async function(menu) {
+    var promises = [];
+    for (var i = 0; i < menu.length; i++) {
+        const m = menu[i];
+        promises.push(new Promise((resolve, reject) => {
+            var query = `SELECT hari FROM hari_menu WHERE id_menu = ${m.id}`;
+            connection.query(query, (error, rows, field) => {
+                if (error) reject(error);
+                else {
+                    var hari = [];
+                    for (var i = 0; i < rows.length; i++) {
+                        hari.push(rows[i].hari);
+                    }
+                    m.hari = hari;
+                    resolve(m);
+                }
+            });
+        }));
+    }
+    return Promise.all(promises).then((values) => values).catch((error) => console.log(error));
 }
 
 exports.add_menu = function(req,res){
@@ -205,8 +230,8 @@ exports.ubah_data_warung = function(req,res){
 }
 
 exports.tambah_warung = function(req,res){
-    connection.query('INSERT INTO warung SET (nama,alamat,kategori,pic,longitude,langitude) VALUES ("' + 
-                     req.body.nama + '", "' + req.body.alamat + '", "' + req.body.cat + '", "' + req.body.pic + '", ' + parseFloat(req.body.long) + ', ' + parseFloat(req.body.lang) + 
+    connection.query('INSERT INTO warung (nama,alamat,kategori,pic,latitude,longitude) VALUES ("' + 
+                     req.body.nama + '", "' + req.body.alamat + '", "' + req.body.cat + '", "' + req.body.pic + '", ' + parseFloat(req.body.lat) + ', ' + parseFloat(req.body.long) + 
                      ')', function (error, rows, fields){
         if(error){
             console.log(error)
@@ -266,11 +291,11 @@ exports.tambah_user_penjual = function(req, res){
 
 exports.get_cooklist = function(req, res) {
     const id = req.params.id;
-    // TODO: tgl_transaksi perlu diganti jadi buat tgl berapa order ini
     const query = `
-        SELECT DATE(t.tgl_transaksi) as tanggal, m.nama, SUM(tm.jumlah_porsi) as qty, m.id
-        FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id) 
-            JOIN transaksi t ON (tm.id_transaksi = t.id) 
+
+        SELECT DATE(t.tgl_kirim) as tanggal, m.id, m.nama, SUM(tm.jumlah_porsi) as qty, m.id
+        FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
+            JOIN transaksi t ON (tm.id_transaksi = t.id)
         WHERE m.id_warung = ${id} AND tm.status = 0
         GROUP BY tanggal, m.nama, m.id;
     `;
@@ -284,10 +309,10 @@ exports.get_cooklist = function(req, res) {
 exports.orderlist_penjual = function(req, res) {
     const id = req.params.id;
     const query = `
-        SELECT id, username_pembeli, tgl_transaksi, alamat_tujuan, total, status, id_warung
+        SELECT id, username_pembeli, tgl_kirim, alamat_tujuan, total, status, id_warung
         FROM transaksi
         WHERE id_warung = ${id} and status = 0
-        ORDER BY tgl_transaksi;
+        ORDER BY tgl_kirim;
     `;
     console.log(query);
 
@@ -305,10 +330,10 @@ exports.orderlist_penjual = function(req, res) {
 exports.history_penjual = function(req, res) {
     const id = req.params.id;
     const query = `
-        SELECT id, username_pembeli, tgl_transaksi, alamat_tujuan, total, status, id_warung
+        SELECT id, username_pembeli, tgl_kirim, alamat_tujuan, total, status, id_warung
         FROM transaksi
         WHERE id_warung = ${id} and (status = 1 OR status = 2)
-        ORDER BY tgl_transaksi DESC;
+        ORDER BY tgl_kirim DESC;
     `;
     console.log(query);
 
@@ -340,7 +365,7 @@ var orderlist_details = async function(rows) {
                 SELECT m.id, jumlah_porsi, m.nama, m.harga, tm.status
                 FROM menu m JOIN transaksi_menu tm ON (m.id = tm.id_menu)
                     JOIN transaksi t ON (t.id = tm.id_transaksi)
-                WHERE username_pembeli = "${row.username_pembeli}" AND tgl_transaksi = "${tgl}";
+                WHERE username_pembeli = "${row.username_pembeli}" AND tgl_kirim = "${tgl}";
             `;
             connection.query(query, (error, rows, field) => {
                 if (error) reject(error);
@@ -358,8 +383,8 @@ exports.orderlist_pembeli = function(req, res) {
     const username = req.params.username;
     // TODO: waktu
     const query = `
-        SELECT t.id, w.nama nama_warung, SUM(tm.jumlah_porsi) jumlah, t.tgl_transaksi, 
-            t.total, t.status 
+        SELECT t.id, w.nama nama_warung, SUM(tm.jumlah_porsi) jumlah, 
+            t.tgl_transaksi, t.tgl_kirim, t.total, t.status 
         FROM transaksi t JOIN transaksi_menu tm ON (t.id = tm.id_transaksi)
             JOIN menu m ON (tm.id_menu = m.id)
             JOIN warung w ON (w.id = m.id_warung)
@@ -378,13 +403,14 @@ exports.add_order = function(req, res) {
     console.log(req.body.username_pembeli);
     const username_pembeli = req.body.username_pembeli;
     const tgl_transaksi = req.body.tgl_transaksi;
-    console.log(tgl_transaksi);
+    const tgl_kirim = req.body.tgl_kirim;
     const total = req.body.total;
     const alamat = req.body.alamat;
     const longitude = req.body.longitude;
     const latitude = req.body.latitude;
     const orders = req.body.orders;
     const id_warung = req.body.id_warung;
+    const status = 0;
     // contoh orders = [
     //     { "id_menu": "1", "qty": 5},
     //     { "id_menu": "5", "qty": 9},
@@ -392,8 +418,8 @@ exports.add_order = function(req, res) {
 
     const query_transaksi = `
         INSERT INTO transaksi VALUES (
-            DEFAULT, '${tgl_transaksi}', ${total}, 
-            "${alamat}", ${longitude}, ${latitude}, 0, ${id_warung}, '${username_pembeli}'
+            DEFAULT, "${tgl_transaksi}", "${tgl_kirim}", ${total}, "${alamat}", ${latitude}, 
+            ${longitude}, ${status}, ${id_warung}, "${username_pembeli}", 
         );
     `;
 
@@ -420,7 +446,7 @@ exports.update_order = function(req, res) {
     // Mengubah status order menjadi completed / cancelled
     // Prereq: semua menu dalam order ini harus berstatus 1 kalau mau jadi completed
     const status = req.body.status;
-    const id_order = req.body.id;
+    const id_order = req.body.id_order;
 
     const query = `
         UPDATE transaksi SET status = ${status} WHERE id = ${id_order};
@@ -441,7 +467,7 @@ exports.update_ordermenu = function(req, res) {
     const query = `
         UPDATE transaksi_menu tm JOIN transaksi t ON (tm.id_transaksi = t.id)
         SET tm.status = 1
-        WHERE tm.id_menu = ${id_menu} AND DATE(tgl_transaksi) = "${tanggal}";
+        WHERE tm.id_menu = ${id_menu} AND DATE(tgl_kirim) = "${tanggal}";
     `;
     console.log(query);
 
@@ -455,14 +481,14 @@ exports.overview_order = function(req, res) {
     const id = req.params.id;
     var promises = [];
     const query_order = `
-        SELECT YEAR(tgl_transaksi) as year, MONTH(tgl_transaksi) as month, COUNT(*) as qty
+        SELECT YEAR(tgl_kirim) as year, MONTH(tgl_kirim) as month, COUNT(*) as qty
         FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
             JOIN transaksi t ON (t.id = tm.id_transaksi)
         WHERE t.id_warung = ${id}
         GROUP BY year, month;
     `;
     const query_profit = `
-        SELECT YEAR(tgl_transaksi) as year, MONTH(tgl_transaksi) as month, SUM(total) as profit
+        SELECT YEAR(tgl_kirim) as year, MONTH(tgl_kirim) as month, SUM(total) as profit
         FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
             JOIN transaksi t ON (t.id = tm.id_transaksi)
         WHERE t.id_warung = ${id}

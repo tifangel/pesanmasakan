@@ -2,6 +2,8 @@ import React, { useState, useEffect, useReducer } from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, InputBase, Button, Grid, } from '@material-ui/core'
+import { getCategories, insertPembeli, insertPenjual, insertWarung } from '../../resource';
+import { loadCategories } from '../filter/FilterParams';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -230,9 +232,20 @@ const useStyles = makeStyles((theme) => ({
 const FormRegis = ({status, changeForm, changeStatusForm}) => {
 
     const [formCreateWarung, setFormCreateWarung] = useState('hide')
+    const [categories, setCategories] = useState([])
 
     let location = useLocation();
     let history = useHistory();
+
+    useEffect(() => {
+        const loadCategories = async() => {
+            const cat = await getCategories()
+            console.log(cat)
+            setCategories(cat.data.values)
+            setDataRegis({ ...dataRegis, kategori: cat.data.values[0].kategori });
+        }
+        loadCategories()
+    }, []) 
 
     const [dataRegis, setDataRegis] = useState({
         fullname: "",
@@ -256,27 +269,43 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
         setFormCreateWarung('show')
     }
 
-    const submitData = async() => {
-        try {
-            let data = JSON.parse(JSON.stringify(dataRegis))
-
-            console.log(data)
+    const handleSubmit = async() => {
+        let response = 0
+        if(status === 'customer'){
+            response = await insertPembeli({
+                username: dataRegis.username,
+                password: dataRegis.password,
+                email: dataRegis.email,
+                no_hp: dataRegis.phone,
+                nama: dataRegis.fullname,
+            })
             
-            let response
-            // status === 'customer'? response = await regiscustomer(data) : response = await regiswarung(data)
-            // console.log(response)
+            if(response) history.push('/');
+            else window.alert('terjadi kesalahan')
+        }else{
+            navigator.geolocation.getCurrentPosition(async(position) => {
+                response = await insertWarung({
+                    nama: dataRegis.nama_warung,
+                    alamat: dataRegis.alamat,
+                    cat: dataRegis.kategori ,
+                    pic: dataRegis.pic,
+                    lat: position.coords.latitude,
+                    long: position.coords.longitude,
+                })
+                response = await insertPenjual({
+                    username: dataRegis.username,
+                    password: dataRegis.password,
+                    email: dataRegis.email,
+                    no_hp: dataRegis.phone,
+                    nama: dataRegis.nama_owner,
+                    id: response.data.values.insertId
+                })
+                
+                if(response) history.push('/');
+                else window.alert('terjadi kesalahan')
+            }, () => alert('please allow location'), { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 });
         }
-        catch (e) {
-            console.log(e)
-        }
-    }
 
-    const handleSubmit = () => {
-        console.log(dataRegis)
-
-        // submitData()
-
-        history.push('/');
     }
 
     const classes = useStyles();
@@ -393,10 +422,7 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                                             style={{height: '35px', border: 0, padding: 0}}
                                             onChange={handleInput}
                                         >
-                                            <option>Chicken Duck</option>
-                                            <option>Masakan Padang</option>
-                                            <option>Masakan Cina</option>
-                                            <option>Masakan Rumah</option>
+                                            {categories.map(it => <option>{it.kategori}</option>)}
                                         </select>
                                     </td>
                                 </tr>
@@ -415,7 +441,7 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                         <Grid className={classes.contimg} item xs={12} sm={12} md={12} lg={6}>
                             <div style={{display: 'flex'}}>
                                 <p className={classes.titleimg}>Warung Image</p>
-                                <input id="uploadfile" type="file" hidden="hidden"></input>
+                                <input id="uploadfile" type="file" hidden="hidden" onChange={(e)=>console.log(document.getElementById("uploadfile").value)}></input>
                                 <Button 
                                     className={classes.fileInput}
                                     onClick={() => {
