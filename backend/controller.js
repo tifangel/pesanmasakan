@@ -343,7 +343,6 @@ exports.history_penjual = function(req, res) {
             console.log(rows);
             var details = await orderlist_details(rows);
             response.ok(details, res);
-            console.log(details);
         }
 
     });
@@ -354,12 +353,12 @@ var orderlist_details = async function(rows) {
     for (var i = 0; i < rows.length; i++) {
         const row = rows[i];
         promises.push(new Promise((resolve, reject) => {
-            var date = ("0" + row.tgl_transaksi.getDate()).slice(-2);
-            var month = ("0" + (row.tgl_transaksi.getMonth() + 1)).slice(-2);
-            var year = row.tgl_transaksi.getFullYear();
-            var hour = row.tgl_transaksi.getHours();
-            var mins = row.tgl_transaksi.getMinutes();
-            var secs = row.tgl_transaksi.getSeconds();
+            var date = ("0" + row.tgl_kirim.getDate()).slice(-2);
+            var month = ("0" + (row.tgl_kirim.getMonth() + 1)).slice(-2);
+            var year = row.tgl_kirim.getFullYear();
+            var hour = row.tgl_kirim.getHours();
+            var mins = row.tgl_kirim.getMinutes();
+            var secs = row.tgl_kirim.getSeconds();
             var tgl = `${year}-${month}-${date} ${hour}:${mins}:${secs}`;
             var query = `
                 SELECT m.id, jumlah_porsi, m.nama, m.harga, tm.status
@@ -394,6 +393,7 @@ exports.orderlist_pembeli = function(req, res) {
     `;        
 
     connection.query(query, (error, rows, field) => {
+        console.log(rows);
         if (error) console.log("Orderlist pembeli", error);
         else response.ok(rows, res);
     });
@@ -419,7 +419,7 @@ exports.add_order = function(req, res) {
     const query_transaksi = `
         INSERT INTO transaksi VALUES (
             DEFAULT, "${tgl_transaksi}", "${tgl_kirim}", ${total}, "${alamat}", ${latitude}, 
-            ${longitude}, ${status}, ${id_warung}, "${username_pembeli}", 
+            ${longitude}, ${status}, ${id_warung}, "${username_pembeli}" 
         );
     `;
 

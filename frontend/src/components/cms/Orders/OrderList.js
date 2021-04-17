@@ -221,8 +221,8 @@ function Row(props) {
                     { open? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
             </TableCell>
-            <TableCell> {formatDate(row.tgl_transaksi)} </TableCell>
-            <TableCell> {formatTime(row.tgl_transaksi)} </TableCell>
+            <TableCell> {formatDate(row.tgl_kirim)} </TableCell>
+            <TableCell> {formatTime(row.tgl_kirim)} </TableCell>
             <TableCell> 
                 { row.username_pembeli } <br />
                 { row.alamat_tujuan }

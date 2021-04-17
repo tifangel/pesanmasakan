@@ -71,10 +71,13 @@ const OrderPage = (props) => {
     tanggal_jam = tanggal_jam.concat(menit);
     tanggal_jam = tanggal_jam.concat(':');
     tanggal_jam = tanggal_jam.concat(detik);
+
+    var tgl_kirim = '2021-04-20 12:00:00';
     
     let orderData = {
       username_pembeli: state.username_pembeli,
       tgl_transaksi: tanggal_jam,
+      tgl_kirim: tgl_kirim,
       total: total,
       alamat: state.alamat,
       longitude: state.user_position.longitude,
