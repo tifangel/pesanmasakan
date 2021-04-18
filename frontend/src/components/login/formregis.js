@@ -155,17 +155,18 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'medium',
         color: '#000000',
         position: 'relative',
-        left: '10vw',
+        // left: '10vw',
         top: '-1.5vw',
         width: '8vw',
+        flex: '20vw',
         background: '#FDCB35',
         [theme.breakpoints.down('md')]: {
             fontSize: '2vw',
-            left: '20vw',
+            // left: '20vw',
         },
         [theme.breakpoints.down('sm')]: {
             fontSize: '2.5vw',
-            left: '20vw',
+            // left: '20vw',
         },
     },
     info: {
@@ -442,10 +443,12 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                             :
                             <React.Fragment>
                                 <div className={classes.box2}>
-                                    <p>You have account?</p>
-                                    <p className={classes.textsignin}
-                                        onClick={changeForm}
-                                        >Sign In</p>
+                                    <div style={{display: 'flex', flex: '80vw'}}>
+                                        <p>You have account?</p>
+                                        <p className={classes.textsignin}
+                                            onClick={changeForm}
+                                            >Sign In</p>
+                                    </div>
                                     <Button onClick={gotoFormCreateWarung} className={classes.btnnext} variant="contained">
                                         Next
                                     </Button>
