@@ -446,7 +446,7 @@ exports.update_order = function(req, res) {
     // Mengubah status order menjadi completed / cancelled
     // Prereq: semua menu dalam order ini harus berstatus 1 kalau mau jadi completed
     const status = req.body.status;
-    const id_order = req.body.id;
+    const id_order = req.body.id_order;
 
     const query = `
         UPDATE transaksi SET status = ${status} WHERE id = ${id_order};

@@ -89,6 +89,7 @@ CREATE TABLE `transaksi` (
   `status` int DEFAULT NULL,
   `id_warung` int DEFAULT NULL,
   `username_pembeli` varchar(255) DEFAULT NULL,
+  `tgl_kirim` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_id_warung` (`id_warung`),
   KEY `username_pembeli` (`username_pembeli`),
