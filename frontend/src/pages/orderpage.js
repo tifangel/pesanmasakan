@@ -64,13 +64,34 @@ const OrderPage = (props) => {
   const [state, setState] = useState(props.location.state);
   const [kurir, setKurir] = useState(0);
   const [carabayar, setCarabayar] = useState(0);
-  console.log(props.location.state);
+  const [keranjang, setKeranjang] = useState(state.keranjang || []);
+  const [ongkir, setOngkir] = useState(0);
+
 
   const onBayar = () => {
+    const total = kurir === 1 ? 0 + subtotal : ongkir + subtotal;
+
+    var tanggal_jam = '';
+    const d = new Date();
+    var tanggal = d.toISOString().split("T")[0];
+    var jam = d.getHours();
+    var menit = d.getMinutes();
+    var detik = d.getSeconds();
+    tanggal_jam = tanggal_jam.concat(tanggal);
+    tanggal_jam = tanggal_jam.concat(' ');
+    tanggal_jam = tanggal_jam.concat(jam);
+    tanggal_jam = tanggal_jam.concat(':');
+    tanggal_jam = tanggal_jam.concat(menit);
+    tanggal_jam = tanggal_jam.concat(':');
+    tanggal_jam = tanggal_jam.concat(detik);
+
+    var tgl_kirim = '2021-04-20 12:00:00';
+    
     let orderData = {
       username_pembeli: pageUser.username,
-      tgl_transaksi: new Date().toISOString().split("T")[0],
-      total: subtotal + ongkir,
+      tgl_transaksi: tanggal_jam,
+      tgl_kirim: tgl_kirim,
+      total: total,
       alamat: state.alamat,
       longitude: state.user_position.longitude,
       latitude: state.user_position.latitude,
@@ -78,16 +99,18 @@ const OrderPage = (props) => {
         return { id_menu: it.id, qty: it.jumlah };
       }),
       id_warung: state.warung_id,
-      tgl_kirim: new Date,
     };
     console.log(orderData);
     insertPesanan(orderData);
     history.push('/pesanan');
+    // history.push({
+    //   pathname: `/pesanan/${state.username_pembeli}`,
+    //   state: keranjang,
+    // });
   };
 
   // untuk keranjang
-  const [keranjang, setKeranjang] = useState(state.keranjang || []);
-  const [ongkir, setOngkir] = useState(0);
+  
   const [subtotal, setSubtotal] = useState(
     keranjang.reduce((total, it) => total + it.harga * it.jumlah, 0)
   );

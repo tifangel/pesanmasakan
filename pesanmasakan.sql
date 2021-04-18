@@ -80,7 +80,8 @@ DROP TABLE IF EXISTS `transaksi`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transaksi` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `tgl_transaksi` date DEFAULT NULL,
+  `tgl_transaksi` datetime DEFAULT NULL,
+  `tgl_kirim` datetime DEFAULT NULL,
   `total` int DEFAULT NULL,
   `alamat_tujuan` varchar(255) DEFAULT NULL,
   `latitude` double DEFAULT NULL,
@@ -103,7 +104,13 @@ CREATE TABLE `transaksi` (
 
 LOCK TABLES `transaksi` WRITE;
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
-INSERT INTO `transaksi` VALUES (1,'2021-02-24',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,1,3,'indy','2021-02-24'),(2,'2021-02-26',17000,'Jl Dieng Kawi no 76',-6.931036,107.5968,0,4,'raras','2021-02-26'),(3,'2021-02-25',40000,'Jl Raya Langsep no 32',-7.383062,108.534895,2,2,'raras','2021-02-25'),(8,'2021-04-02',45000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,4,'indy','2021-04-02'),(9,'2021-04-03',135000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'raras','2021-04-03'),(10,'2021-05-03',100000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'indy','2021-05-03');
+INSERT INTO `transaksi` VALUES 
+(1,'2021-02-24 10:23:55','2021-02-25 10:00:00',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,1,3,'indy'),
+(2,'2021-02-26 08:16:54','2021-02-28 12:00:00',17000,'Jl Dieng Kawi no 7',-6.931036,107.596800,0,4,'raras'),
+(3,'2021-02-25 12:05:39','2021-02-30 12:00:00',40000,'Jl Raya Langsep no 32',-7.383062,108.534895,2,2,'raras'),
+(4,'2021-04-02 10:25:32','2021-04-10 17:00:00',45000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,4,'indy'),
+(5,'2021-04-03 19:53:02','2021-04-05 18:00:00',135000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'raras'),
+(6,'2021-05-03 10:03:24','2021-05-04 12:00:00',100000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'indy');
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,7 +139,7 @@ CREATE TABLE `transaksi_menu` (
 
 LOCK TABLES `transaksi_menu` WRITE;
 /*!40000 ALTER TABLE `transaksi_menu` DISABLE KEYS */;
-INSERT INTO `transaksi_menu` VALUES (1,28,1,1),(1,16,1,1),(2,34,1,0),(3,9,2,2),(8,32,1,0),(8,33,2,0),(9,1,4,0),(9,2,5,0),(10,5,10,1);
+INSERT INTO `transaksi_menu` VALUES (1,28,1,1),(1,16,1,1),(2,34,1,0),(3,9,2,2),(4,32,1,0),(4,33,2,0),(5,1,4,0),(5,2,5,0),(6,5,10,1);
 /*!40000 ALTER TABLE `transaksi_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 

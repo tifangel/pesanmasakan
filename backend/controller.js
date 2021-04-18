@@ -254,11 +254,12 @@ exports.hapus_warung = function(req,res){
 exports.get_cooklist = function(req, res) {
     const id = req.params.id;
     const query = `
-        SELECT t.tgl_kirim, m.id, m.nama, SUM(tm.jumlah_porsi) as qty
+
+        SELECT DATE(t.tgl_kirim) as tanggal, m.id, m.nama, SUM(tm.jumlah_porsi) as qty, m.id
         FROM transaksi_menu tm JOIN menu m ON (tm.id_menu = m.id)
             JOIN transaksi t ON (tm.id_transaksi = t.id)
         WHERE m.id_warung = ${id} AND tm.status = 0
-        GROUP BY t.tgl_kirim, m.nama;
+        GROUP BY tanggal, m.nama, m.id;
     `;
 
     connection.query(query, (error, rows, field) => {
@@ -304,7 +305,6 @@ exports.history_penjual = function(req, res) {
             console.log(rows);
             var details = await orderlist_details(rows);
             response.ok(details, res);
-            console.log(details);
         }
 
     });
@@ -318,7 +318,10 @@ var orderlist_details = async function(rows) {
             var date = ("0" + row.tgl_kirim.getDate()).slice(-2);
             var month = ("0" + (row.tgl_kirim.getMonth() + 1)).slice(-2);
             var year = row.tgl_kirim.getFullYear();
-            var tgl = `${year}-${month}-${date}`;
+            var hour = row.tgl_kirim.getHours();
+            var mins = row.tgl_kirim.getMinutes();
+            var secs = row.tgl_kirim.getSeconds();
+            var tgl = `${year}-${month}-${date} ${hour}:${mins}:${secs}`;
             var query = `
                 SELECT m.id, jumlah_porsi, m.nama, m.harga, tm.status
                 FROM menu m JOIN transaksi_menu tm ON (m.id = tm.id_menu)
@@ -347,16 +350,19 @@ exports.orderlist_pembeli = function(req, res) {
             JOIN menu m ON (tm.id_menu = m.id)
             JOIN warung w ON (w.id = m.id_warung)
         WHERE username_pembeli = "${username}"
-        GROUP BY w.nama;
+        GROUP BY w.nama, t.id
+        ORDER BY t.tgl_transaksi DESC;
     `;        
 
     connection.query(query, (error, rows, field) => {
+        console.log(rows);
         if (error) console.log("Orderlist pembeli", error);
         else response.ok(rows, res);
     });
 }
 
 exports.add_order = function(req, res) {
+    console.log(req.body.username_pembeli);
     const username_pembeli = req.body.username_pembeli;
     const tgl_transaksi = req.body.tgl_transaksi;
     const tgl_kirim = req.body.tgl_kirim;
@@ -374,8 +380,8 @@ exports.add_order = function(req, res) {
     console.log(req.body)
     const query_transaksi = `
         INSERT INTO transaksi VALUES (
-            DEFAULT, "${tgl_transaksi}", ${total}, "${alamat}", ${latitude}, 
-            ${longitude}, ${status}, ${id_warung}, "${username_pembeli}", "${tgl_kirim}" 
+            DEFAULT, "${tgl_transaksi}", "${tgl_kirim}", ${total}, "${alamat}", ${latitude}, 
+            ${longitude}, ${status}, ${id_warung}, "${username_pembeli}" 
         );
     `;
 
@@ -423,7 +429,7 @@ exports.update_ordermenu = function(req, res) {
     const query = `
         UPDATE transaksi_menu tm JOIN transaksi t ON (tm.id_transaksi = t.id)
         SET tm.status = 1
-        WHERE tm.id_menu = ${id_menu} AND tgl_kirim = "${tanggal}";
+        WHERE tm.id_menu = ${id_menu} AND DATE(tgl_kirim) = "${tanggal}";
     `;
     console.log(query);
 
