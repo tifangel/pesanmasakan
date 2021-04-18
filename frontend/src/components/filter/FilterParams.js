@@ -8,19 +8,13 @@ export var distance = [
   ];
   
 export var price = [
-    { name: "price", value: "price_lt20", label: "<20.000" },
-    { name: "price", value: "price_20_50", label: "20.000-50.000" },
-    { name: "price", value: "price_50_100", label: "50.000-100.000" },
-    { name: "price", value: "price_>100", label: ">100.000" }
+    { name: "price", value: "0_20000", label: "<20.000" },
+    { name: "price", value: "20000_50000", label: "20.000-50.000" },
+    { name: "price", value: "50000_100000", label: "50.000-100.000" },
+    { name: "price", value: "100000_Infinity", label: ">100.000" }
   ];
 
-export var category = [
-    { name: "category", value: "cat1", label: "category 1"},
-    { name: "category", value: "cat2", label: "category 2"},
-    { name: "category", value: "cat3", label: "category 3"}
-  ]; 
-
-export async function loadCategories(callback) {
+export async function loadCategories() {
   try {
     let response = await getCategories();
     

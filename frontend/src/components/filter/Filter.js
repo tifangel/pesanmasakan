@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+
 import { Checkbox } from '@material-ui/core';
+
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 
-import { distance, price, loadCategories, loadDistances, day } from './FilterParams';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
+import { distance, price, loadCategories, day } from './FilterParams';
 import { filterDistance, filterPrice, filterCategory, filterDay } from './FilterFunctions';
 
 function Filter(props) {
@@ -19,16 +25,22 @@ function Filter(props) {
       marginRight: theme.spacing(5),
       flexShrink: 0,
     },
-    params: {
-
-    }
+    accordionTitle: {
+      fontFamily: 'Roboto Slab',
+      fontWeight : 'medium',
+    },
   }));
+
+  const classes = useStyles();
 
   var [category, setCategory] = useState([]);
   var [expanded, setExpanded] = useState(false);
   var [activeCat, setActiveCat] = useState([]);
   var [activeDist, setActiveDist] = useState([]);
-  var [ticked, setTicked] = useState(0);
+  var [activePrice, setActivePrice] = useState([]);
+  var [activeDay, setActiveDay] = useState([]);
+  var [tickedW, setTickedW] = useState(0);
+  var [tickedM, setTickedM] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -46,87 +58,118 @@ function Filter(props) {
   const handleCheckbox = () => (event, isChecked) => {
     var id = event.target.id;
     var value = event.target.value;
-    var n = ticked;
-
-    isChecked ? n++ : n--;
-    setTicked(n);
+    var w = tickedW;
+    var m = tickedM;
 
     switch (id) {
       case 'category':
         var cat = activeCat;
         isChecked? cat.push(value) : cat.splice(cat.indexOf(value), 1);
+        isChecked? w++ : w--;
         setActiveCat(cat);
-
-        var f = props.original.filter(filterCategory(activeCat));
-        chainFilters(n);
+        setTickedW(w);
+        chainFilters(w, m);
         return;
 
       case 'price':
-        console.log("price");
-        var f = filterPrice(value, props.original, props.current, isChecked);
-        props.onFilter(f, n);
+        var price = activePrice;
+        isChecked? price.push(value) : price.splice(price.indexOf(value), 1);
+        isChecked? m++ : m--;
+        setActivePrice(price);
+        setTickedM(m);
+        chainFilters(w, m);
         return;
 
       case 'distance':
         var dist = activeDist;
         isChecked? dist.push(value) : dist.splice(dist.indexOf(value), 1);
+        isChecked? w++ : w--;
         setActiveDist(dist);
-
-        var f = props.original.filter(filterDistance(activeDist));
-        chainFilters(n);
+        setTickedW(w);
+        chainFilters(w, m);
         return;
 
       case 'day':
-        console.log("day");
-        var f = filterDay(value, props.original, props.current, isChecked);
-        props.onFilter(f, n);
+        var day = activeDay;
+        isChecked? day.push(value) : day.splice(day.indexOf(value), 1);
+        isChecked? m++ : m--;
+        setActiveDay(day);
+        setTickedM(m);
+        chainFilters(w, m);
         return;
     };
   }
 
-  const chainFilters = (n) => {
-    var f = props.original
+  const chainFilters = (nw, nm) => {
+    var m = props.menu
+      .filter(filterPrice(activePrice))
+      .filter(filterDay(activeDay));
+    var f = props.warung
       .filter(filterCategory(activeCat))
       .filter(filterDistance(activeDist));
-    props.onFilter(f, n);
+
+    props.onFilter(f, m, nw, nm);
   }
 
+  
   function mapToForm(list) {
     return (list.map((data, id) => {
       return (
         <FormControlLabel 
-          control={ <Checkbox onChange={handleCheckbox()} id={data.name} value={data.value} data-testid={data.value} />}
           label={data.label}
+          control={ 
+            <Checkbox
+              style={{color: '#FDCB35'}} 
+              onChange={handleCheckbox()} 
+              id={data.name} value={data.value} data-testid={data.value} 
+              disableRipple/>
+          }
         />
       );
     }));
   }
 
-  const classes = useStyles();
   return (
-    <Accordion className={classes.root} expanded={expanded === 'panel'} onChange={handleAccordion('panel')} >
-      <AccordionSummary>
-        Filter
+    <Accordion className={classes.root} expanded={expanded === 'panel'} onChange={handleAccordion('panel')} elevation={0} >
+      <AccordionSummary className={classes.root}>
+        <Typography className={classes.accordionTitle}>Filter Results</Typography>
       </AccordionSummary>
-      <AccordionDetails>
-        <FormGroup>
-        <FormLabel>Distance</FormLabel>
-          <FormGroup row={true} className="params">
-            { mapToForm(distance) }
-          </FormGroup>
-          <FormLabel>Price</FormLabel>
-          <FormGroup row={true} className="params">
-            { mapToForm(price) }          
-          </FormGroup>
-          <FormLabel>Category</FormLabel>
-          <FormGroup row={true} className="params">
-            { mapToForm(category) }
-          </FormGroup>
-          <FormLabel>Day</FormLabel>
-          <FormGroup row={true} className="params">
-            { mapToForm(day) }  
-          </FormGroup>
-        </FormGroup>
+      <AccordionDetails className={classes.root} spacing={2}>
+        <Grid container justify="space-between">
+          <Grid item>
+            <FormLabel>Distance</FormLabel>
+            <FormGroup className="params">
+              { mapToForm(distance) }
+            </FormGroup>
+          </Grid>
+          <Grid item>
+            <FormLabel>Price</FormLabel>
+            <FormGroup className="params">
+              { mapToForm(price) }          
+            </FormGroup>            
+          </Grid>
+          <Grid item>
+            <FormLabel>Category</FormLabel>
+            <FormGroup className="params">
+              { mapToForm(category) }
+            </FormGroup>            
+          </Grid>
+          <Grid item>
+            <FormLabel>Day</FormLabel>
+            <Grid container>
+              <Grid item>
+                <FormGroup className="params">
+                  { mapToForm(day.slice(0, 4)) }  
+                </FormGroup>
+              </Grid>
+              <Grid item>
+                <FormGroup className="params">
+                  { mapToForm(day.slice(4, 8)) }  
+                </FormGroup>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </AccordionDetails>
     </Accordion>
   );
