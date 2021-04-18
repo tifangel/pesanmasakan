@@ -248,7 +248,6 @@ function PesananSayaPage(props) {
   useEffect(() => {
       if (user) {
           setPageUser(user)
-          console.log(pageUser)
       }
   }, [user])
   
@@ -281,7 +280,7 @@ function PesananSayaPage(props) {
       }
     }
     loadPesanan()
-  }, [pageUser.username]);
+  }, [pageUser.username, data]);
 
   const classes = useStyles();
 

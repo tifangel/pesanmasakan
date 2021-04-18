@@ -100,13 +100,8 @@ const OrderPage = (props) => {
       }),
       id_warung: state.warung_id,
     };
-    console.log(orderData);
     insertPesanan(orderData);
     history.push('/pesanan');
-    // history.push({
-    //   pathname: `/pesanan/${state.username_pembeli}`,
-    //   state: keranjang,
-    // });
   };
 
   // untuk keranjang

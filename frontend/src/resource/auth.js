@@ -11,7 +11,6 @@ export const getMyProfile = async () =>
         },
       })
       response = response.json()
-      console.log(response)
 
       resolve(response);
     } catch (e) {
