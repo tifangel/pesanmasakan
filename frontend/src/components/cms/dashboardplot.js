@@ -67,7 +67,7 @@ const DashboardPlot = ({id_warung}) =>{
             }
         }
         loadData();
-    }, []);
+    }, [id_warung]);
 
     const classes = useStyles();
     return (

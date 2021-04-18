@@ -96,7 +96,7 @@ const MainContent = ({ id}) => {
         }
       }
       loadMenu();
-    }, []);
+    }, [dataFormProfile.id_warung]);
 
     const onDeleteMenu = (id) => {
         if(window.confirm("Anda yakin ingin menghapus menu?")){
