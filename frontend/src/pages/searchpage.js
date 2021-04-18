@@ -41,9 +41,10 @@ const SearchPage = (props) => {
 
     const [result,setResult] = useState([]); // the filtered data
     const [resultMenu, setResultMenu] = useState([]);
-    const [filtered, setFiltered] = useState([]);
+    const [fullMenu, setFullMenu] = useState([]);
     const [fullData, setFullData] = useState([]); // the unfiltered data
-    const [length, setLength] = useState(0);
+    const [lengthW, setLengthW] = useState(0);
+    const [LengthM, setLengthM] = useState(0);
 
     const [currentPage, setCurrentPage] = useState(1);
     const postPerPage = 3;
@@ -72,6 +73,11 @@ const SearchPage = (props) => {
     
         function handleError(error){
             //Handle Errors
+            for (var i = 0; i < fullData.length; i++) {
+                fullData[i].distance = "N/A";
+            }
+            setFullData(fullData);
+
             switch(error.code) {
                 case error.PERMISSION_DENIED:
                     console.log("User denied the request for Geolocation.");
@@ -80,10 +86,10 @@ const SearchPage = (props) => {
                     console.log("Location information is unavailable.");
                     break;
                 case error.TIMEOUT:
-                console.log("The request to get user location timed out.");
+                    console.log("The request to get user location timed out.");
                     break;
                 case error.UNKNOWN_ERROR:
-                console.log("An unknown error occurred.");
+                    console.log("An unknown error occurred.");
                     break;
             }
         }
@@ -107,11 +113,12 @@ const SearchPage = (props) => {
                 if (response.status === 200) {
                     setResult(response.data.values);
                     setDistance(response.data.values);
-                    setLength(response.data.values.length);
+                    setLengthW(response.data.values.length);
                 }
 
                 if (responseMenu.status === 200){
                     setResultMenu(responseMenu.data.values);
+                    setFullMenu(responseMenu.data.values);
                 }
             }
             catch (e) {
@@ -121,14 +128,23 @@ const SearchPage = (props) => {
         loadWarungList();
     }, [props.location,datasearch,datalocation,datamenu]);
 
-    const handleFilter = (f, n) => {
-        if (n === 0) {
+    const handleFilter = (f, m, nw, nm) => {
+        if (nw === 0) {
             setResult(fullData);
-            setLength(0);
+            setLengthW(0);
         }
         else {
             setResult(f);
-            setLength(f.length);
+            setLengthW(f.length);
+        }
+
+        if (nm === 0) {
+            setResultMenu(fullMenu);
+            setLengthM(0);
+        }
+        else {
+            setResultMenu(m);
+            setLengthM(m.length);
         }
     }
 
@@ -148,15 +164,11 @@ const SearchPage = (props) => {
 
     const classes = useStyles();
 
-    // console.log("ddata", dData);
-    // console.log("res", currentResult);
-    // setDistance(currentResult);
-    // setDistance(fullData);
     return(
         <React.Fragment>
             <AppHeader/>
             <Searchbar/>
-            <Filter original={fullData} current={filtered} onFilter={handleFilter}/>
+            <Filter warung={fullData} menu={fullMenu} onFilter={handleFilter}/>
             <WarungList data={result}/>
             <MenuList data={resultMenu}/>
         </React.Fragment>
