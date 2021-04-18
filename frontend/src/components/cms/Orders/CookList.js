@@ -5,7 +5,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import Snackbar from '@material-ui/core/Snackbar';
 
-import { IconButton } from '@material-ui/core';
+import { IconButton, requirePropFactory } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -35,10 +35,12 @@ const convertDataToRows = function(data) {
     var res = [];
     for (var i = 0; i < data.length; i++) {
         var row = {};
-        row.id = data[i].id;
-        row.date = formatDate(data[i].tgl_transaksi);
+        row.id = i;
+        row.idmenu = data[i].id;
+        row.date = formatDate(data[i].tanggal);
         row.qty = data[i].qty;
         row.itemname = data[i].nama;
+        console.log(row);
         res.push(row);
     }
     return res;
@@ -57,7 +59,7 @@ function formatDate(date) {
 
 const Markdone = (props) => {
     var date = props.tgl;
-    var id = props.id;
+    var id = props.idmenu;
 
     const [open, setOpen] = useState(false);
     const [disabled, setDisabled] = useState(false); 
@@ -69,12 +71,14 @@ const Markdone = (props) => {
 
     const handleClick = async function() {
         var day, month, year, tgl;
+        console.log(date);
         day = date.slice(0, 2);
         month = date.slice(3, 5);
         year = date.slice(6, 8);
         tgl = `20${year}-${month}-${day}`;
 
-        console.log("data", id, tgl);
+        console.log("id ", id);
+
         var data = {
             id: id,
             tanggal: tgl
@@ -128,7 +132,7 @@ const CookList = ({data}) => {
         { field: 'id', headerName:' ', flex: 0.16, sortable: false, disableClickEventBubbling: true,
             renderCell: (params) => {                
                 return (
-                    <Markdone key={params.getValue('id')} id={params.getValue('id')} tgl={params.getValue('date')}/>
+                    <Markdone key={params.getValue('id')} idmenu={params.getValue('idmenu')} tgl={params.getValue('date')}/>
                 );
             }
             },

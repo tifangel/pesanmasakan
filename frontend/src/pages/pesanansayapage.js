@@ -97,56 +97,81 @@ function columns(props) {
     {
       field: "nama_warung",
       headerName: "Nama Warung",
-      width: 285,
+      width: 260,
       headerClassName: "header-style",
     },
     {
       field: "jumlah",
       headerName: "Jumlah",
-      width: 180,
+      width: 100,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         return `${value} Item`;
       },
     },
     {
-      field: "tanggal",
-      headerName: "Tanggal",
-      width: 200,
+      field: "tgl_transaksi",
+      headerName: "Tanggal Transaksi",
+      width: 150,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         const time = new Date(value);
         return `${time.getDate()} ${
           months[time.getMonth()]
-        } ${time.getFullYear()}`;
+        } ${time.getFullYear()} `;
       },
     },
     {
-      field: "jam",
-      headerName: "Jam",
-      width: 200,
+      field: "jam_transaksi",
+      headerName: "Jam Transaksi",
+      width: 150,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         const time = new Date(value);
-        return `
-          ${
-            time.getHours() < 10 ? `0${time.getHours()}` : time.getHours()
-          }
-          :
-          ${
+        return `${time.getHours() < 10 ? `0${time.getHours()}` : time.getHours()
+          }:${
             time.getMinutes() < 10 ? `0${time.getMinutes()}` : time.getMinutes()
-          }
-          :
-          ${
+          }:${
             time.getSeconds() < 10 ? `0${time.getSeconds()}` : time.getSeconds()
           } 
           WIB`;
       },
     },
     {
+      field: "tgl_kirim",
+      headerName: "Tanggal Kirim",
+      width: 150,
+      headerClassName: "header-style",
+      valueFormatter: ({ value }) => {
+        const time = new Date(value);
+        return `${time.getDate()} ${
+          months[time.getMonth()]
+        } ${time.getFullYear()} `;
+      },
+    },
+    {
+      field: "jam_kirim",
+      headerName: "Jam Kirim",
+      width: 150,
+      headerClassName: "header-style",
+      valueFormatter: ({ value }) => {
+        const time = new Date(value);
+        return `
+          ${
+            time.getHours() < 10 ? `0${time.getHours()}` : time.getHours()
+          }:${
+            time.getMinutes() < 10 ? `0${time.getMinutes()}` : time.getMinutes()
+          }:${
+            time.getSeconds() < 10 ? `0${time.getSeconds()}` : time.getSeconds()
+          } 
+          WIB`;
+      },
+    },
+    
+    {
       field: "total",
       headerName: "Total",
-      width: 200,
+      width: 160,
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         if (value >= 1000) {
@@ -221,8 +246,11 @@ function PesananSayaPage(props) {
     if(data.length > 0){
       for(var i=0; i<data.length; i++){
         var date = new Date(data[i].tgl_transaksi)
-        data[i].tanggal = date
-        data[i].jam = date
+        data[i].tgl_transaksi = date
+        data[i].jam_transaksi = date
+        var date1 = new Date(data[i].tgl_kirim)
+        data[i].tgl_kirim = date1
+        data[i].jam_kirim = date1
       }
       setData(data)
     }
@@ -231,7 +259,6 @@ function PesananSayaPage(props) {
   useEffect(() => {
     async function loadPesanan() {
       try {
-        
         let response = await getPesananPembeli(props.match.params.username_pembeli)
         if (response.status === 200) {
           rows(response.data.values)
@@ -248,7 +275,7 @@ function PesananSayaPage(props) {
 
   return (
     <React.Fragment>
-    <AppHeader username="Jundu" />
+    <AppHeader username="indy" />
       <div className={classes.root}>
         <Toolbar style={{ padding: 0 }}>
           <Typography className={classes.title} variant="h4" noWrap>

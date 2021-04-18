@@ -127,8 +127,8 @@ const InfoPage = (props) => {
   };
   const onBayar = () => {
     if (!keranjang.length) return;
-    const userId = prompt("Anda harus login", 1);
-    if(!Number(userId)){
+    const username_pembeli = prompt("Anda harus login", "indy");
+    if(!username_pembeli){
       alert("Login gagal");
       return;
     }
@@ -141,7 +141,7 @@ const InfoPage = (props) => {
       history.push({
           pathname: '/konfirmasi/',
           state: {
-            userId: Number(userId),
+            username_pembeli: username_pembeli,
             alamat: alamat,
             keranjang: keranjang,
             warung_id: props.match.params.id,
