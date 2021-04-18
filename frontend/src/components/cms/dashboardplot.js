@@ -28,7 +28,6 @@ const DashboardPlot = ({id_warung}) =>{
         const dataCombine = [];
         var orderArray = orders[0];
         const revenueArray = orders[1];
-        console.log(orderArray.length);
         for (var i = 0; i < orderArray.length; i++){
             var date = ''
 
@@ -50,7 +49,6 @@ const DashboardPlot = ({id_warung}) =>{
             dataCombine.push(dataObj);
         }
         setData(dataCombine);
-        console.log(data.length);
     }
 
     useEffect(() => {

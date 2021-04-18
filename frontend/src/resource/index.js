@@ -156,7 +156,6 @@ export const getOrderlistPenjual = async(id) => {
 export const getHistoryPenjual = async(id) => {
     const url = `${defaultAPIURL}/history/penjual/${id}`;
     const response = await get(url);
-    console.log(response);
     return response;
 }
 
