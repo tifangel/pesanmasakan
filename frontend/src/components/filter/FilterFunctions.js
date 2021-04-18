@@ -1,6 +1,13 @@
-export function filterPrice(value, original, current, isChecked) {
-    console.log("warungs", original);
-    return original;
+export function filterPrice(activePrice) {
+    return function(data) {
+        if (activePrice.length <= 0) return true;
+
+        for (var i = 0; i < activePrice.length; i++) {
+            var param = activePrice[i].split("_").map(x => +x);
+            if (data.harga >= param[0] && data.harga <= param[1]) return true;
+        }
+        return false;
+    }
 }
 
 export function filterCategory(activeCat) {
@@ -14,18 +21,23 @@ export function filterCategory(activeCat) {
 export function filterDistance(activeDist) {
     return function(data) {
         if (activeDist.length <= 0) return true;
+        if (data.distance === "N/A") return true;
 
-        var passed = false;
         for (var i = 0; i < activeDist.length; i++) {
             var param = activeDist[i].split("_").map(x => +x);
-            passed = data.distance >= param[0] && data.distance <= param[1];
-            if (passed) return passed;
+            if (data.distance >= param[0] && data.distance <= param[1]) return true;
         }
-        return passed;
+        return false;
     }
 }
 
-export function filterDay(value, original, current, isChecked) {
-    console.log("warungs", original);
-    return original;
+export function filterDay(activeDay) {
+    return function(data) {
+        if (activeDay.length <= 0) return true;
+
+        for (var i = 0; i < data.hari.length; i++) {
+            if (activeDay.includes(data.hari[i])) return true;
+        }
+        return false;
+    }
 }
