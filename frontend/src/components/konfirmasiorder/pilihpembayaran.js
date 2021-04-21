@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     color: "#000",
     marginLeft: theme.spacing(1),
+    fontFamily: "Roboto Slab"
   },
   buttonInactive: {
     margin: theme.spacing(1),
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
       color: "#FDCB35",
       backgroundColor: "#FFF",
     },
+    fontFamily: "Roboto Slab"
   },
   button: {
     margin: theme.spacing(1),
@@ -37,80 +39,83 @@ const useStyles = makeStyles((theme) => ({
       color: "#FFF",
       backgroundColor: "#FDCB35",
     },
-  },
+    fontFamily: "Roboto Slab"
+  }
 }));
 
 export default function PilihPembayaran({kurir, setKurir, carabayar, setCarabayar}) {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Typography
-        component="h2"
-        variant="h6"
-        gutterBottom
-        className={classes.title}
-      >
-        Pilih Kurir
-      </Typography>
-      <div>
-        <Button
-          variant="contained"
-          size="large"
-          className={kurir === 0 ? classes.button : classes.buttonInactive}
-          startIcon={<LocalShippingIcon />}
-          onClick={() => setKurir(0)}
+      <div className={classes.root}>
+        <Typography
+          component="h2"
+          variant="h6"
+          gutterBottom
+          className={classes.title}
         >
-          Delivery Service
-        </Button>
-        <Button
-          variant="contained"
-          size="large"
-          className={kurir === 1 ? classes.button : classes.buttonInactive}
-          startIcon={<LocalMallIcon />}
-          onClick={() => setKurir(1)}
-        >
-          Self Pickup
-        </Button>
-      </div>
+          Pilih Kurir
+        </Typography>
+        <div className={classes.buttonGroup}>
+          <Button
+            variant="contained"
+            size="large"
+            className={kurir === 0 ? classes.button : classes.buttonInactive}
+            startIcon={<LocalShippingIcon />}
+            onClick={() => setKurir(0)}
+          >
+            Delivery Service
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            className={kurir === 1 ? classes.button : classes.buttonInactive}
+            startIcon={<LocalMallIcon />}
+            onClick={() => setKurir(1)}
+          >
+            Self Pickup
+          </Button>
+        </div>
 
-      <Divider style={{ marginTop: 40, marginBottom: 40 }} />
+        <Divider style={{ marginTop: 40, marginBottom: 40 }} />
 
-      <Typography
-        component="h2"
-        variant="h6"
-        gutterBottom
-        className={classes.title}
-      >
-        Pilih Metode Pembayaran
-      </Typography>
-      <div>
-        <Button
-          variant="contained"
-          size="large"
-          className={carabayar === 0 ? classes.button : classes.buttonInactive}
-          startIcon={<AccountBalanceIcon />}
-          onClick={() => setCarabayar(0)}
+        <Typography
+          component="h2"
+          variant="h6"
+          gutterBottom
+          className={classes.title}
         >
-          Bank Transfer
-        </Button>
-        <Button
-          variant="contained"
-          size="large"
-          className={carabayar === 1 ? classes.button : classes.buttonInactive}
-          startIcon={<PhoneAndroidIcon />}
-          onClick={() => setCarabayar(1)}
-        >
-          E-money
-        </Button>
-        <Button
-          variant="contained"
-          size="large"
-          className={carabayar === 2 ? classes.button : classes.buttonInactive}
-          startIcon={<AttachMoneyIcon />}
-          onClick={() => setCarabayar(2)}
-        >
-          Cash
-        </Button>
+          Pilih Metode Pembayaran
+        </Typography>
+        <div className={classes.buttonGroup}>
+          <Button
+            variant="contained"
+            size="large"
+            className={carabayar === 0 ? classes.button : classes.buttonInactive}
+            startIcon={<AccountBalanceIcon />}
+            onClick={() => setCarabayar(0)}
+          >
+            Bank Transfer
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            className={carabayar === 1 ? classes.button : classes.buttonInactive}
+            startIcon={<PhoneAndroidIcon />}
+            onClick={() => setCarabayar(1)}
+          >
+            E-money
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            className={carabayar === 2 ? classes.button : classes.buttonInactive}
+            startIcon={<AttachMoneyIcon />}
+            onClick={() => setCarabayar(2)}
+          >
+            Cash
+          </Button>
+        </div>
       </div>
     </React.Fragment>
   );

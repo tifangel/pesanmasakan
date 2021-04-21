@@ -22,10 +22,11 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
-    height: 500,
   },
 }));
 function hitungOngkir(lat1, lon1, lat2, lon2) {
@@ -140,7 +141,7 @@ const OrderPage = (props) => {
       <AppHeader username={state.username_pembeli} />
       <div className={classes.root}>
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+          <Grid container spacing={5}>
             <Grid item xs={12} md={8}>
               <Paper className={classes.paper}>
                 <PilihPembayaran

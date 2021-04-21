@@ -105,9 +105,6 @@ const MenuItem = ({data, onClick}) => {
                     <Typography className={classes.menuDesc} variant="body2" color="textSecondary" component="p">
                         {data.desc_menu}
                     </Typography>
-                    <Typography className={classes.menuPrice} variant="body2" color="textSecondary" component="p">
-                        Rp {data.harga}
-                    </Typography>
                     <Grid container className={classes.card} spacing={1}>
                         {days.map((item, idx)=>
                             <Grid item>
@@ -117,6 +114,9 @@ const MenuItem = ({data, onClick}) => {
                             </Grid>
                         )}
                     </Grid>
+                    <Typography className={classes.menuPrice} variant="body2" color="textSecondary" component="p">
+                        Rp {data.harga}
+                    </Typography>
                 </CardContent>
             </Card>
         </React.Fragment>

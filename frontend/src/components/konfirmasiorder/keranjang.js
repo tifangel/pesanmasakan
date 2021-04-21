@@ -47,21 +47,30 @@ const useStyles = makeStyles((theme) => ({
       color: "#FFF",
       backgroundColor: "#FDCB35",
     },
+    fontFamily: "Roboto Slab"
   },
   tablecell: {
     borderBottom: "none",
     fontWeight: 500,
+    fontFamily: "Roboto Slab"
   },
   menuimg: {
     objectFit: "contain",
-    width: 80,
-    height: 80,
+    width: 70,
+    height: 70,
   },
   menuroot: {
     display: "flex",
+    flexDirection:"row",
     justifyContent: "center",
-    backgroundColor: "",
-  },
+    alignItems:"center",
+    backgroundColor: ""
+  },icon:{
+    margin: theme.spacing(1), 
+    backgroundColor:"#EFEFEF", 
+    width:20,
+    height:20
+  }
 }));
 
 export default function Keranjang({
@@ -80,7 +89,7 @@ export default function Keranjang({
         variant="h6"
         color="primary"
         gutterBottom
-        style={{ color: "#000" }}
+        style={{ color: "#000", fontFamily: "Roboto Slab", fontWeight:600 }}
       >
         Keranjang Anda
       </Typography>
@@ -98,28 +107,30 @@ export default function Keranjang({
                 paddingRight: 0,
                 paddingLeft: 0,
                 width: 120,
-                marginLeft: 12,
+                marginLeft: 12
               }}
             >
-              <Typography display="inline" style={{ fontWeight: 500 }}>
+              <Typography display="inline" style={{ fontFamily: "Roboto Slab", fontWeight:400 }}>
                 {it.nama}
               </Typography>
             </CardContent>
-            <CardContent style={{ paddingRight: 0, paddingLeft: 0 }}>
+            <CardContent style={{ paddingRight: 0, paddingLeft: 0, display:"flex", flexDirection:"row", alignItems:'center'}}>
               <IconButton
                 size="small"
                 onClick={() => onItemCountChange(it.id, it.jumlah - 1)}
+                className={classes.icon}
               >
-                <RemoveIcon />
+                <RemoveIcon style={{width:20,height:20}} />
               </IconButton>
-              {it.jumlah}
+              <p style={{fontFamily: "Roboto Slab", width:5, textAlign:"center"}}>{it.jumlah} </p>
               <IconButton
                 size="small"
                 onClick={() => onItemCountChange(it.id, it.jumlah + 1)}
+                className={classes.icon}
               >
-                <AddIcon />
+                <AddIcon style={{width:20,height:20}}/>
               </IconButton>
-              <Typography display="inline" style={{ fontWeight: 500 }}>
+              <Typography display="inline" style={{ fontFamily: "Roboto Slab", fontWeight:400, paddingLeft: 10, }}>
                 {formatMoney(it.harga)}
               </Typography>
             </CardContent>
