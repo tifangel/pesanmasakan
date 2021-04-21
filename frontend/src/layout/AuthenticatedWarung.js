@@ -11,7 +11,7 @@ const AuthenticatedWarung = (props) => {
   useEffect(() => {
     const checkAuth = async () => {
       if (!isAuthenticated) {
-        alert("Silakan login terlebih dahulu!")
+        alert("Please login first!")
         history.push("/login")
       }
     };
@@ -22,14 +22,14 @@ const AuthenticatedWarung = (props) => {
   useEffect(() => {
     // check if current user is not an warung
       if (!roleWarung) {
-        console.log("Unauthorized access!")
+        alert("Unauthorized access! Not account warung")
         history.push("/")
       } 
   }, [roleWarung,history])
 
   return (
     <>
-      {roleWarung && children}
+      {isAuthenticated && roleWarung && children}
     </>
   );
 };

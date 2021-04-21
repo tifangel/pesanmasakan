@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {logincustomer, loginwarung} from '../../resource/auth'
+import {loginuser, loginwarung} from '../../resource/auth'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, InputBase, Button } from '@material-ui/core'
 import StorefrontIcon from '@material-ui/icons/Storefront'
@@ -176,20 +176,23 @@ const FormLogin = ({status, changeForm, changeStatusForm}) => {
                 data.role = status
 
                 let response
-                status === 'customer'? response = await logincustomer(data) : response = await loginwarung(data)
+                response = await loginuser(data)
                 console.log(response)
-
-                localStorage.setItem('token', response.token);
-                localStorage.setItem('role', response.role);
-                status === 'customer'? history.push('/') : history.push('/cms');
-                window.location.reload();
+                if(response.message){
+                    alert(response.message)
+                }else{
+                    localStorage.setItem('token', response.token);
+                    localStorage.setItem('role', response.role);
+                    status === 'customer'? history.push('/') : history.push('/cms');
+                    window.location.reload();
+                }
             }else{
                 alert("Username and / or password must be fill")
             }
         }
         catch (e) {
             console.log(e)
-            alert("Username or password incorrect")
+            alert("Failed to get authorization")
         }
     }
 

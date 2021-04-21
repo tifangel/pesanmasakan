@@ -44,6 +44,7 @@ export default function AppHeader() {
       localStorage.removeItem("role");
 
       userHasAuthenticated(false);
+      alert("logout was successful")
       history.push("/");
   }
 

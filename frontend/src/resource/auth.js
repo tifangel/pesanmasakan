@@ -36,10 +36,10 @@ export const loginwarung = async (data) =>
     }
   });
 
-export const logincustomer = async (data) =>
+export const loginuser = async (data) =>
   new Promise(async (resolve, reject) => {    
     try {
-      let response = await fetch(`${defaultAPIURL}/getpembeli`, {
+      let response = await fetch(`${defaultAPIURL}/getuser`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

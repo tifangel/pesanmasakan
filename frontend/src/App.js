@@ -25,9 +25,9 @@ function App(){
                     const response = await getMyProfile();
                     console.log(response)
 
-                    if (response.detail) {
+                    if (response.data.detail) {
                         alert(
-                            "Sesi login Anda telah berakhir, silakan login kembali."
+                            "Your login session has ended, please login again."
                         );
 
                         // sign out

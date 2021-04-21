@@ -54,16 +54,14 @@ module.exports = function(app) {
         .post(pesanmasakan.update_menu);
     
     // USER
-    app.route('/getpembeli')
-        .post(auth.get_pembeli);
-    app.route('/getpenjual')
-        .post(auth.get_penjual);    
+    app.route('/getuser')
+        .post(auth.get_auth);   
     app.route('/myprofile')
         .get(auth.get_my_profile);
     app.route('/registerpembeli')
-        .post(auth.tambah_user_pembeli);
+        .post(auth.add_user_customer);
     app.route('/registerpenjual')
-        .post(auth.tambah_user_penjual);
+        .post(auth.add_user_warung);
     
     // ORDER
     app.route('/cooklist/:id')
@@ -80,7 +78,7 @@ module.exports = function(app) {
     app.route('/history/penjual/:id')
         .get(pesanmasakan.history_penjual);
 
-    app.route('/orderlist/pembeli/:username')
+    app.route('/orderlist/pembeli/:id')
         .get(pesanmasakan.orderlist_pembeli);
 
     app.route('/tambahorder')

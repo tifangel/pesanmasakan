@@ -9,7 +9,7 @@ import PilihPembayaran from "../components/konfirmasiorder/pilihpembayaran";
 import AppHeader from "../components/header";
 import { useHistory } from "react-router-dom";
 import { getWarung } from "../resource/index";
-import Authenticated from '../layout/Authenticated'
+import AuthenticatedUser from '../layout/AuthenticatedUser'
 import { useAppContext } from '../lib/contextLib'
 
 const { defaultAPIURL } = require("../config");
@@ -48,6 +48,8 @@ function hitungOngkir(lat1, lon1, lat2, lon2) {
 }
 
 const OrderPage = (props) => {
+
+  const roleUser = localStorage.getItem('role')
 
   const { user } = useAppContext();
   const [pageUser, setPageUser] = useState({})
@@ -88,7 +90,7 @@ const OrderPage = (props) => {
     var tgl_kirim = '2021-04-20 12:00:00';
     
     let orderData = {
-      username_pembeli: pageUser.username,
+      id_pembeli: pageUser.id,
       tgl_transaksi: tanggal_jam,
       tgl_kirim: tgl_kirim,
       total: total,
@@ -101,7 +103,14 @@ const OrderPage = (props) => {
       id_warung: state.warung_id,
     };
     insertPesanan(orderData);
-    history.push('/pesanan');
+    if(roleUser === 'customer'){
+      alert("Order successful delivered to seller")
+      history.push('/pesanan');
+    }else if(roleUser === 'warung'){
+      alert("Order successful delivered to seller")
+      history.push('/');
+    }
+    
   };
 
   // untuk keranjang
@@ -146,7 +155,7 @@ const OrderPage = (props) => {
   }, []);
 
   return (
-    <Authenticated>
+    <AuthenticatedUser>
       { pageUser &&
           <React.Fragment>
               <AppHeader/>
@@ -179,7 +188,7 @@ const OrderPage = (props) => {
               </div>
           </React.Fragment>
       }
-    </Authenticated>
+    </AuthenticatedUser>
   );
 };
 

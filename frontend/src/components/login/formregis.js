@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, InputBase, Button, Grid, } from '@material-ui/core'
-import { getCategories, insertPembeli, insertPenjual, insertWarung } from '../../resource';
+import { getCategories, insertPembeli, insertPenjual, insertWarung} from '../../resource';
 import { loadCategories } from '../filter/FilterParams';
 
 const useStyles = makeStyles((theme) => ({
@@ -290,22 +290,21 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
         const loadCategories = async() => {
             const cat = await getCategories()
             setCategories(cat.data.values)
-            setDataRegis({ ...dataRegis, kategori: cat.data.values[0].kategori });
+            setDataRegis({ ...dataRegis, cat: cat.data.values[0].kategori });
         }
         loadCategories()
     }, []) 
 
     const [dataRegis, setDataRegis] = useState({
-        fullname: "",
+        name: "",
         username: "",
         email: "",
         phone: "",
         password: "",
         currpassword: "",
-        nama_warung: "",
-        alamat: "",
-        kategori: "",
-        nama_owner: "",
+        warung_name: "",
+        address: "",
+        cat: "",
         pic: "",
     })
 
@@ -319,7 +318,6 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
             dataRegis.password != "" &&
             dataRegis.email != "" &&
             dataRegis.phone != "" &&
-            dataRegis.currpassword != "" &&
             dataRegis.password === dataRegis.currpassword
         ){
             setFormCreateWarung('show')
@@ -335,44 +333,41 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
             dataRegis.password != "" &&
             dataRegis.email != "" &&
             dataRegis.phone != "" &&
-            dataRegis.fullname != ""
+            dataRegis.name != ""
         ){
             response = await insertPembeli({
                 username: dataRegis.username,
                 password: dataRegis.password,
                 email: dataRegis.email,
                 no_hp: dataRegis.phone,
-                nama: dataRegis.fullname,
+                nama: dataRegis.name,
+                role: status
             })
             
-            if(response) history.push('/');
-            else window.alert('terjadi kesalahan')
+            if(response.data.message) {
+                alert(response.data.message)
+            }
+            else{
+                alert("registration is successful")
+                history.push('/');
+            }
         }else if (status === 'warung' &&
-            dataRegis.nama_warung != "" &&
-            dataRegis.alamat != "" &&
-            dataRegis.kategori != "" && 
-            dataRegis.nama_owner != ""
+            dataRegis.warung_name != "" &&
+            dataRegis.address != "" 
         ){
             navigator.geolocation.getCurrentPosition(async(position) => {
-                response = await insertWarung({
-                    nama: dataRegis.nama_warung,
-                    alamat: dataRegis.alamat,
-                    cat: dataRegis.kategori ,
-                    pic: dataRegis.pic,
-                    lat: position.coords.latitude,
-                    long: position.coords.longitude,
-                })
-                response = await insertPenjual({
-                    username: dataRegis.username,
-                    password: dataRegis.password,
-                    email: dataRegis.email,
-                    no_hp: dataRegis.phone,
-                    nama: dataRegis.nama_owner,
-                    id: response.data.values.insertId
-                })
+                dataRegis.lat = position.coords.latitude
+                dataRegis.long = position.coords.longitude
+                dataRegis.role = status
+                response = await insertPenjual(dataRegis)
                 
-                if(response) history.push('/');
-                else window.alert('terjadi kesalahan')
+                if(response.data.message) {
+                    alert(response.data.message)
+                }
+                else{
+                    alert("registration is successful")
+                    history.push('/');
+                }
             }, () => alert('please allow location'), { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 });
         }else {
             alert("All input field must be fill")
@@ -392,7 +387,7 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                         </p>
                         {status === 'customer' && (
                             <InputBase
-                            name="fullname"
+                            name="name"
                             type="text"
                             placeholder="Fullname"
                             className={classes.input}
@@ -463,7 +458,7 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                                         <td className={classes.col1}>Warung Name</td>
                                         <td className={classes.col2}>
                                             <InputBase
-                                                name="nama_warung"
+                                                name="warung_name"
                                                 type="text"
                                                 className={classes.input2}
                                                 onChange={handleInput}/>
@@ -473,7 +468,7 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                                         <td className={classes.col1}>Address</td>
                                         <td className={classes.col2}>
                                             <InputBase
-                                                name="alamat"
+                                                name="address"
                                                 type="text"
                                                 multiline
                                                 rows="4"
@@ -485,7 +480,7 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                                         <td className={classes.col1}>Category</td>
                                         <td className={classes.col2}>
                                             <select 
-                                                name="kategori"
+                                                name="cat"
                                                 type="text"
                                                 className={classes.input2}
                                                 style={{height: '35px', border: 0, padding: 0}}
@@ -499,7 +494,7 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                                         <td className={classes.col1}>Warung Owner</td>
                                         <td className={classes.col2}>
                                             <InputBase
-                                                name="nama_owner"
+                                                name="name"
                                                 type="text"
                                                 className={classes.input2}
                                                 onChange={handleInput}/>

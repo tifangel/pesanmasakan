@@ -86,11 +86,12 @@ const MainContent = ({ id}) => {
     useEffect(() => {
       async function loadMenu() {
         try {
-  
-          let responseMenu = await getMenuListByWarungId(dataFormProfile.id_warung);
-          if (responseMenu.status === 200) {
-            setMenuList(responseMenu.data.values);
-          }
+            if(dataFormProfile){
+                let responseMenu = await getMenuListByWarungId(dataFormProfile.id_warung);
+                if (responseMenu.status === 200) {
+                    setMenuList(responseMenu.data.values);
+                }
+            }
         } catch (e) {
           console.log(e);
         }
@@ -144,9 +145,13 @@ const MainContent = ({ id}) => {
     const classes = useStyles();
 
     return (
-        <main className={classes.root}>
-            {content}
-        </main>
+        <>
+            {dataFormProfile &&
+                <main className={classes.root}>
+                    {content}
+                </main>
+            }
+        </>
     );
 }
 

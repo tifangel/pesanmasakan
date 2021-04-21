@@ -270,7 +270,7 @@ function PesananSayaPage(props) {
   useEffect(() => {
     async function loadPesanan() {
       try {
-        let response = await getPesananPembeli(pageUser.username)
+        let response = await getPesananPembeli(pageUser.id)
         if (response.status === 200) {
           rows(response.data.values)
         }
@@ -280,7 +280,7 @@ function PesananSayaPage(props) {
       }
     }
     loadPesanan()
-  }, [pageUser.username, data]);
+  }, [pageUser.id]);
 
   const classes = useStyles();
 

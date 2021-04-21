@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
 -- Host: localhost    Database: pesanmasakan
 -- ------------------------------------------------------
--- Server version	8.0.19
+-- Server version	8.0.23
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -88,13 +88,13 @@ CREATE TABLE `transaksi` (
   `longitude` double DEFAULT NULL,
   `status` int DEFAULT NULL,
   `id_warung` int DEFAULT NULL,
-  `username_pembeli` varchar(255) DEFAULT NULL,
+  `id_pembeli` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_id_warung` (`id_warung`),
-  KEY `username_pembeli` (`username_pembeli`),
+  KEY `id_pembeli` (`id_pembeli`),
   CONSTRAINT `fk_id_warung` FOREIGN KEY (`id_warung`) REFERENCES `warung` (`id`),
-  CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`username_pembeli`) REFERENCES `user_pembeli` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`id_pembeli`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,13 +103,7 @@ CREATE TABLE `transaksi` (
 
 LOCK TABLES `transaksi` WRITE;
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
-INSERT INTO `transaksi` VALUES 
-(1,'2021-02-24 10:23:55','2021-02-25 10:00:00',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,1,3,'indy'),
-(2,'2021-02-26 08:16:54','2021-02-28 12:00:00',17000,'Jl Dieng Kawi no 7',-6.931036,107.596800,0,4,'raras'),
-(3,'2021-02-25 12:05:39','2021-02-30 12:00:00',40000,'Jl Raya Langsep no 32',-7.383062,108.534895,2,2,'raras'),
-(4,'2021-04-02 10:25:32','2021-04-10 17:00:00',45000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,4,'indy'),
-(5,'2021-04-03 19:53:02','2021-04-05 18:00:00',135000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'raras'),
-(6,'2021-05-03 10:03:24','2021-05-04 12:00:00',100000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,'indy');
+INSERT INTO `transaksi` VALUES (1,'2021-02-24 10:23:55','2021-02-25 10:00:00',75000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,1,3,3),(2,'2021-02-26 08:16:54','2021-02-28 12:00:00',17000,'Jl Dieng Kawi no 7',-6.931036,107.5968,0,4,4),(3,'2021-02-25 12:05:39','0000-00-00 00:00:00',40000,'Jl Raya Langsep no 32',-7.383062,108.534895,2,2,4),(4,'2021-04-02 10:25:32','2021-04-10 17:00:00',45000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,4,3),(5,'2021-04-03 19:53:02','2021-04-05 18:00:00',135000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,4),(6,'2021-05-03 10:03:24','2021-05-04 12:00:00',100000,'Jl Ijen Nirwana no 12',-6.464019,107.179779,0,1,3),(11,'2021-04-21 10:06:36','2021-04-20 12:00:00',71100,'alamat',-7.9666204,112.63263210000001,0,1,3),(12,'2021-04-21 10:10:43','2021-04-20 12:00:00',115400,'alamat',-7.9828597,112.6334548,0,3,3),(13,'2021-04-21 11:12:45','2021-04-20 12:00:00',67400,'alamat',-7.9666204,112.63263210000001,0,2,4);
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,65 +132,38 @@ CREATE TABLE `transaksi_menu` (
 
 LOCK TABLES `transaksi_menu` WRITE;
 /*!40000 ALTER TABLE `transaksi_menu` DISABLE KEYS */;
-INSERT INTO `transaksi_menu` VALUES (1,28,1,1),(1,16,1,1),(2,34,1,0),(3,9,2,2),(4,32,1,0),(4,33,2,0),(5,1,4,0),(5,2,5,0),(6,5,10,1);
+INSERT INTO `transaksi_menu` VALUES (1,28,1,1),(1,16,1,1),(2,34,1,0),(3,9,2,2),(4,32,1,0),(4,33,2,0),(5,1,4,0),(5,2,5,0),(6,5,10,1),(11,2,1,0),(12,15,1,0),(12,17,1,0),(13,6,1,0);
 /*!40000 ALTER TABLE `transaksi_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_pembeli`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `user_pembeli`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_pembeli` (
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+CREATE TABLE `user` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) DEFAULT NULL,
+  `email` varchar(128) DEFAULT NULL,
+  `password` varchar(256) DEFAULT NULL,
+  `role` varchar(10) DEFAULT NULL,
+  `nama` varchar(256) DEFAULT NULL,
   `no_hp` varchar(15) DEFAULT NULL,
-  `nama` varchar(255) NOT NULL,
-  PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_pembeli`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `user_pembeli` WRITE;
-/*!40000 ALTER TABLE `user_pembeli` DISABLE KEYS */;
-INSERT INTO `user_pembeli` VALUES ('indy','pass','anindya@mail.com','081353513','anindya'),('raras','1234','raras@mail.com','081565379','raras');
-/*!40000 ALTER TABLE `user_pembeli` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user_penjual`
---
-
-DROP TABLE IF EXISTS `user_penjual`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_penjual` (
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `no_hp` varchar(15) DEFAULT NULL,
-  `id_warung` int DEFAULT NULL,
-  `nama` varchar(255) NOT NULL,
-  PRIMARY KEY (`username`),
-  KEY `id_warung` (`id_warung`),
-  CONSTRAINT `user_penjual_ibfk_1` FOREIGN KEY (`id_warung`) REFERENCES `warung` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_penjual`
---
-
-LOCK TABLES `user_penjual` WRITE;
-/*!40000 ALTER TABLE `user_penjual` DISABLE KEYS */;
-INSERT INTO `user_penjual` VALUES ('jundu','password','jundu.lalapan@mail.com','081234568',1,'jundullah'),('tiffany','4321','tiffany.mamasuka@mail.com','0887654321',4,'tiffany');
-/*!40000 ALTER TABLE `user_penjual` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'jundu','jundu.lalapan@mail.com','$2a$10$ZXmZ3KzViVoh3/D6iHVXOeiZufw35aXa.7PAzoqD2/8V9iWKy4Ek6','warung','Jundullah','08102837592'),(2,'tiffany','tiffany.mamasuka@mail.com','$2a$10$ZXmZ3KzViVoh3/D6iHVXOek4UPXvp5KAXZT9HpmqFTkrxfUqfXkVK','warung','tifany','0818379473'),(3,'indy','anindya@mail.com','$2a$10$ZXmZ3KzViVoh3/D6iHVXOedlSs9m0aDaOcFtDBD1k5linknJBGkGS','customer','anindya','081353513'),(4,'raras','raras@mail.com','$2a$10$ZXmZ3KzViVoh3/D6iHVXOeEPvOX1wnpSBVjM.JfyKAUbC5Hnfo57O','customer','raras','081565379');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -227,6 +194,33 @@ LOCK TABLES `warung` WRITE;
 INSERT INTO `warung` VALUES (1,'Lalapan Lahap','Jl pertenakan no 45','chicken & duck','/warung/lalapan-lahap.jpg',-6.917431,107.657066),(2,'Warung Padang Pak Lontong','Jl lampunyala no 2','masakan padang','/warung/warung-padang-pak-lontong.jpg',-7.077877,107.735901),(3,'Gang Kapak Chinese Food','Jl sipitputih no 25','masakan cina','/warung/gang-kapak-chinese-food.jpg',-7.372021,108.559485),(4,'Warung Mamasuka','Jl malasmasak no 6','masakan rumah','/warung/warung-mamasuka.jpg',-6.464019,107.179779);
 /*!40000 ALTER TABLE `warung` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `warung_owner`
+--
+
+DROP TABLE IF EXISTS `warung_owner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `warung_owner` (
+  `id_user` int DEFAULT NULL,
+  `id_warung` int DEFAULT NULL,
+  KEY `id_user` (`id_user`),
+  KEY `id_warung` (`id_warung`),
+  CONSTRAINT `warung_owner_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`),
+  CONSTRAINT `warung_owner_ibfk_2` FOREIGN KEY (`id_warung`) REFERENCES `warung` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `warung_owner`
+--
+
+LOCK TABLES `warung_owner` WRITE;
+/*!40000 ALTER TABLE `warung_owner` DISABLE KEYS */;
+INSERT INTO `warung_owner` VALUES (1,1),(2,4);
+/*!40000 ALTER TABLE `warung_owner` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -237,4 +231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-13 21:16:27
+-- Dump completed on 2021-04-21 11:27:14
