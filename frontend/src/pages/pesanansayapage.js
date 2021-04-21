@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import AppHeader from "../components/header";
 
 import Toolbar from "@material-ui/core/Toolbar";
-import { Chip, Paper } from "@material-ui/core";
+import { Chip, Paper, Table, TableBody, TableCell } from "@material-ui/core";
 
 import { getPesananPembeli } from "../resource";
 
@@ -32,6 +32,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#FDCB35",
     },
   },
+  smallroot: {
+    padding: 15,
+    minHeight: 720,
+    backgroundColor: "#F5F5F5",
+    "& .header-style": {
+      backgroundColor: "#FDCB35",
+    },
+  },
   header: {
     marginTop: 0,
   },
@@ -47,6 +55,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+    },
+  },
+  smalltitle: {
+    flexGrow: 1,
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -90,6 +104,18 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  cellcontainer: {
+
+  },
+  labelTitle: {
+    fontWeight: 500
+  },
+  label: {
+    fontWeight: 500
+  },
+  field: {
+
+  }
 }));
 
 function columns(props) {
@@ -273,6 +299,7 @@ function PesananSayaPage(props) {
 
   const classes = useStyles();
 
+  if(window.innerWidth > 768)
   return (
     <React.Fragment>
     <AppHeader username="indy" />
@@ -296,7 +323,59 @@ function PesananSayaPage(props) {
         </Paper>
       </div>
     </React.Fragment>
+  )
+  else
+  return (
+    <React.Fragment>
+    <AppHeader username="indy" />
+      <div className={classes.smallroot}>
+        <Toolbar style={{ padding: 0 }}>
+          <Typography className={classes.smalltitle} variant="h4" noWrap>
+            Pesanan Saya
+          </Typography>
+        </Toolbar>
+        {
+          data.map(it => {
+            return (
+              <React.Fragment>
+                <Table>
+                  <TableBody className={classes.cellcontainer}>
+                    <TableCell className={classes.labelTitle}>{it.nama_warung}</TableCell>
+                  </TableBody>
+                  <TableBody className={classes.cellcontainer}>
+                    <TableCell className={classes.label}>Jumlah: </TableCell>
+                    <TableCell className={classes.field}>{it.jumlah}</TableCell>
+                  </TableBody>
+                  <TableBody className={classes.cellcontainer}>
+                    <TableCell className={classes.label}>Waktu Pesan: </TableCell>
+                    <TableCell className={classes.field}>{converttanggal(String(it.tgl_transaksi))}</TableCell>
+                  </TableBody>
+                  <TableBody className={classes.cellcontainer}>
+                    <TableCell className={classes.label}>Waktu Kirim: </TableCell>
+                    <TableCell className={classes.field}>{converttanggal(String(it.tgl_kirim))}</TableCell>
+                  </TableBody>
+                  <TableBody className={classes.cellcontainer}>
+                    <TableCell className={classes.label}>Total Harga: </TableCell>
+                    <TableCell className={classes.field}>{it.total}</TableCell>
+                  </TableBody>
+                  <TableBody className={classes.cellcontainer}>
+                    <TableCell className={classes.label}>Status Pesanan: </TableCell>
+                    <TableCell className={classes.field}>{it.status}</TableCell>
+                  </TableBody>
+                </Table>
+              </React.Fragment>
+
+              )
+          })
+        }
+      </div>
+    </React.Fragment>
   );
+}
+
+function converttanggal(date){
+  const part = date.split(" ");
+  return `${part[0]},  ${part[2]} ${part[1]} ${part[3]} Jam ${part[4]}`;
 }
 
 export default PesananSayaPage;
