@@ -37,7 +37,7 @@ exports.cari_warung = function(req,res, next) {
 };
 
 exports.lihat_kategori = function(req, res) {
-    const category = req.query.category;
+    // const category = req.query.category;
 
     connection.query("SELECT DISTINCT kategori FROM warung", function(error, rows, fields) {
         if (error) {
@@ -204,8 +204,6 @@ exports.update_menu = function(req,res){
 
 
 exports.ubah_data_warung = function(req,res){
-    const id = req.body.id
-    const username = req.body.username
     const id_warung = req.body.id_warung
     const nama_warung = req.body.nama_warung
     const nama = req.body.nama
@@ -406,7 +404,7 @@ exports.update_order = function(req, res) {
     // Mengubah status order menjadi completed / cancelled
     // Prereq: semua menu dalam order ini harus berstatus 1 kalau mau jadi completed
     const status = req.body.status;
-    const id_order = req.body.id_order;
+    const id_order = req.body.id;
 
     const query = `
         UPDATE transaksi SET status = ${status} WHERE id = ${id_order};

@@ -25,7 +25,7 @@ function App(){
                     const response = await getMyProfile();
                     console.log(response)
 
-                    if (response.data.detail) {
+                    if (response.detail) {
                         alert(
                             "Your login session has ended, please login again."
                         );

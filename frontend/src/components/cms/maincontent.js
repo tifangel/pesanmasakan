@@ -57,7 +57,7 @@ const MainContent = ({ id}) => {
         harga: 0,
         desc_menu: "",
         pic: "",
-        id: 48, // ID_MENU
+        id: 1, // ID_MENU
         id_warung: 1,
     });
     const [daysMenu, setDaysMenu] = useState({
@@ -85,15 +85,24 @@ const MainContent = ({ id}) => {
     const [menuList, setMenuList] = useState([]);
     useEffect(() => {
       async function loadMenu() {
-        try {
-            if(dataFormProfile){
-                let responseMenu = await getMenuListByWarungId(dataFormProfile.id_warung);
-                if (responseMenu.status === 200) {
-                    setMenuList(responseMenu.data.values);
-                }
+        if(dataFormProfile.id_warung){
+            try {
+                    setDataFormMenu({
+                        nama: "",
+                        harga: 0,
+                        desc_menu: "",
+                        pic: "",
+                        id: 1, // ID_MENU
+                        id_warung: dataFormProfile.id_warung,
+                    })
+                    let responseMenu = await getMenuListByWarungId(dataFormProfile.id_warung);
+                    if (responseMenu.status === 200) {
+                        setMenuList(responseMenu.data.values);
+                    }
+                
+            } catch (e) {
+            console.log(e);
             }
-        } catch (e) {
-          console.log(e);
         }
       }
       loadMenu();
