@@ -268,8 +268,8 @@ exports.get_cooklist = function(req, res) {
 exports.orderlist_penjual = function(req, res) {
     const id = req.params.id;
     const query = `
-        SELECT id, id_pembeli, tgl_kirim, alamat_tujuan, total, status, id_warung
-        FROM transaksi
+        SELECT transaksi.id id, id_pembeli, nama, tgl_kirim, alamat_tujuan, total, status, id_warung
+        FROM transaksi join user on (transaksi.id_pembeli=user.id)
         WHERE id_warung = ${id} and status = 0
         ORDER BY tgl_kirim;
     `;
@@ -289,8 +289,8 @@ exports.orderlist_penjual = function(req, res) {
 exports.history_penjual = function(req, res) {
     const id = req.params.id;
     const query = `
-        SELECT id, id_pembeli, tgl_kirim, alamat_tujuan, total, status, id_warung
-        FROM transaksi
+        SELECT transaksi.id id, id_pembeli, nama, tgl_kirim, alamat_tujuan, total, status, id_warung
+        FROM transaksi join user on (transaksi.id_pembeli=user.id)
         WHERE id_warung = ${id} and (status = 1 OR status = 2)
         ORDER BY tgl_kirim DESC;
     `;

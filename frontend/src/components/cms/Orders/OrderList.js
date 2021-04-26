@@ -224,7 +224,7 @@ function Row(props) {
             <TableCell> {formatDate(row.tgl_kirim)} </TableCell>
             <TableCell> {formatTime(row.tgl_kirim)} </TableCell>
             <TableCell> 
-                { row.username_pembeli } <br />
+                { row.nama } <br />
                 { row.alamat_tujuan }
             </TableCell>
             <TableCell> {formatMoney(row.total)} </TableCell>
