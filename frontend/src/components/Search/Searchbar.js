@@ -8,16 +8,18 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      marginTop: 20,
       padding: 5,
       display: 'flex',
       alignItems: 'center',
       width: '100%',
       borderRadius: '15px',
-      margin: theme.spacing(1.5),
+    },
+    gridroot: {
+        padding: theme.spacing(1.5),
     },
     input: {
       marginLeft: theme.spacing(5),
@@ -79,29 +81,37 @@ const Searchbar = (props) => {
         <React.Fragment>
             <Container>
                 <form className={classes.form} onSubmit={handleSearch}>
-                    <Paper className={classes.root}>
-                        <InputBase
-                            className={classes.input}
-                            placeholder="Search Name"
-                            onChange={(e)=>{setNamaitem(e.target.value)}}/>
-                    </Paper>
-                    <Paper className={classes.root}>
-                        <InputBase
-                            className={classes.input}
-                            placeholder="Search Location"
-                            onChange={(e)=>{setLokasi(e.target.value)}}/>
-                    </Paper>
-                    <Paper className={classes.root}>
-                        <InputBase
-                            className={classes.input}
-                            placeholder="Search Menu"
-                            onChange={(e)=>{setMenu(e.target.value)}}/>
-                        <IconButton 
-                            type="submit" 
-                            className={classes.iconButton2} 
-                            aria-label="search">
-                        </IconButton>
-                    </Paper>
+                    <Grid container style={{marginTop: 12}}>
+                        <Grid xs="12" sm="6" md="4" className={classes.gridroot}>
+                            <Paper className={classes.root}>
+                                <InputBase
+                                    className={classes.input}
+                                    placeholder="Search Name"
+                                    onChange={(e)=>{setNamaitem(e.target.value)}}/>
+                            </Paper>
+                        </Grid>
+                        <Grid xs="12" sm="6" md="4" className={classes.gridroot}>
+                            <Paper className={classes.root}>
+                                <InputBase
+                                    className={classes.input}
+                                    placeholder="Search Location"
+                                    onChange={(e)=>{setLokasi(e.target.value)}}/>
+                            </Paper>
+                        </Grid>
+                        <Grid xs="12" sm="6" md="4" className={classes.gridroot}>
+                            <Paper className={classes.root}>
+                                <InputBase
+                                    className={classes.input}
+                                    placeholder="Search Menu"
+                                    onChange={(e)=>{setMenu(e.target.value)}}/>
+                                <IconButton 
+                                    type="submit" 
+                                    className={classes.iconButton2} 
+                                    aria-label="search">
+                                </IconButton>
+                            </Paper>
+                        </Grid>
+                    </Grid>
                 </form>
             </Container>
         </React.Fragment>

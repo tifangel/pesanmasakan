@@ -120,20 +120,6 @@ export const insertPesanan = async(data) =>
         return response
     }
 
-export const getPembeli = async(data) =>
-    {
-        const url = `${defaultAPIURL}/getpembeli`
-        const response = await post(url, data)
-        return response
-    }
-
-export const getPenjual = async(data) =>
-    {
-        const url = `${defaultAPIURL}/getpenjual`
-        const response = await post(url, data)
-        return response
-    }
-    
 export const insertPembeli = async(data) =>
     {
         const url = `${defaultAPIURL}/registerpembeli`
@@ -170,7 +156,6 @@ export const getOrderlistPenjual = async(id) => {
 export const getHistoryPenjual = async(id) => {
     const url = `${defaultAPIURL}/history/penjual/${id}`;
     const response = await get(url);
-    console.log(response);
     return response;
 }
 
@@ -186,9 +171,9 @@ export const updateOrderMenu = async(data) => {
     return response;
 }
 
-export const getPesananPembeli = async(username) =>
+export const getPesananPembeli = async(id) =>
     {
-        const url =`${defaultAPIURL}/orderlist/pembeli/${username}`
+        const url =`${defaultAPIURL}/orderlist/pembeli/${id}`
         const response = await get(url)
 
         return response

@@ -20,10 +20,23 @@ const useStyles = makeStyles((theme) => ({
       height : 240,
       display: 'flex'
     },
+    smallroot: {
+      padding : 0,
+      height : 120,
+      display: 'flex'
+    },
     media: {
         height: 240,
         width: 260,
         display: 'flex'
+    },
+    smallmedia: {
+        height: 120,
+        width: 130,
+        display: 'flex'
+    },
+    noshow:{
+        display: "none"
     },
     card: {
         marginTop: theme.spacing(1),
@@ -40,6 +53,13 @@ const useStyles = makeStyles((theme) => ({
     },
     menuTitle:{
         fontSize : 30,
+        fontFamily : 'Roboto Slab',
+        fontWeight : 'medium',
+        color : '#000',
+    },
+    smallMenuTitle:{
+        fontSize : 18,
+        padding : 0,
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
         color : '#000',
@@ -67,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+function pick(optbig, optsmall){
+    return (window.innerWidth>768) ? optbig : optsmall
+}
+
 const MenuItem = ({data, onClick}) => {
     
     const[id, setID] = useState(data.id);
@@ -92,17 +116,17 @@ const MenuItem = ({data, onClick}) => {
 
     return(
         <React.Fragment>
-            <Card className={classes.root} onClick={() => onClick(data)}> 
+            <Card className={pick(classes.root, classes.smallroot)} onClick={() => onClick(data)}> 
                 <CardMedia
-                    className={classes.media}
+                    className={pick(classes.media, classes.smallmedia)}
                     image={`${defaultAPIURL}${data.pic}`}
                     title={data.nama}
                 />
                 <CardContent className={classes.content}>
-                    <Typography className={classes.menuTitle} variant="h5" component="h2">
+                    <Typography className={pick(classes.menuTitle, classes.smallMenuTitle)} variant="h5" component="h2">
                         {data.nama}
                     </Typography>
-                    <Typography className={classes.menuDesc} variant="body2" color="textSecondary" component="p">
+                    <Typography className={pick(classes.menuDesc, classes.noshow)} variant="body2" color="textSecondary" component="p">
                         {data.desc_menu}
                     </Typography>
                     <Grid container className={classes.card} spacing={1}>

@@ -166,7 +166,7 @@ const SearchPage = (props) => {
 
     return(
         <React.Fragment>
-            <AppHeader />
+            <AppHeader/>
             <Searchbar/>
             <Filter warung={fullData} menu={fullMenu} onFilter={handleFilter}/>
             <WarungList data={result}/>

@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import Title from './title';
 import {editProfile} from '../../resource'
+import { defaultAPIURL } from '../../config'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -298,13 +299,13 @@ const Profile = ({data}) => {
                                 <td className={classes.col1}>Warung Owner</td>
                                 <td className={classes.col2}>
                                     { statusForm === 'hide' && (
-                                        data.nama_owner
+                                        data.nama
                                     )}
                                     { statusForm === 'show' && (
                                         <InputBase
-                                        name="nama_owner"
+                                        name="nama"
                                         type="text"
-                                        defaultValue={formInput.nama_owner}
+                                        defaultValue={formInput.nama}
                                         className={classes.input}
                                         onChange={handleInput}/>
                                     )}
@@ -335,7 +336,7 @@ const Profile = ({data}) => {
                                 <input type="file" className={classes.fileInput}></input>
                             )}
                         </div>
-                        <img src="/logo512.png" className={classes.img}/>
+                        <img src={defaultAPIURL+data.pic} className={classes.img}/>
                     </Grid>
                 </Grid>
                 </form>

@@ -40,7 +40,6 @@ const convertDataToRows = function(data) {
         row.date = formatDate(data[i].tanggal);
         row.qty = data[i].qty;
         row.itemname = data[i].nama;
-        console.log(row);
         res.push(row);
     }
     return res;
