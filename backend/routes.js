@@ -2,6 +2,7 @@
 
 module.exports = function(app) {
     var pesanmasakan = require('./controller');
+    var auth = require('./controllerAuthentication');
 
     app.get("/", (req, res) => {
         res.json({ message: "Welcome to pesanmasakan application." });
@@ -53,11 +54,14 @@ module.exports = function(app) {
         .post(pesanmasakan.update_menu);
     
     // USER
-    app.route('/getpembeli')
-        .post(pesanmasakan.get_pembeli);
-    app.route('/getpenjual')
-        .post(pesanmasakan.get_penjual);    
-    
+    app.route('/getuser')
+        .post(auth.get_auth);   
+    app.route('/myprofile')
+        .get(auth.get_my_profile);
+    app.route('/registerpembeli')
+        .post(auth.add_user_customer);
+    app.route('/registerpenjual')
+        .post(auth.add_user_warung);
     
     // ORDER
     app.route('/cooklist/:id')
@@ -74,7 +78,7 @@ module.exports = function(app) {
     app.route('/history/penjual/:id')
         .get(pesanmasakan.history_penjual);
 
-    app.route('/orderlist/pembeli/:username')
+    app.route('/orderlist/pembeli/:id')
         .get(pesanmasakan.orderlist_pembeli);
 
     app.route('/tambahorder')
@@ -85,12 +89,6 @@ module.exports = function(app) {
 
     app.route('/updateordermenu')
         .post(pesanmasakan.update_ordermenu);
-    
-    app.route('/registerpembeli')
-        .post(pesanmasakan.tambah_user_pembeli);
-    
-    app.route('/registerpenjual')
-        .post(pesanmasakan.tambah_user_penjual);
 
     app.route('/overvieworder/:id')
         .get(pesanmasakan.overview_order);

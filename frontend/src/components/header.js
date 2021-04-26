@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from 'react'
+import {useHistory, useLocation} from 'react-router-dom'
+import { useAppContext } from "../lib/contextLib"
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -23,8 +25,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AppHeader({ username }) {
+export default function AppHeader() {
   const classes = useStyles();
+  let history = useHistory();
+  const { userHasAuthenticated, user } = useAppContext();
+  const [pageUser, setPageUser] = useState({})
+  const isAuthenticated = localStorage.getItem("token") ? true : false;
+
+  useEffect(() => {
+      if (user) {
+          setPageUser(user)
+      }
+  }, [user])
+
+  async function handleLogout() {
+      // sign out
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+
+      userHasAuthenticated(false);
+      alert("logout was successful")
+      history.push("/");
+  }
 
   return (
     <div className={classes.root}>
@@ -34,12 +56,27 @@ export default function AppHeader({ username }) {
           <Typography variant="h6" className={classes.title}>
             HaniBee
           </Typography>
-          {username ? (
+          {isAuthenticated ? (
+            <>
             <Typography>
-              Hello, {username}!
+              Hello, {pageUser.nama}
             </Typography>
+            <Button 
+                color="inherit" 
+                className={classes.yellow}
+                onClick={handleLogout}
+            >
+              Logout
+            </Button>
+            </>
           ) : (
-            <Button color="inherit" className={classes.yellow}>
+            <Button 
+                color="inherit" 
+                className={classes.yellow}
+                onClick={() => {
+                  history.push("/login")
+                }}
+            >
               Login
             </Button>
           )}

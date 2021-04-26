@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const History = ({ data }) => {
-    console.log("history", data);
     const classes = useStyles();
     return(
         <React.Fragment>

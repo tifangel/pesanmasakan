@@ -9,6 +9,8 @@ import PilihPembayaran from "../components/konfirmasiorder/pilihpembayaran";
 import AppHeader from "../components/header";
 import { useHistory } from "react-router-dom";
 import { getWarung } from "../resource/index";
+import AuthenticatedUser from '../layout/AuthenticatedUser'
+import { useAppContext } from '../lib/contextLib'
 
 const { defaultAPIURL } = require("../config");
 
@@ -46,6 +48,19 @@ function hitungOngkir(lat1, lon1, lat2, lon2) {
 }
 
 const OrderPage = (props) => {
+
+  const roleUser = localStorage.getItem('role')
+
+  const { user } = useAppContext();
+  const [pageUser, setPageUser] = useState({})
+
+  useEffect(() => {
+      if (user) {
+          setPageUser(user)
+      }
+  }, [user])
+
+
   const classes = useStyles();
   const history = useHistory();
   const [state, setState] = useState(props.location.state);
@@ -75,7 +90,7 @@ const OrderPage = (props) => {
     var tgl_kirim = '2021-04-20 12:00:00';
     
     let orderData = {
-      username_pembeli: state.username_pembeli,
+      id_pembeli: pageUser.id,
       tgl_transaksi: tanggal_jam,
       tgl_kirim: tgl_kirim,
       total: total,
@@ -88,10 +103,14 @@ const OrderPage = (props) => {
       id_warung: state.warung_id,
     };
     insertPesanan(orderData);
-    history.push({
-      pathname: `/pesanan/${state.username_pembeli}`,
-      state: keranjang,
-    });
+    if(roleUser === 'customer'){
+      alert("Order successful delivered to seller")
+      history.push('/pesanan');
+    }else if(roleUser === 'warung'){
+      alert("Order successful delivered to seller")
+      history.push('/');
+    }
+    
   };
 
   // untuk keranjang
@@ -136,36 +155,40 @@ const OrderPage = (props) => {
   }, []);
 
   return (
-    <React.Fragment>
-      <AppHeader username={state.username_pembeli} />
-      <div className={classes.root}>
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
-              <Paper className={classes.paper}>
-                <PilihPembayaran
-                  kurir={kurir}
-                  carabayar={carabayar}
-                  setKurir={setKurir}
-                  setCarabayar={setCarabayar}
-                />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper className={classes.paper}>
-                <Keranjang
-                  keranjang={keranjang}
-                  ongkir={kurir === 1 ? 0 : ongkir}
-                  subtotal={subtotal}
-                  onItemCountChange={updateJumlahItem}
-                  onBayar={onBayar}
-                />
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
-      </div>
-    </React.Fragment>
+    <AuthenticatedUser>
+      { pageUser &&
+          <React.Fragment>
+              <AppHeader/>
+              <div className={classes.root}>
+                <Container maxWidth="lg" className={classes.container}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={8}>
+                      <Paper className={classes.paper}>
+                        <PilihPembayaran
+                          kurir={kurir}
+                          carabayar={carabayar}
+                          setKurir={setKurir}
+                          setCarabayar={setCarabayar}
+                        />
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <Paper className={classes.paper}>
+                        <Keranjang
+                          keranjang={keranjang}
+                          ongkir={kurir === 1 ? 0 : ongkir}
+                          subtotal={subtotal}
+                          onItemCountChange={updateJumlahItem}
+                          onBayar={onBayar}
+                        />
+                      </Paper>
+                    </Grid>
+                  </Grid>
+                </Container>
+              </div>
+          </React.Fragment>
+      }
+    </AuthenticatedUser>
   );
 };
 

@@ -8,6 +8,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { Chip, Paper } from "@material-ui/core";
 
 import { getPesananPembeli } from "../resource";
+import { useAppContext } from '../lib/contextLib'
+import Authenticated from '../layout/Authenticated'
 
 const months = [
   "Jan",
@@ -239,6 +241,15 @@ function columns(props) {
 }
 
 function PesananSayaPage(props) {
+
+  const { user } = useAppContext();
+  const [pageUser, setPageUser] = useState({})
+
+  useEffect(() => {
+      if (user) {
+          setPageUser(user)
+      }
+  }, [user])
   
   const [data, setData] = useState([])
 
@@ -259,7 +270,7 @@ function PesananSayaPage(props) {
   useEffect(() => {
     async function loadPesanan() {
       try {
-        let response = await getPesananPembeli(props.match.params.username_pembeli)
+        let response = await getPesananPembeli(pageUser.id)
         if (response.status === 200) {
           rows(response.data.values)
         }
@@ -269,33 +280,37 @@ function PesananSayaPage(props) {
       }
     }
     loadPesanan()
-  }, [props.match.params.username_pembeli]);
+  }, [pageUser.id]);
 
   const classes = useStyles();
 
   return (
-    <React.Fragment>
-    <AppHeader username="indy" />
-      <div className={classes.root}>
-        <Toolbar style={{ padding: 0 }}>
-          <Typography className={classes.title} variant="h4" noWrap>
-            Pesanan Saya
-          </Typography>
-        </Toolbar>
-        <Paper style={{ padding: "40px 60px" }}>
-          <DataGrid
-            rows={data}
-            columns={columns({
-              classes: classes,
-            })}
-            pageSize={5}
-            disableColumnMenu
-            autoHeight
-            rowHeight={55}
-          />
-        </Paper>
-      </div>
-    </React.Fragment>
+    <Authenticated>
+      {pageUser &&
+          <React.Fragment>
+          <AppHeader/>
+            <div className={classes.root}>
+              <Toolbar style={{ padding: 0 }}>
+                <Typography className={classes.title} variant="h4" noWrap>
+                  Pesanan Saya
+                </Typography>
+              </Toolbar>
+              <Paper style={{ padding: "40px 60px" }}>
+                <DataGrid
+                  rows={data}
+                  columns={columns({
+                    classes: classes,
+                  })}
+                  pageSize={5}
+                  disableColumnMenu
+                  autoHeight
+                  rowHeight={55}
+                />
+              </Paper>
+            </div>
+          </React.Fragment>
+      }
+    </Authenticated>
   );
 }
 

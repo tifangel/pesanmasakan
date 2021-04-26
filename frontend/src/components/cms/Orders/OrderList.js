@@ -224,7 +224,7 @@ function Row(props) {
             <TableCell> {formatDate(row.tgl_kirim)} </TableCell>
             <TableCell> {formatTime(row.tgl_kirim)} </TableCell>
             <TableCell> 
-                { row.username_pembeli } <br />
+                { row.nama } <br />
                 { row.alamat_tujuan }
             </TableCell>
             <TableCell> {formatMoney(row.total)} </TableCell>
@@ -262,8 +262,6 @@ const OrderList = (props) => {
                 var res = await getOrderlistPenjual(data.id_warung);
             }
             if (res) {
-                console.log("res", res.data.values);
-                console.log(new Date("2021-04-02T17:00:00.000Z").toLocaleString('en-US', { timeZone: 'Asia/Jakarta'}) )
                 setOrderlist(res.data.values);
             }
         })();
