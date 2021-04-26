@@ -22,8 +22,20 @@ const useStyles = makeStyles((theme) => ({
       padding : 0,
       height : 440
     },
+    smallroot: {
+      padding : 0,
+      height : 150
+    },
     media: {
         height: 200,
+    },
+    smallpic: {
+        height: 150,
+        width: 100,
+        float: "right"
+    },
+    noshow: {
+        display: "none",
     },
     card: {
         marginTop: theme.spacing(1),
@@ -32,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(0),
     },
   }));
+
+function pick(optbig, optsmall){
+    return (window.innerWidth>768) ? optbig : optsmall
+}
 
 const WarungItem = ({data}) => {
 
@@ -47,10 +63,10 @@ const WarungItem = ({data}) => {
     }, [prevLocation, searchPath, location]);
     
     const classes = useStyles();
-
+    
     return(
         <React.Fragment>
-            <Card className={classes.root} onClick={
+            <Card className={pick(classes.root, classes.smallroot)} onClick={
                                 ()=>{
                                     history.push({
                                         pathname : `/warung/${data.id}`,
@@ -60,12 +76,12 @@ const WarungItem = ({data}) => {
                                 }
                             }> 
                 <CardMedia
-                    className={classes.media}
+                    className={pick(classes.media, classes.smallpic)}
                     image={`${defaultAPIURL}${data.pic}`}
                     title={data.nama}
                 />
                 <CardContent>
-                    <Typography className={classes.card} variant="h5" component="h2">
+                    <Typography className={classes.card} variant={pick("h5", "p")} component="h2">
                         {data.nama}
                     </Typography>
                     <Typography className={classes.card} variant="body2" color="textSecondary" component="p">
@@ -86,7 +102,7 @@ const WarungItem = ({data}) => {
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid container spacing={1}>
+                    <Grid container spacing={1} className={pick(null, classes.noshow)}>
                         <Grid item>
                             <LocationOnIcon/>
                         </Grid>

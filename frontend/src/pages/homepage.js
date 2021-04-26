@@ -72,8 +72,8 @@ const HomePage = (props) => {
     
     return(
         <div>
-            <AppHeader/>
-            <InfoTambahan />
+            <AppHeader />
+            {(window.innerWidth > 768)? <InfoTambahan /> : null}
             <Searchbar/>
             <WarungList data={warungList}/>
         </div>
