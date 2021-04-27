@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
@@ -22,36 +22,39 @@ const useStyles = makeStyles((theme) => ({
     title: {
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
-        fontSize: '30px',
-    },
-    gridItem: {
-        
+        fontSize: '1.5em',
     },
     input: {
         background: '#F5F5F5',
-        width: '23vw',
-        [theme.breakpoints.down('md')]: {
-            width: '18vw',
-        },
-        [theme.breakpoints.down('sm')]: {
-            width: '60vw',
-        },
+        width: '100%',
+        fontFamily: 'Roboto Slab',
+        fontSize: '1em',
+        paddingLeft: '5px',
+    },
+    formLabel: {
+        paddingTop: theme.spacing(2),
+        fontFamily : 'Roboto Slab',
+        fontWeight : 'regular',
+        fontSize: '1em',
     },
     col1: {
         width: '22%',
         paddingBottom: theme.spacing(1),
+        paddingRight: theme.spacing(0.25),
         verticalAlign: 'top',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
-        fontSize: '16px',
+        fontSize: '1em',
     },
     col2: {
         width: '78%',
         paddingBottom: theme.spacing(1),
     },
     colimage: {
-        width: '23vw',
         paddingBottom: theme.spacing(1),
+        paddingRight: 0,
+        paddingTop: 0,
+        paddingLeft: 0,
         display: 'flex',
         [theme.breakpoints.down('md')]: {
             width: '18vw',
@@ -61,56 +64,32 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     textarea: {
-        width: '23vw',
+        width: '100%',
         background: '#F5F5F5',
-        resize: 'none',
+        fontFamily: 'Roboto Slab',
         border: 0,
-        [theme.breakpoints.down('md')]: {
-            width: '18vw',
-        },
-        [theme.breakpoints.down('sm')]: {
-            width: '60vw',
-        },
-    },
-    inputimg : {
-        background: '#F5F5F5',
-        flex: '70%',
-        marginRight: '5%',
-    },
-    button: {
-        flex: '25%',
-        borderRadius: '25px',
-        color: 'white',
-        backgroundColor: '#448AC9',
-        height: '30px',
-        fontFamily : 'Roboto Slab',
-        fontWeight : 'regular',
-        fontSize: '15px',
-    },
-    checkdays: {
-        width: '30%',
-        fontFamily : 'Roboto Slab',
-        fontWeight : 'regular',
-        fontSize: '16px',
-    },
-    checkfriday: {
-        width: '60%',
+        fontSize: '1em',
+        paddingLeft: '5px',
     },
     btnsubmit: {
-        borderRadius: '25px',
+        marginTop: theme.spacing(2),
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+        float: 'right',
+        borderRadius: '15px',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
-        fontSize: '15px',
-        color: 'white',
-        backgroundColor: '#31CE36',
-        height: '30px',
-        width: '150px',
-        float: 'right',
-        marginRight: '3vw',
+        fontSize: '1em',
+        color: 'black',
+        backgroundColor: '#FDCB35',
+        [theme.breakpoints.down('xs')]: {
+            width: '100%'
+        },
     },
 }));
 
 const FormMenu = ({datamenu, statedays, status, handleChange, handleInput, resetStatusFormMenu}) => {
+    const [reload, setReload] = useState(false);
 
     const submitMenu = async() => {
         let hari = []
@@ -176,9 +155,9 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput, reset
             <div className={classes.root}>
                 <h1 className={classes.title}>{status === 'insert'? "Add Item" : "Edit Item"}</h1>
                 <form id="formmenu">
-                <Grid container>
+                <Grid container spacing={2}>
                     <Grid className={classes.gridItem} item xs={12} sm={12} md={6}>
-                        <table>
+                        <table width="100%">
                             <tr>
                                 <td className={classes.col1}>Item Name</td>
                                 <td className={classes.col2}>
@@ -218,118 +197,103 @@ const FormMenu = ({datamenu, statedays, status, handleChange, handleInput, reset
                         </table>
                     </Grid>
                     <Grid item xs={12} sm={12} md={6}>
-                        <table>
-                            <tr>
-                                <td className={classes.col1}>Choose Image</td>
-                                <td className={classes.colimage}>
-                                    <InputBase
-                                        name="pic"
-                                        type="text"
-                                        value={datamenu.pic}
-                                        className={classes.inputimg}
-                                        onChange={handleInput}/>
-                                    <Button className={classes.button} variant="contained" color="primary">
-                                        Upload
-                                    </Button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className={classes.col1}>Available On</td>
-                                <td className={classes.col2}>
-                                    <FormGroup row>
-                                        <FormControlLabel
-                                            className={classes.checkdays}
-                                            control={
-                                                <Checkbox
-                                                  checked={statedays.senin}
-                                                  onChange={handleChange}
-                                                  name="senin"
-                                                  color="primary"
-                                                />
-                                              }
-                                              label="Senin"
-                                        />
-                                        <FormControlLabel
-                                            className={classes.checkdays}
-                                            control={
-                                                <Checkbox
-                                                  checked={statedays.selasa}
-                                                  onChange={handleChange}
-                                                  name="selasa"
-                                                  color="primary"
-                                                />
-                                              }
-                                              label="Selasa"
-                                        />
-                                        <FormControlLabel
-                                            className={classes.checkdays}
-                                            control={
-                                                <Checkbox
-                                                  checked={statedays.rabu}
-                                                  onChange={handleChange}
-                                                  name="rabu"
-                                                  color="primary"
-                                                />
-                                              }
-                                              label="Rabu"
-                                        />
-                                        <FormControlLabel
-                                            className={classes.checkdays}
-                                            control={
-                                                <Checkbox
-                                                  checked={statedays.kamis}
-                                                  onChange={handleChange}
-                                                  name="kamis"
-                                                  color="primary"
-                                                />
-                                              }
-                                              label="Kamis"
-                                        />
-                                        <FormControlLabel
-                                            className={classes.checkfriday}
-                                            control={
-                                                <Checkbox
-                                                  checked={statedays.jumat}
-                                                  onChange={handleChange}
-                                                  name="jumat"
-                                                  color="primary"
-                                                />
-                                              }
-                                              label="Jumat"
-                                        />
-                                        <FormControlLabel
-                                            className={classes.checkdays}
-                                            control={
-                                                <Checkbox
-                                                  checked={statedays.sabtu}
-                                                  onChange={handleChange}
-                                                  name="sabtu"
-                                                  color="primary"
-                                                />
-                                              }
-                                              label="Sabtu"
-                                        />
-                                        <FormControlLabel
-                                            className={classes.checkdays}
-                                            control={
-                                                <Checkbox
-                                                  checked={statedays.minggu}
-                                                  onChange={handleChange}
-                                                  name="minggu"
-                                                  color="primary"
-                                                />
-                                              }
-                                              label="Minggu"
-                                        />
-                                    </FormGroup>
-                                </td>
-                            </tr>
-                        </table>
+                        <Grid container className={classes.fileInput}>
+                            <Grid item className={classes.col1}>Image</Grid>
+                            <Grid item><input type="file" ></input></Grid>
+                        </Grid>
+                        <div className={classes.formLabel}>Available On:</div>
+                        <Grid container>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                      size="small"
+                                      checked={statedays.senin}
+                                      onChange={handleChange}
+                                      name="senin"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Senin"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                      size="small"
+                                      checked={statedays.selasa}
+                                      onChange={handleChange}
+                                      name="selasa"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Selasa"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                      size="small"
+                                      checked={statedays.rabu}
+                                      onChange={handleChange}
+                                      name="rabu"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Rabu"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                      size="small"
+                                      checked={statedays.kamis}
+                                      onChange={handleChange}
+                                      name="kamis"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Kamis"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                      size="small"
+                                      checked={statedays.jumat}
+                                      onChange={handleChange}
+                                      name="jumat"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Jumat"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                      size="small"
+                                      checked={statedays.sabtu}
+                                      onChange={handleChange}
+                                      name="sabtu"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Sabtu"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                      size="small"
+                                      checked={statedays.minggu}
+                                      onChange={handleChange}
+                                      name="minggu"
+                                      color="primary"
+                                    />
+                                  }
+                                  label="Minggu"
+                            />
+                        </Grid>
                         <Button onClick={handleSubmit} className={classes.btnsubmit} variant="contained" color="primary">
-                            Submit
-                        </Button>
+                        Submit
+                    </Button>
                     </Grid>
                 </Grid>
+
                 </form>
             </div>
         </React.Fragment>

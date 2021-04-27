@@ -9,6 +9,8 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import HistoryIcon from '@material-ui/icons/History';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         color: '#FDCB35',
         fontSize: '1.875em',
+    },
+    button: {
+        fontSize : '1em',
+        fontFamily : 'Roboto Slab',
+        color: "#FDCB35",
+        marginBottom: theme.spacing(3),
     },
   }));
 
@@ -62,6 +70,7 @@ const Sidebar = ({id, mobile, onMenuClick}) => {
     return(
         <React.Fragment>
             <div className={classes.toolbar} />
+            <Box display="flex" flexDirection="column" justifyContent="space-between" height="100vh">
             <List>
                 <Divider classes={{root: classes.dividerColor}}/>
                 <ListItem button 
@@ -115,6 +124,10 @@ const Sidebar = ({id, mobile, onMenuClick}) => {
                 </ListItem>
                 <Divider classes={{root: classes.dividerColor}}/>
             </List>
+            <Button className={classes.button}>
+              Logout
+            </Button>
+            </Box>
         </React.Fragment>
     );
 }

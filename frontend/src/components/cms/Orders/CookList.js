@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { DataGrid } from '@material-ui/data-grid';
+import { TableContainer, Table, TableCell, TableBody, TableHead, TableRow } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import Snackbar from '@material-ui/core/Snackbar';
 
@@ -10,6 +10,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { getCooklist, updateOrderMenu } from '../../../resource';
+import { formatDate } from '../../../resource/formatter';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,43 +18,25 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Inter',
     },
     title: {
-        flex: '95%',
         color: '#000000',
-        fontSize : '1.9vw',
+        fontSize : '1.5em',
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
-        [theme.breakpoints.down('sm')]: {
-            fontSize : '3vw',
-        },
     },
     green: {
         color: "#31CE36",
     },
 }));
 
-const convertDataToRows = function(data) {
-    var res = [];
-    for (var i = 0; i < data.length; i++) {
-        var row = {};
-        row.id = i;
-        row.idmenu = data[i].id;
-        row.date = formatDate(data[i].tanggal);
-        row.qty = data[i].qty;
-        row.itemname = data[i].nama;
-        res.push(row);
-    }
-    return res;
-}
-
-function formatDate(date) {
-    date = new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Jakarta'});
-    date = date.slice(0, date.indexOf(","));
-    date = date.split("/");
-
-    var month = date[0].length < 2 ? `0${date[0]}` : date[0];
-    var day = date[1].length < 2 ? `0${date[1]}` : date[1];
-    var year = date[2];
-    return `${day}/${month}/${year.slice(-2)}`
+const convertDataToTableRows = function(data) {
+    return (
+        <TableRow>
+            <TableCell><Markdone key={data.id} idmenu={data.id} tgl={data.tanggal} /></TableCell>
+            <TableCell>{formatDate(data.tanggal)}</TableCell>
+            <TableCell>{data.qty}</TableCell>
+            <TableCell>{data.nama}</TableCell>
+        </TableRow>
+    );
 }
 
 const Markdone = (props) => {
@@ -70,23 +53,19 @@ const Markdone = (props) => {
 
     const handleClick = async function() {
         var day, month, year, tgl;
-        console.log(date);
-        day = date.slice(0, 2);
-        month = date.slice(3, 5);
-        year = date.slice(6, 8);
-        tgl = `20${year}-${month}-${day}`;
-
-        console.log("id ", id);
-
+        date = new Date(date);
+        day = ("0" + date.getDate()).slice(-2);
+        month = ("0" + (date.getMonth() + 1)).slice(-2);
+        year = date.getFullYear();
+        tgl = `${year}-${month}-${day}`;
+        
         var data = {
             id: id,
             tanggal: tgl
         };
 
         var res = await updateOrderMenu(data);
-        // var res = true;
         if (res) { 
-            console.log(res);
             setDisabled(true);
             setOpen(true);
             setSnackbarMsg("Dish marked as cooked!");
@@ -124,30 +103,23 @@ const CookList = ({data}) => {
             setCooklist(res.data.values);
         })();
     }, []);
-    const rows = convertDataToRows(cooklist);
-
-    const classes = useStyles();
-    const columns = [
-        { field: 'id', headerName:' ', flex: 0.16, sortable: false, disableClickEventBubbling: true,
-            renderCell: (params) => {                
-                return (
-                    <Markdone key={params.getValue('id')} idmenu={params.getValue('idmenu')} tgl={params.getValue('date')}/>
-                );
-            }
-            },
-        { field: 'date', headerName: 'Date', type: 'date'},
-        { field: 'qty', headerName: 'Qty', type: 'number', marginRight: 25},
-        { field: 'itemname', headerName: 'Item name', flex: 1}
-    ]
 
     return(
-        <div style={{display: 'flex', height: '100%' }}>
-            <div style={{ flexGrow: 1 }}>
-                <DataGrid rows={rows} columns={columns} 
-                    pageSize={5}
-                    autoHeight />
-            </div>
-        </div>
+        <TableContainer component="div">
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>{/*Column for tick button*/}</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Qty</TableCell>
+                        <TableCell>Item Name</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {cooklist.map((item) => convertDataToTableRows(item))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     )
 }
 

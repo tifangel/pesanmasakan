@@ -16,37 +16,51 @@ const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: 'flex',
+      display: 'flex',
+      // width: '100vw',
+      height: '100vh',
+      background: '#F5F5F5'
+    },
+    content: {
+      background: "#F5F5F5",
+      display: "flex",
+      flexDirection: "column",
+      height: '100vh',
+      flex: "1 1 auto",
     },
     drawer: {
         [theme.breakpoints.up('md')]: {
             width: drawerWidth,
             flexShrink: 0,
         },
+      },
+    filler: {
+      background: "#F5F5F5",
+      flex: "1 1 auto",
     },
     appBar: {
-        background: 'transparent',
-        boxShadow: 'none',
-        [theme.breakpoints.up('md')]: {
-            width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: drawerWidth,
-        },
+      background: 'transparent',
+      boxShadow: 'none',
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+      },
     },
     menuButton: {
-        marginRight: theme.spacing(2),
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
-        },
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
     },
     icon: {
-        fontSize: '30px',
-        color: 'black',
+      fontSize: '30px',
+      color: 'black',
     },
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
-        width: drawerWidth,
-        backgroundColor: '#08080C',
-        color: '#9A7A18',
+      width: drawerWidth,
+      backgroundColor: '#08080C',
+      color: '#9A7A18',
     },
   }));
 
@@ -140,10 +154,28 @@ const CMSPage = (props) => {
                             />
                         </Drawer>
                     </Hidden>
-                  </nav>
-                  <MainContent id={selectedMenu}/>
-              </div>
-            }
+                    <Hidden smDown implementation="css">
+                      <Drawer
+                        classes={{
+                          paper: classes.drawerPaper,
+                        }}
+                        variant="permanent"
+                        open
+                      >
+                          <Sidebar
+                            id={selectedMenu} 
+                            mobile={false}
+                            onMenuClick={handleListMenuClick}
+                          />
+                      </Drawer>
+                  </Hidden>
+                </nav>
+                <div className={classes.content}>
+                  <MainContent className={classes.filler} id={selectedMenu}/>
+                  <div className={classes.filler}></div>                  
+                </div>
+            </div>
+          }
         </AuthenticatedWarung>
     );
 }
