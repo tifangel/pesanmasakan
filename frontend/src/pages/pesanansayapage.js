@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@material-ui/data-grid";
 import Typography from "@material-ui/core/Typography";
 import AppHeader from "../components/header";
 
 import Toolbar from "@material-ui/core/Toolbar";
-import { Chip, Paper } from "@material-ui/core";
+import { Chip, Paper, Table, TableBody, TableCell } from "@material-ui/core";
 
 import { getPesananPembeli } from "../resource";
 import { useAppContext } from '../lib/contextLib'
@@ -34,6 +34,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#FDCB35",
     },
   },
+  smallroot: {
+    padding: 15,
+    minHeight: 720,
+    backgroundColor: "#F5F5F5",
+    "& .header-style": {
+      backgroundColor: "#FDCB35",
+    },
+  },
   header: {
     marginTop: 0,
   },
@@ -49,6 +57,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+    },
+  },
+  smalltitle: {
+    flexGrow: 1,
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -92,6 +106,15 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  cellcontainer: {},
+  labelTitle: {
+    fontWeight: 700,
+    background: "#FDCB35",
+  },
+  label: {
+    fontWeight: 600,
+  },
+  field: {},
 }));
 
 function columns(props) {
@@ -130,12 +153,13 @@ function columns(props) {
       headerClassName: "header-style",
       valueFormatter: ({ value }) => {
         const time = new Date(value);
-        return `${time.getHours() < 10 ? `0${time.getHours()}` : time.getHours()
-          }:${
-            time.getMinutes() < 10 ? `0${time.getMinutes()}` : time.getMinutes()
-          }:${
-            time.getSeconds() < 10 ? `0${time.getSeconds()}` : time.getSeconds()
-          } 
+        return `${
+          time.getHours() < 10 ? `0${time.getHours()}` : time.getHours()
+        }:${
+          time.getMinutes() < 10 ? `0${time.getMinutes()}` : time.getMinutes()
+        }:${
+          time.getSeconds() < 10 ? `0${time.getSeconds()}` : time.getSeconds()
+        } 
           WIB`;
       },
     },
@@ -159,17 +183,15 @@ function columns(props) {
       valueFormatter: ({ value }) => {
         const time = new Date(value);
         return `
-          ${
-            time.getHours() < 10 ? `0${time.getHours()}` : time.getHours()
-          }:${
-            time.getMinutes() < 10 ? `0${time.getMinutes()}` : time.getMinutes()
-          }:${
-            time.getSeconds() < 10 ? `0${time.getSeconds()}` : time.getSeconds()
-          } 
+          ${time.getHours() < 10 ? `0${time.getHours()}` : time.getHours()}:${
+          time.getMinutes() < 10 ? `0${time.getMinutes()}` : time.getMinutes()
+        }:${
+          time.getSeconds() < 10 ? `0${time.getSeconds()}` : time.getSeconds()
+        } 
           WIB`;
       },
     },
-    
+
     {
       field: "total",
       headerName: "Total",
@@ -241,77 +263,144 @@ function columns(props) {
 }
 
 function PesananSayaPage(props) {
+  const [data, setData] = useState([]);
 
-  const { user } = useAppContext();
-  const [pageUser, setPageUser] = useState({})
-
-  useEffect(() => {
-      if (user) {
-          setPageUser(user)
+  function rows(data) {
+    if (data.length > 0) {
+      for (var i = 0; i < data.length; i++) {
+        var date = new Date(data[i].tgl_transaksi);
+        data[i].tgl_transaksi = date;
+        data[i].jam_transaksi = date;
+        var date1 = new Date(data[i].tgl_kirim);
+        data[i].tgl_kirim = date1;
+        data[i].jam_kirim = date1;
       }
-  }, [user])
-  
-  const [data, setData] = useState([])
-
-  function rows(data){
-    if(data.length > 0){
-      for(var i=0; i<data.length; i++){
-        var date = new Date(data[i].tgl_transaksi)
-        data[i].tgl_transaksi = date
-        data[i].jam_transaksi = date
-        var date1 = new Date(data[i].tgl_kirim)
-        data[i].tgl_kirim = date1
-        data[i].jam_kirim = date1
-      }
-      setData(data)
+      setData(data);
     }
   }
-  
+
   useEffect(() => {
     async function loadPesanan() {
       try {
-        let response = await getPesananPembeli(pageUser.id)
+        let response = await getPesananPembeli(
+          props.match.params.username_pembeli
+        );
         if (response.status === 200) {
-          rows(response.data.values)
+          rows(response.data.values);
         }
-
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }
-    loadPesanan()
-  }, [pageUser.id]);
+    loadPesanan();
+  }, [props.match.params.username_pembeli]);
 
   const classes = useStyles();
 
-  return (
-    <Authenticated>
-      {pageUser &&
-          <React.Fragment>
-          <AppHeader/>
-            <div className={classes.root}>
-              <Toolbar style={{ padding: 0 }}>
-                <Typography className={classes.title} variant="h4" noWrap>
-                  Pesanan Saya
-                </Typography>
-              </Toolbar>
-              <Paper style={{ padding: "40px 60px" }}>
-                <DataGrid
-                  rows={data}
-                  columns={columns({
-                    classes: classes,
-                  })}
-                  pageSize={5}
-                  disableColumnMenu
-                  autoHeight
-                  rowHeight={55}
-                />
-              </Paper>
-            </div>
-          </React.Fragment>
-      }
-    </Authenticated>
-  );
+  if (window.innerWidth > 768)
+    return (
+      <React.Fragment>
+        <AppHeader username="indy" />
+        <div className={classes.root}>
+          <Toolbar style={{ padding: 0 }}>
+            <Typography className={classes.title} variant="h4" noWrap>
+              Pesanan Saya
+            </Typography>
+          </Toolbar>
+          <Paper style={{ padding: "40px 60px" }}>
+            <DataGrid
+              rows={data}
+              columns={columns({
+                classes: classes,
+              })}
+              pageSize={5}
+              disableColumnMenu
+              autoHeight
+              rowHeight={55}
+            />
+          </Paper>
+        </div>
+      </React.Fragment>
+    );
+  else
+    return (
+      <React.Fragment>
+        <AppHeader username="indy" />
+        <div className={classes.smallroot}>
+          <Toolbar style={{ padding: 0 }}>
+            <Typography className={classes.smalltitle} variant="h4" noWrap>
+              Pesanan Saya
+            </Typography>
+          </Toolbar>
+          <Paper style={{}}>
+            <Table>
+              {data.map((it) => {
+                return (
+                  <React.Fragment>
+                    <TableBody className={classes.cellcontainer}>
+                      <TableCell className={classes.labelTitle} colSpan={2}>
+                        {it.nama_warung}
+                      </TableCell>
+                    </TableBody>
+                    <TableBody className={classes.cellcontainer}>
+                      <TableCell className={classes.label}>Jumlah </TableCell>
+                      <TableCell className={classes.field}>
+                        {it.jumlah}
+                      </TableCell>
+                    </TableBody>
+                    <TableBody className={classes.cellcontainer}>
+                      <TableCell className={classes.label}>
+                        Waktu Pesan
+                      </TableCell>
+                      <TableCell className={classes.field}>
+                        {converttanggal(String(it.tgl_transaksi))}
+                      </TableCell>
+                    </TableBody>
+                    <TableBody className={classes.cellcontainer}>
+                      <TableCell className={classes.label}>
+                        Waktu Kirim
+                      </TableCell>
+                      <TableCell className={classes.field}>
+                        {converttanggal(String(it.tgl_kirim))}
+                      </TableCell>
+                    </TableBody>
+                    <TableBody className={classes.cellcontainer}>
+                      <TableCell className={classes.label}>
+                        Total Harga
+                      </TableCell>
+                      <TableCell className={classes.field}>
+                        {it.total}
+                      </TableCell>
+                    </TableBody>
+                    <TableBody className={classes.cellcontainer}>
+                      <TableCell className={classes.label}>
+                        Status Pesanan
+                      </TableCell>
+                      <TableCell className={classes.field}>
+                        {it.status === 0 ? (
+                          <Typography style={{color: "#FDCB35", fontWeight: 700}}>In Progress</Typography>
+                        ) : it.status === 1 ? (
+                          <Typography style={{color: "#31CE36", fontWeight: 700}}>Completed</Typography>
+                        ) : it.status === 2 ? (
+                          <Typography style={{color: "#D85450", fontWeight: 700}}>Canceled</Typography>
+                        ) : (
+                          <Typography style={{color: "#000000", fontWeight: 700}}>Undefined</Typography>
+                        )}
+                      </TableCell>
+                    </TableBody>
+                  </React.Fragment>
+                );
+              })}
+            </Table>
+          </Paper>
+        </div>
+      </React.Fragment>
+    );
+}
+
+function converttanggal(date) {
+  const part = date.split(" ");
+  return `${part[0]},  ${part[2]} ${part[1]} ${part[3]} Jam ${part[4]}`;
 }
 
 export default PesananSayaPage;
