@@ -62,6 +62,18 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translateX(-50%)",
   },
+  smalltitle: {
+    color: "#FDCB35",
+    fontSize: "4.5vw",
+    fontFamily: "Roboto Slab",
+    fontWeight: "black",
+    margin: 0,
+    paddingTop: 12,
+    paddingBottom: 12,
+    backgroundColor: "#08080C",
+    textAlign: "center",
+    position: "relative",
+  },
   detail: {
     width: "68vw",
     position: "relative",
@@ -89,7 +101,23 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
   },
+  smallbasket: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(0),
+    marginLeft: theme.spacing(1.5),
+    marginRight: theme.spacing(1.5),
+    border: "0.5px solid #C4C4C4",
+    borderRadius: "5px",
+    padding: theme.spacing(2),
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
+  },
 }));
+
+function pick(optbig, optsmall) {
+  return window.innerWidth > 768 ? optbig : optsmall;
+}
 
 const InfoPage = (props) => {
 
@@ -137,29 +165,34 @@ const InfoPage = (props) => {
       return;
     }
     const alamat = prompt("Alamat anda?", "alamat");
-    if(!alamat){
+    if (!alamat) {
       alert("Login gagal");
       return;
     }
     const handleSuccess = (position) => {
       history.push({
-          pathname: '/konfirmasi/',
-          state: {
-            alamat: alamat,
-            keranjang: keranjang,
-            warung_id: props.match.params.id,
-            user_position: {
-              longitude: position.coords.longitude,
-              latitude: position.coords.latitude,
-            }
-          }
-        })
-    }
+        pathname: "/konfirmasi/",
+        state: {
+          username_pembeli: username_pembeli,
+          alamat: alamat,
+          keranjang: keranjang,
+          warung_id: props.match.params.id,
+          user_position: {
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude,
+          },
+        },
+      });
+    };
     const handleError = (err) => {
-      alert("Izin akses lokasi dibutuhkan!")
-    }
-    navigator.geolocation.getCurrentPosition(handleSuccess,handleError, { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 });
-  }
+      alert("Izin akses lokasi dibutuhkan!");
+    };
+    navigator.geolocation.getCurrentPosition(handleSuccess, handleError, {
+      enableHighAccuracy: false,
+      timeout: 20000,
+      maximumAge: 1000,
+    });
+  };
 
   async function loadDays(id) {
     try {
@@ -182,23 +215,24 @@ const InfoPage = (props) => {
     setInfoShowed(false);
   };
   const addToKeranjang = () => {
-    const alreadyHave = keranjang.reduce((alreadyHave, it) => (it.id===menuInfo.id)? it.jumlah : alreadyHave, 0);
-    if (alreadyHave){
-        updateJumlahItem(menuInfo.id, alreadyHave+1);
-    }else{
-        setKeranjang([
-          ...keranjang,
-          {
-            id: menuInfo.id,
-            nama: menuInfo.nama,
-            harga: menuInfo.harga,
-            jumlah: 1,
-            pic: menuInfo.pic
-          },
-        ]);
-        setSubtotal(
-          subtotal + menuInfo.harga
-        );
+    const alreadyHave = keranjang.reduce(
+      (alreadyHave, it) => (it.id === menuInfo.id ? it.jumlah : alreadyHave),
+      0
+    );
+    if (alreadyHave) {
+      updateJumlahItem(menuInfo.id, alreadyHave + 1);
+    } else {
+      setKeranjang([
+        ...keranjang,
+        {
+          id: menuInfo.id,
+          nama: menuInfo.nama,
+          harga: menuInfo.harga,
+          jumlah: 1,
+          pic: menuInfo.pic,
+        },
+      ]);
+      setSubtotal(subtotal + menuInfo.harga);
     }
     setInfoShowed(false);
   };
@@ -240,6 +274,7 @@ const InfoPage = (props) => {
             backgroundImage: `url(${defaultAPIURL + pathpic})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
+            display: pick("block", "none"),
           }}
         >
           <IconButton
@@ -280,12 +315,17 @@ const InfoPage = (props) => {
             </div>
           ))}
         </div>
+        {window.innerWidth > 768 ? null : (
+          <div className={classes.smalltitle}>{(result[0] !== undefined)? result[0].nama : "Lalapan Lahab"}</div> // sengaja typo biar tau kalau eror
+        )}
         <Grid container spacing={0}>
-          <Grid item xs={12} sm={12} md={8}>
-            <MenuList data={menuList} onMenuClick={handleShowInfoMenu} />
-          </Grid>
+          {window.innerWidth > 768 ? (
+            <Grid item xs={12} sm={12} md={8}>
+              <MenuList data={menuList} onMenuClick={handleShowInfoMenu} />
+            </Grid>
+          ) : null}
           <Grid item xs={12} sm={12} md={4}>
-            <Paper className={classes.basket}>
+            <Paper className={pick(classes.basket, classes.smallbasket)}>
               <Keranjang
                 keranjang={keranjang}
                 subtotal={subtotal}
@@ -294,6 +334,11 @@ const InfoPage = (props) => {
               />
             </Paper>
           </Grid>
+          {window.innerWidth > 768 ? null : (
+            <Grid item xs={12} sm={12} md={8}>
+              <MenuList data={menuList} onMenuClick={handleShowInfoMenu} />
+            </Grid>
+          )}
         </Grid>
         <MenuPopUp
           data={menuInfo}
