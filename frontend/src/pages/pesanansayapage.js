@@ -263,7 +263,17 @@ function columns(props) {
 }
 
 function PesananSayaPage(props) {
-  const [data, setData] = useState([]);
+
+  const { user } = useAppContext();
+  const [pageUser, setPageUser] = useState({})
+
+  useEffect(() => {
+      if (user) {
+          setPageUser(user)
+      }
+  }, [user])
+  
+  const [data, setData] = useState([])
 
   function rows(data) {
     if (data.length > 0) {
@@ -282,119 +292,127 @@ function PesananSayaPage(props) {
   useEffect(() => {
     async function loadPesanan() {
       try {
-        let response = await getPesananPembeli(
-          props.match.params.username_pembeli
-        );
+        let response = await getPesananPembeli(pageUser.id)
         if (response.status === 200) {
-          rows(response.data.values);
+          rows(response.data.values)
         }
+
       } catch (e) {
-        console.log(e);
+        console.log(e)
       }
     }
-    loadPesanan();
-  }, [props.match.params.username_pembeli]);
+    loadPesanan()
+  }, [pageUser.id]);
+
 
   const classes = useStyles();
 
   if (window.innerWidth > 768)
     return (
-      <React.Fragment>
-        <AppHeader username="indy" />
-        <div className={classes.root}>
-          <Toolbar style={{ padding: 0 }}>
-            <Typography className={classes.title} variant="h4" noWrap>
-              Pesanan Saya
-            </Typography>
-          </Toolbar>
-          <Paper style={{ padding: "40px 60px" }}>
-            <DataGrid
-              rows={data}
-              columns={columns({
-                classes: classes,
-              })}
-              pageSize={5}
-              disableColumnMenu
-              autoHeight
-              rowHeight={55}
-            />
-          </Paper>
-        </div>
-      </React.Fragment>
+      <Authenticated>
+        {pageUser &&
+          <React.Fragment>
+            <AppHeader/>
+            <div className={classes.root}>
+              <Toolbar style={{ padding: 0 }}>
+                <Typography className={classes.title} variant="h4" noWrap>
+                  Pesanan Saya
+                </Typography>
+              </Toolbar>
+              <Paper style={{ padding: "40px 60px" }}>
+                <DataGrid
+                  rows={data}
+                  columns={columns({
+                    classes: classes,
+                  })}
+                  pageSize={5}
+                  disableColumnMenu
+                  autoHeight
+                  rowHeight={55}
+                />
+              </Paper>
+            </div>
+          </React.Fragment>
+        }
+      </Authenticated>
     );
   else
     return (
-      <React.Fragment>
-        <AppHeader username="indy" />
-        <div className={classes.smallroot}>
-          <Toolbar style={{ padding: 0 }}>
-            <Typography className={classes.smalltitle} variant="h4" noWrap>
-              Pesanan Saya
-            </Typography>
-          </Toolbar>
-          <Paper style={{}}>
-            <Table>
-              {data.map((it) => {
-                return (
-                  <React.Fragment>
-                    <TableBody className={classes.cellcontainer}>
-                      <TableCell className={classes.labelTitle} colSpan={2}>
-                        {it.nama_warung}
-                      </TableCell>
-                    </TableBody>
-                    <TableBody className={classes.cellcontainer}>
-                      <TableCell className={classes.label}>Jumlah </TableCell>
-                      <TableCell className={classes.field}>
-                        {it.jumlah}
-                      </TableCell>
-                    </TableBody>
-                    <TableBody className={classes.cellcontainer}>
-                      <TableCell className={classes.label}>
-                        Waktu Pesan
-                      </TableCell>
-                      <TableCell className={classes.field}>
-                        {converttanggal(String(it.tgl_transaksi))}
-                      </TableCell>
-                    </TableBody>
-                    <TableBody className={classes.cellcontainer}>
-                      <TableCell className={classes.label}>
-                        Waktu Kirim
-                      </TableCell>
-                      <TableCell className={classes.field}>
-                        {converttanggal(String(it.tgl_kirim))}
-                      </TableCell>
-                    </TableBody>
-                    <TableBody className={classes.cellcontainer}>
-                      <TableCell className={classes.label}>
-                        Total Harga
-                      </TableCell>
-                      <TableCell className={classes.field}>
-                        {it.total}
-                      </TableCell>
-                    </TableBody>
-                    <TableBody className={classes.cellcontainer}>
-                      <TableCell className={classes.label}>
-                        Status Pesanan
-                      </TableCell>
-                      <TableCell className={classes.field}>
-                        {it.status === 0 ? (
-                          <Typography style={{color: "#FDCB35", fontWeight: 700}}>In Progress</Typography>
-                        ) : it.status === 1 ? (
-                          <Typography style={{color: "#31CE36", fontWeight: 700}}>Completed</Typography>
-                        ) : it.status === 2 ? (
-                          <Typography style={{color: "#D85450", fontWeight: 700}}>Canceled</Typography>
-                        ) : (
-                          <Typography style={{color: "#000000", fontWeight: 700}}>Undefined</Typography>
-                        )}
-                      </TableCell>
-                    </TableBody>
-                  </React.Fragment>
-                );
-              })}
-            </Table>
-          </Paper>
-        </div>
-      </React.Fragment>
+      <Authenticated>
+        {pageUser &&
+          <React.Fragment>
+            <AppHeader/>
+            <div className={classes.smallroot}>
+              <Toolbar style={{ padding: 0 }}>
+                <Typography className={classes.smalltitle} variant="h4" noWrap>
+                  Pesanan Saya
+                </Typography>
+              </Toolbar>
+              <Paper style={{}}>
+                <Table>
+                  {data.map((it) => {
+                    return (
+                      <React.Fragment>
+                        <TableBody className={classes.cellcontainer}>
+                          <TableCell className={classes.labelTitle} colSpan={2}>
+                            {it.nama_warung}
+                          </TableCell>
+                        </TableBody>
+                        <TableBody className={classes.cellcontainer}>
+                          <TableCell className={classes.label}>Jumlah </TableCell>
+                          <TableCell className={classes.field}>
+                            {it.jumlah}
+                          </TableCell>
+                        </TableBody>
+                        <TableBody className={classes.cellcontainer}>
+                          <TableCell className={classes.label}>
+                            Waktu Pesan
+                          </TableCell>
+                          <TableCell className={classes.field}>
+                            {converttanggal(String(it.tgl_transaksi))}
+                          </TableCell>
+                        </TableBody>
+                        <TableBody className={classes.cellcontainer}>
+                          <TableCell className={classes.label}>
+                            Waktu Kirim
+                          </TableCell>
+                          <TableCell className={classes.field}>
+                            {converttanggal(String(it.tgl_kirim))}
+                          </TableCell>
+                        </TableBody>
+                        <TableBody className={classes.cellcontainer}>
+                          <TableCell className={classes.label}>
+                            Total Harga
+                          </TableCell>
+                          <TableCell className={classes.field}>
+                            {it.total}
+                          </TableCell>
+                        </TableBody>
+                        <TableBody className={classes.cellcontainer}>
+                          <TableCell className={classes.label}>
+                            Status Pesanan
+                          </TableCell>
+                          <TableCell className={classes.field}>
+                            {it.status === 0 ? (
+                              <Typography style={{color: "#FDCB35", fontWeight: 700}}>In Progress</Typography>
+                            ) : it.status === 1 ? (
+                              <Typography style={{color: "#31CE36", fontWeight: 700}}>Completed</Typography>
+                            ) : it.status === 2 ? (
+                              <Typography style={{color: "#D85450", fontWeight: 700}}>Canceled</Typography>
+                            ) : (
+                              <Typography style={{color: "#000000", fontWeight: 700}}>Undefined</Typography>
+                            )}
+                          </TableCell>
+                        </TableBody>
+                      </React.Fragment>
+                    );
+                  })}
+                </Table>
+              </Paper>
+            </div>
+          </React.Fragment>
+        }
+      </Authenticated>
     );
 }
 

@@ -53,7 +53,7 @@ export default function AppHeader() {
       <AppBar position="static">
         <Toolbar style={{ backgroundColor: "#08080C" }}>
           <EmojiNatureIcon className={classes.yellow} />
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} onClick={() => {history.push("/")}}>
             HaniBee
           </Typography>
           {isAuthenticated ? (

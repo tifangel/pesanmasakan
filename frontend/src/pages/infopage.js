@@ -173,7 +173,6 @@ const InfoPage = (props) => {
       history.push({
         pathname: "/konfirmasi/",
         state: {
-          username_pembeli: username_pembeli,
           alamat: alamat,
           keranjang: keranjang,
           warung_id: props.match.params.id,

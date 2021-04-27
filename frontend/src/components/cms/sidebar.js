@@ -12,6 +12,8 @@ import HistoryIcon from '@material-ui/icons/History';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { useAppContext } from "../../lib/contextLib"
+import {useHistory, useLocation} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -64,6 +66,19 @@ const ListItem = withStyles({
   })(MuiListItem);
 
 const Sidebar = ({id, mobile, onMenuClick}) => {
+
+    const { userHasAuthenticated} = useAppContext();
+    let history = useHistory();
+
+    async function handleLogout() {
+        // sign out
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+  
+        userHasAuthenticated(false);
+        alert("logout was successful")
+        history.push("/");
+    }
 
     const classes = useStyles();
 
@@ -124,7 +139,7 @@ const Sidebar = ({id, mobile, onMenuClick}) => {
                 </ListItem>
                 <Divider classes={{root: classes.dividerColor}}/>
             </List>
-            <Button className={classes.button}>
+            <Button className={classes.button} onClick={handleLogout}>
               Logout
             </Button>
             </Box>
