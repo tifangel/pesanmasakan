@@ -6,31 +6,40 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         paddingTop: theme.spacing(7),
         paddingBottom: theme.spacing(1),
-        alignItems:'space-between'
+        alignItems:'space-between',
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column-reverse',
+        },
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column-reverse',
+        },
+        [theme.breakpoints.down('xs')]: {
+            paddingLeft: theme.spacing(5),
+            paddingRight: theme.spacing(5),
+        }
     },
     title: {
         flex: '50%',
         color: '#000000',
-        fontSize : '2.5vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'medium',
         [theme.breakpoints.down('sm')]: {
-            fontSize : '4vw',
+            fontSize : '2em',
+            marginTop: 0,
+            marginBottom: 30
         },
     },
     date: {
-        display:'flex',
-        flexDirection: 'column',
         alignSelf: 'center',
-        justifyContent:'flex-end',
-        flex: '50%',
         textAlign: 'right',
         color: '#000000',
-        fontSize : '1vw',
         fontFamily : 'Inter',
         fontWeight : 'medium',
         [theme.breakpoints.down('sm')]: {
-            fontSize : '2vw',
+            alignSelf: 'flex-start',
+            textAlign: 'left',
+            fontSize: '1em',
+            marginBottom: 0,
         },
     }
   }));
@@ -45,8 +54,6 @@ const Title = ({nama}) => {
                 <h1 className={classes.title}>Hello, {nama}!</h1>
                 <pre className={classes.date}>
                     Tuesday, 16 March 2021
-                    <br/>
-                    12:32 PM
                 </pre>
             </div>
         </React.Fragment>

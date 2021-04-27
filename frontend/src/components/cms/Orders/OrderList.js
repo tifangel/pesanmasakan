@@ -16,6 +16,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { getHistoryPenjual, getOrderlistPenjual, updateOrder } from "../../../resource";
+import { formatMoney, formatDate, formatTime } from '../../../resource/formatter';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,42 +75,6 @@ const TableCell = withStyles({
     }
 })(MuiTableCell);
 
-function formatMoney(money) {
-    if (money >= 1000) {
-      return `Rp${Math.floor(money / 1000)}.${
-        money % 1000 < 10
-          ? `00${money % 1000}`
-          : money % 1000 < 100
-          ? `0${money % 1000}`
-          : money % 1000
-      }`;
-    } else {
-      return `Rp${money}`;
-    }
-  }
-
-function formatDate(date) {
-    const d = new Date(date);
-    var month = (d.getMonth()+1) < 10 ? `0${(d.getMonth()+1)}` : (d.getMonth()+1);
-    var day = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
-    var year = d.getFullYear().toString().slice(-2);
-    return `${day}/${month}/${year}`;
-    
-    // date = new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Jakarta'});
-    // return date = date.slice(0, date.indexOf(","));
-}
-
-function formatTime(date) {
-    const d = new Date(date);
-    var jam = d.getHours() < 10 ? `0${d.getHours()}` : d.getHours();
-    var menit = d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes();
-    var detik = d.getSeconds() < 10 ? `0${d.getSeconds()}` : d.getSeconds();
-    return `${jam}:${menit}:${detik} WIB`;
-    
-    // date = new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Jakarta'});
-    // return date = date.slice(0, date.indexOf(","));
-}
-
 function Row(props) {
     var row = props.row;
     var type = props.type;
@@ -117,6 +82,7 @@ function Row(props) {
     const [allCooked, setAllCooked] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [msg, setMsg] = useState("");
 
     useEffect(() => {
         var allCookedTemp = true;
@@ -134,11 +100,14 @@ function Row(props) {
             id: id
         }
         var res = await updateOrder(data);
-        if (res) {
+        console.log(res);
+        if (res.data.values.changedRows > 0) {
             setDisabled(true);
+            setMsg("Dish sent!");
             setSnackbarOpen(true);
         } else {
-            // TODO: show error message
+            setMsg("An error has occured, please try again later");
+            setSnackbarOpen(true);
         }
     }
 
@@ -160,7 +129,7 @@ function Row(props) {
                         <Tooltip title="Send dish to customer">
                             <Button variant="contained" disableElevation className={classes.greenbg} onClick={sendOrder} disabled={disabled}>Send</Button>
                         </Tooltip>
-                        <Snackbar open={snackbarOpen} message="Dish sent!" autoHideDuration={1000} 
+                        <Snackbar open={snackbarOpen} message={msg} autoHideDuration={1000} 
                             action={
                                 <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
                                     <CloseIcon fontSize="small" />

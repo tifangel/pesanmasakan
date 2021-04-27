@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import { DataGrid } from '@material-ui/data-grid';
+import { TableContainer, Table, TableCell, TableBody, TableHead, TableRow } from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
@@ -10,14 +11,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 
+import { formatMoney } from '../../../resource/formatter';
 const { defaultAPIURL } = require("../../../config");
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 20,
-    "& .header-style": {
-      backgroundColor: "#FDCB35",
-    },
   },
   header: {
     marginTop: 0
@@ -30,13 +29,28 @@ const useStyles = makeStyles((theme) => ({
       background : '#FDCB35',
       color : '#000'
   },
-  
-
   title: {
     flexGrow: 1,
     display: 'none',
+    color: '#000000',
+    fontSize : '1.5em',
+    fontFamily : 'Roboto Slab',
+    fontWeight : 'medium',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
+    },
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    [theme.breakpoints.down('xs')]: {
+      width: 50,
+      height: 50,
+    },
+  },
+  desc: {
+    [theme.breakpoints.down('xs')]: {
+      width: 150
     },
   },
   search: {
@@ -80,78 +94,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function columns(props) {
-  return [
-    {
-      field: "id",
-      headerName: "No",
-      width: 60,
-      headerClassName: "header-style",
-    },
-    {
-      field: "pic",
-      headerName: "Image",
-      width: 160,
-      headerClassName: "header-style",
-      renderCell: (params) => <img src={`${defaultAPIURL}${params.value}`} alt="Foto sampah" width={160} style={{objectFit : 'contain'}}/>,
-    },
-    // {
-    //   field: "id_warung",
-    //   headerName: "No",
-    //   width: 100,
-    //   headerClassName: "header-style",
-    // },
-    {
-      field: "nama",
-      headerName: "Item Name",
-      width: 160,
-      headerClassName: "header-style",
-    },
-    {
-      field: "harga",
-      headerName: "Price",
-      width: 120,
-      headerClassName: "header-style",
-    },
-    {
-      field: "desc_menu",
-      headerName: "Description",
-      width: 350,
-      headerClassName: "header-style",
-    },
-    {
-      field: "days",
-      headerName: "Available On",
-      width: 200,
-      headerClassName: "header-style",
-      renderCell: (params) => (
-        ["senin", "selasa", "rabu"].map((item, idx)=>
-          <Grid item>
-              <Typography className={props.classes.menuDay} variant="body2" color="textSecondary" component="p">
-                  {item}
-              </Typography>
-          </Grid>
-      )
-      ),
-    },
-    {
-      field: "action",
-      headerName: "Action",
-      width: 200,
-      headerClassName: "header-style",
-      renderCell: (params) => (
-        <React.Fragment>
-          <EditIcon onClick={() => props.onClickEdit(params.row)} />
-          <DeleteOutlineIcon onClick={() => props.onClickDelete(params.row.id)} />
-        </React.Fragment>
-      ),
-    },
-  ];
-}
-
 function MenuListPenjual({data, onEdit, onDelete}) {
   const classes = useStyles(); 
   const [search,setSearch] = useState("");
+
+  function createRow(data) {
+    var days = data.hari.map((item, idx) =>
+      <Grid item>
+          <Typography className={classes.menuDay} variant="body2" color="textSecondary" component="p">
+              {item} <br/>
+          </Typography>
+      </Grid> 
+    );
+    return (
+      <TableRow>
+        <TableCell><Avatar className={classes.avatar} variant="square" src={`${defaultAPIURL}${data.pic}`} alt="Foto makanan"/></TableCell>
+        <TableCell>{data.nama}</TableCell>
+        <TableCell>{formatMoney(data.harga)}</TableCell>
+        <TableCell width={classes.desc}>{data.desc_menu}</TableCell>
+        <TableCell><Grid container>{days}</Grid></TableCell>
+        <TableCell>          
+          <EditIcon onClick={() => onEdit(data)} />
+          <DeleteOutlineIcon onClick={() => onDelete(data.id)} />
+        </TableCell>
+      </TableRow>
+    );
+  }
+
   return (
     <div className={classes.root}>
       <Toolbar>
@@ -173,18 +142,25 @@ function MenuListPenjual({data, onEdit, onDelete}) {
           />
         </div>
       </Toolbar>
-      <DataGrid
-        rows={data.filter(it => it.desc_menu.includes(search))}
-        columns={columns({
-          onClickEdit: (dataformmenu) => {onEdit(dataformmenu)},
-          onClickDelete: (id_menu) => {onDelete(id_menu)},
-          classes : classes,
-        })}
-        pageSize={20}
-        disableColumnMenu
-        autoHeight
-        rowHeight={120}
-      />
+      <TableContainer component="paper">
+        <Table stickyHeader>
+          <TableHead>
+            <TableCell>Image</TableCell>
+            <TableCell>Item Name</TableCell>
+            <TableCell>Price</TableCell>
+            <TableCell>Description</TableCell>
+            <TableCell>Avail. Days</TableCell>
+            <TableCell>Action</TableCell>
+          </TableHead>
+          <TableBody>
+            {
+              data
+                .filter(it => it.desc_menu.includes(search))
+                .map(d => createRow(d))
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 }

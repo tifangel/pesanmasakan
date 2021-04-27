@@ -1,20 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { getOverviewOrder } from "../../resource";
-import { LineChart, Legend, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { LineChart, Legend, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Paper } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root:{
         marginTop: theme.spacing(5),
-        padding: theme.spacing(5),
+        paddingTop: theme.spacing(5),
+        paddingBottom: theme.spacing(5),
+        paddingLeft: 0,
+        paddingRight: 0,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 13,
+        [theme.breakpoints.down('xs')]: {
+            borderRadius: 0,
+            overflowY: "scroll",
+        },
     },
     title:{
         fontFamily: "Roboto Slab",
         fontSize:"large"
+    },
+    graphContainer: {
+        height: '70vh',
+        marginLeft: 0,
+        marginRight: 0,
     }
 })
 )
@@ -69,47 +83,47 @@ const DashboardPlot = ({id_warung}) =>{
 
     const classes = useStyles();
     return (
-        <Paper className={classes.root}>
+        <Paper className={classes.root} elevation={0}>
             <p className={classes.title}> Summary</p>
-            <LineChart
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5
-            }}
-            >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis 
-                yAxisId="left" 
-                dataKey="Items Ordered"
-            />
-            <YAxis 
-                yAxisId="right" 
-                orientation="right" 
-                dataKey="Profit"
-            />
-            <Tooltip />
-            <Legend />
-            <Line
-                yAxisId="left"
-                type="monotone"
-                dataKey= "Items Ordered"
-                stroke="#000"
-                activeDot={{ r: 5 }}
-            />
-            <Line 
-                yAxisId="right" 
-                type="monotone" 
-                dataKey="Profit" 
-                stroke="#FDCB35" 
-                activeDot={{ r: 5 }}
-            />
-            </LineChart>
+            <Container className={classes.graphContainer}>
+            <ResponsiveContainer>
+                <LineChart
+                width={500}
+                height={300}
+                data={data}
+                >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis 
+                    yAxisId="left" 
+                    dataKey="Items Ordered"
+                />
+                <YAxis 
+                    yAxisId="right" 
+                    orientation="right" 
+                    dataKey="Profit"
+                />
+                <Tooltip />
+                <Legend />
+                <Line
+                    yAxisId="left"
+                    type="monotone"
+                    dataKey= "Items Ordered"
+                    stroke="#000"
+                    activeDot={{ r: 5 }}
+                    isAnimationActive={false}
+                />
+                <Line 
+                    yAxisId="right" 
+                    type="monotone" 
+                    dataKey="Profit" 
+                    stroke="#FDCB35" 
+                    activeDot={{ r: 5 }}
+                    isAnimationActive={false}
+                />
+                </LineChart>
+            </ResponsiveContainer>
+            </Container>
         </Paper>
         
     );

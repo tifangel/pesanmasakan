@@ -26,8 +26,23 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             paddingTop: theme.spacing(5),
         },
+        [theme.breakpoints.down('xs')]: {
+            paddingLeft: theme.spacing(0),
+            paddingRight: theme.spacing(0),
+            paddingTop: theme.spacing(5),
+        },
     },
     toolbar: theme.mixins.toolbar,
+    paper: {
+        borderRadius: 13,
+        [theme.breakpoints.down('xs')]: {
+            borderRadius: 0,
+            paddingLeft: theme.spacing(0),
+            paddingRight: theme.spacing(0),
+            width: '100vw',
+            overflow: 'scroll',
+        },
+    }
 }));
 
 const MainContent = ({ id}) => {
@@ -50,8 +65,10 @@ const MainContent = ({ id}) => {
       };
 
     const handleChange = (event) => {
+        console.log(event);
         setDaysMenu({ ...daysMenu, [event.target.name]: event.target.checked });
       };
+
     const [dataFormMenu, setDataFormMenu] = useState({
         nama: "",
         harga: 0,
@@ -59,6 +76,7 @@ const MainContent = ({ id}) => {
         pic: "",
         id: 1, // ID_MENU
         id_warung: 1,
+        hari: [],
     });
     const [daysMenu, setDaysMenu] = useState({
         senin: false,
@@ -73,7 +91,16 @@ const MainContent = ({ id}) => {
 
     const changeStatusFormtoEdit = (data) => {
         setStatusFormMenu('edit');
-        setDataFormMenu(data)
+        setDataFormMenu(data);
+        setDaysMenu({
+            senin: data.hari.includes("senin"),
+            selasa: data.hari.includes("selasa"),
+            rabu: data.hari.includes("rabu"),
+            kamis: data.hari.includes("kamis"),
+            jumat: data.hari.includes("jumat"),
+            sabtu: data.hari.includes("sabtu"),
+            minggu: data.hari.includes("minggu"),
+        })
         console.log(data)
     }
 
@@ -93,16 +120,18 @@ const MainContent = ({ id}) => {
                         desc_menu: "",
                         pic: "",
                         id: 1, // ID_MENU
+                        hari: [],
                         id_warung: dataFormProfile.id_warung,
                     })
                     let responseMenu = await getMenuListByWarungId(dataFormProfile.id_warung);
                     if (responseMenu.status === 200) {
                         setMenuList(responseMenu.data.values);
                     }
-                
             } catch (e) {
             console.log(e);
             }
+
+
         }
       }
       loadMenu();
@@ -120,6 +149,7 @@ const MainContent = ({ id}) => {
 
     // Handling Main Content
     var content;
+    const classes = useStyles();
 
     if (id === 0) {
         content = <React.Fragment>
@@ -129,7 +159,7 @@ const MainContent = ({ id}) => {
                 </React.Fragment>;
     } else if (id === 1) {
         content =   <React.Fragment>
-                        <Paper>
+                        <Paper elevation={0} className={classes.paper}>
                             <FormMenu
                                 datamenu={dataFormMenu}
                                 statedays={daysMenu}
@@ -139,7 +169,7 @@ const MainContent = ({ id}) => {
                                 resetStatusFormMenu={resetStatusFormMenu}
                             />
                         </Paper>
-                        <Paper style={{ marginTop: 30 }}>
+                        <Paper style={{ marginTop: 30 }} elevation={0} className={classes.paper}>
                             <MenuListPenjual data={menuList} onEdit={changeStatusFormtoEdit} onDelete={onDeleteMenu}/>
                         </Paper>
                     </React.Fragment>;
@@ -151,14 +181,12 @@ const MainContent = ({ id}) => {
         content = <Profile data={dataFormProfile} />
     }
 
-    const classes = useStyles();
-
     return (
         <>
             {dataFormProfile &&
-                <main className={classes.root}>
+                <div className={classes.root}>
                     {content}
-                </main>
+                </div>
             }
         </>
     );
