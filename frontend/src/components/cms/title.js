@@ -46,6 +46,29 @@ const useStyles = makeStyles((theme) => ({
 
 const Title = ({nama}) => {
 
+    const months = [
+        "January",
+        "Februari",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    const formatDate = () => {
+        const d = new Date();
+        var month = months[d.getMonth()];
+        var day = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
+        var year = d.getFullYear();
+        return `${day} ${month} ${year}`;
+    }
+
     const classes = useStyles();
 
     return(
@@ -53,7 +76,7 @@ const Title = ({nama}) => {
             <div className={classes.root}>
                 <h1 className={classes.title}>Hello, {nama}!</h1>
                 <pre className={classes.date}>
-                    Tuesday, 16 March 2021
+                    Tuesday, {formatDate()}
                 </pre>
             </div>
         </React.Fragment>
