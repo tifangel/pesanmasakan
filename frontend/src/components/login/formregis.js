@@ -9,19 +9,19 @@ const useStyles = makeStyles((theme) => ({
     root: {
         background: "#FFFFFF",
         width: '30vw',
-        padding: theme.spacing(6),
+        padding: theme.spacing(5),
         margin: theme.spacing(4),
         [theme.breakpoints.down('md')]: {
-            width: '50vw',
-            padding: theme.spacing(5),
+            width: '35vw',
+            padding: theme.spacing(4.5),
         },
         [theme.breakpoints.down('sm')]: {
-            width: '70vw',
+            width: '50vw',
             padding: theme.spacing(3),
         },
     },
     title: {
-        fontSize: '4.15vw',
+        fontSize: '3.8vw',
         fontFamily: 'Roboto Slab',
         fontWeight: 'regular',
         color: '#000000',
@@ -29,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(0),
         borderLeft: '0.65vw solid #FDCB35',
         [theme.breakpoints.down('md')]: {
-            fontSize: '5.5vw',
+            fontSize: '4.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '7vw',
+            fontSize: '5vw',
         },
     },
     title2: {
-        fontSize: '4.15vw',
+        fontSize: '3.8vw',
         fontFamily: 'Roboto Slab',
         fontWeight: 'bold',
         color: '#000000',
@@ -46,10 +46,10 @@ const useStyles = makeStyles((theme) => ({
         top: '-1.63vw',
         borderLeft: '0.65vw solid #FDCB35',
         [theme.breakpoints.down('md')]: {
-            fontSize: '5.5vw',
+            fontSize: '4.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '7vw',
+            fontSize: '5vw',
         },
     },
     subtitle: {
@@ -58,28 +58,28 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'light',
         color: '#000000',
         [theme.breakpoints.down('md')]: {
-            fontSize: '2vw',
+            fontSize: '1.7vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '2.5vw',
+            fontSize: '1.8vw',
         },
     },
     input: {
         background: '#F5F5F5',
-        padding: theme.spacing(1),
+        padding: theme.spacing(0.5),
+        paddingLeft: theme.spacing(1),
         width: '100%',
         fontSize: '1vw',
         fontFamily: 'Roboto Slab',
         fontWeight: 'regular',
         marginBottom: '1.3vw',
         [theme.breakpoints.down('md')]: {
-            fontSize: '1.8vw',
-            marginBottom: '2vw',
+            padding: theme.spacing(0),
+            fontSize: '1.4vw',
+            marginBottom: '1.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '2.2vw',
-            padding: theme.spacing(0),
-            paddingLeft: theme.spacing(1),
+            fontSize: '1.8vw',
         },
     },
     btnsubmit: {
@@ -92,16 +92,16 @@ const useStyles = makeStyles((theme) => ({
         transform: 'translateX(-50%)',
         width: '13vw',
         background: '#FDCB35',
-        marginTop: '1.3vw',
+        marginTop: '2vw',
         [theme.breakpoints.down('md')]: {
-            width: '22vw',
-            marginTop: '3vw',
-            fontSize: '2vw',
+            width: '15vw',
+            marginTop: '2vw',
+            fontSize: '1.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            width: '30vw',
-            marginTop: '5vw',
-            fontSize: '2.5vw',
+            width: '24vw',
+            marginTop: '3vw',
+            fontSize: '1.8vw',
         },
     },
     box: {
@@ -110,10 +110,10 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Roboto Slab',
         fontWeight: 'regular',
         [theme.breakpoints.down('md')]: {
-            fontSize: '1.8vw',
+            fontSize: '1.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '2.2vw',
+            fontSize: '1.8vw',
         },
     },
     text1: {
@@ -135,13 +135,13 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         top: '2.5vw',
         [theme.breakpoints.down('md')]: {
-            top: '4vw',
-            fontSize: '1.8vw',
+            top: '3vw',
+            fontSize: '1.3vw',
         },
         [theme.breakpoints.down('sm')]: {
-            top: '6vw',
-            marginBottom: '4vw',
-            fontSize: '2.2vw',
+            top: '4vw',
+            marginBottom: '3vw',
+            fontSize: '1.6vw',
         },
     },
     textsignin: {
@@ -161,45 +161,37 @@ const useStyles = makeStyles((theme) => ({
         flex: '20vw',
         background: '#FDCB35',
         [theme.breakpoints.down('md')]: {
+            fontSize: '1.5vw',
+            // left: '20vw',
+        },
+        [theme.breakpoints.down('sm')]: {
             fontSize: '2vw',
             // left: '20vw',
         },
-        [theme.breakpoints.down('sm')]: {
-            fontSize: '2.5vw',
-            // left: '20vw',
-        },
-    },
-    info: {
-        paddingLeft: theme.spacing(4),
-        paddingRight: theme.spacing(6),
-        [theme.breakpoints.down('sm')]: {
-            paddingLeft: theme.spacing(0),
-            paddingRight: theme.spacing(0),
-        },
     },
     col1: {
-        width: '40%',
+        width: '35%',
         paddingTop: '1.8vw',
         color: '#C4C4C4',
-        fontSize : '1.2vw',
+        fontSize : '1.1vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
         [theme.breakpoints.down('md')]: {
-            fontSize : '2vw',
+            fontSize : '1.4vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize : '2.8vw',
+            fontSize : '2.2vw',
         },
     },
     col2: {
-        width: '60%',
+        width: '65%',
         paddingTop: '1.8vw',
         color: '#000000',
         fontSize : '1.2vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
         [theme.breakpoints.down('md')]: {
-            paddingLeft: theme.spacing(3),
+            paddingLeft: theme.spacing(1.5),
         },
     },
     input2: {
@@ -208,51 +200,51 @@ const useStyles = makeStyles((theme) => ({
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
         width: '15vw',
+        paddingLeft: theme.spacing(1),
         [theme.breakpoints.down('md')]: {
-            width: '30vw',
-            fontSize : '2.2vw',
+            width: '22vw',
+            fontSize : '1.3vw',
         },
         [theme.breakpoints.down('sm')]: {
             marginLeft: '0px',
-            width: '40vw',
-            fontSize : '3vw',
+            width: '35vw',
+            fontSize : '2vw',
         },
     },
     contimg: {
         paddingTop: theme.spacing(2),
         paddingBottom: theme.spacing(2),
         [theme.breakpoints.down('sm')]: {
-            paddingTop: theme.spacing(5),
+            paddingTop: theme.spacing(4),
         },
     },
     titleimg: {
+        marginTop: theme.spacing(6),
         flex: '50%',
         color: '#C4C4C4',
-        fontSize : '1.2vw',
+        fontSize : '1.1vw',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
         [theme.breakpoints.down('md')]: {
-            fontSize : '2vw',
+            fontSize : '1.4vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize : '2.5vw',
+            fontSize : '2vw',
         },
     },
     img: {
-        width: '30vw',
-        height: '15vw',
+        width: '25vw',
+        height: '12vw',
+        position: 'relative',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        marginTop: '17px',
         [theme.breakpoints.down('md')]: {
-            position: 'relative',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '40vw',
-            height: '25vw',
-            marginTop: '20px',
         },
         [theme.breakpoints.down('sm')]: {
-            marginTop: '20px',
-            width: '50vw',
-            height: '30vw',
+            marginTop: '17px',
+            width: '35vw',
+            height: '22vw',
         },
     },
     fileInput: {
@@ -266,14 +258,15 @@ const useStyles = makeStyles((theme) => ({
         fontSize : '14px',
         fontFamily : 'Roboto Slab',
         fontWeight : 'regular',
+        marginTop: theme.spacing(4),
         [theme.breakpoints.down('md')]: {
             flex: '15%',
-            height: '6vw',
-            fontSize : '1.7vw',
+            height: '4vw',
+            fontSize : '1.2vw',
         },
         [theme.breakpoints.down('sm')]: {
-            height: '8vw',
-            fontSize : '2.5vw',
+            height: '5.5vw',
+            fontSize : '1.7vw',
         },
     },
 }));
@@ -451,8 +444,8 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                             </React.Fragment>
                         }  
                     </> : <>
-                        <Grid container>
-                            <Grid className={classes.info} item xs={12} sm={12} md={12} lg={6}>
+                        {/* <Grid container> */}
+                            {/* <Grid className={classes.info} item xs={12} sm={12} md={12} lg={6}> */}
                                 <table>
                                     <tr>
                                         <td className={classes.col1}>Warung Name</td>
@@ -501,8 +494,8 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                                         </td>
                                     </tr>
                                 </table>
-                            </Grid>
-                            <Grid className={classes.contimg} item xs={12} sm={12} md={12} lg={6}>
+                            {/* </Grid> */}
+                            {/* <Grid className={classes.contimg} item xs={12} sm={12} md={12} lg={6}> */}
                                 <div style={{display: 'flex'}}>
                                     <p className={classes.titleimg}>Warung Image</p>
                                     <input id="uploadfile" type="file" hidden="hidden" onChange={(e)=>console.log(document.getElementById("uploadfile").value)}></input>
@@ -516,8 +509,8 @@ const FormRegis = ({status, changeForm, changeStatusForm}) => {
                                     </Button>
                                 </div>
                                 <img src="/logo512.png" className={classes.img}/>
-                            </Grid>
-                        </Grid>
+                            {/* </Grid> */}
+                        {/* </Grid> */}
                         <Button onClick={handleSubmit} className={classes.btnsubmit} variant="contained">
                             Register
                         </Button>

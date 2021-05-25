@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useReducer } from 'react'
+import { useHistory } from "react-router-dom"
 import { makeStyles } from '@material-ui/core/styles'
 import FormLogin from '../components/login/formlogin'
 import FormRegis from '../components/login/formregis'
 import { Box } from '@material-ui/core'
+import IconButton from "@material-ui/core/IconButton"
+import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -11,9 +14,16 @@ const useStyles = makeStyles((theme) => ({
         background: '-moz-linear-gradient(140deg, #FDCB35 50%, #F5F5F5 50%)',
         background: 'linear-gradient(140deg, #FDCB35 50%, #F5F5F5 50%)',
     },
+    iconback: {
+        position: 'absolute',
+        top: '10px',
+        left: '10px',
+    }
 }));
 
 const LoginPage = () => {
+
+    let history = useHistory()
 
     const [state,setState] = useState('login')
 
@@ -37,6 +47,14 @@ const LoginPage = () => {
                 justifyContent="center"
                 alignItems="center"
                 minHeight="100vh">
+                <IconButton
+                    className={classes.iconback}
+                    onClick={() => {
+                        history.push("/");
+                    }}
+                >
+                    <ArrowBackIcon style={{ color: "#08080C", fontSize: "1em" }} />
+                </IconButton>
                 { state === 'login'? 
                     <FormLogin 
                         status={status}

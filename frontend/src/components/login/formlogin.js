@@ -9,19 +9,19 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 const useStyles = makeStyles((theme) => ({
     root: {
         background: "#FFFFFF",
-        width: '30vw',
-        padding: theme.spacing(6),
+        width: '28vw',
+        padding: theme.spacing(5),
         [theme.breakpoints.down('md')]: {
-            width: '50vw',
-            padding: theme.spacing(5),
+            width: '33vw',
+            padding: theme.spacing(4.5),
         },
         [theme.breakpoints.down('sm')]: {
-            width: '70vw',
-            padding: theme.spacing(3.2),
+            width: '50vw',
+            padding: theme.spacing(3.7),
         },
     },
     title: {
-        fontSize: '4.15vw',
+        fontSize: '3.8vw',
         fontFamily: 'Roboto Slab',
         fontWeight: 'regular',
         color: '#000000',
@@ -29,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(0),
         borderLeft: '0.65vw solid #FDCB35',
         [theme.breakpoints.down('md')]: {
-            fontSize: '5.5vw',
+            fontSize: '4.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '7vw',
+            fontSize: '5vw',
         },
     },
     title2: {
-        fontSize: '4.15vw',
+        fontSize: '3.8vw',
         fontFamily: 'Roboto Slab',
         fontWeight: 'bold',
         color: '#000000',
@@ -46,10 +46,10 @@ const useStyles = makeStyles((theme) => ({
         top: '-1.63vw',
         borderLeft: '0.65vw solid #FDCB35',
         [theme.breakpoints.down('md')]: {
-            fontSize: '5.5vw',
+            fontSize: '4.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '7vw',
+            fontSize: '5vw',
         },
     },
     subtitle: {
@@ -58,28 +58,28 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'light',
         color: '#000000',
         [theme.breakpoints.down('md')]: {
-            fontSize: '2vw',
+            fontSize: '1.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '2.5vw',
+            fontSize: '1.8vw',
         },
     },
     input: {
         background: '#F5F5F5',
-        padding: theme.spacing(1),
+        padding: theme.spacing(0.5),
+        paddingLeft: theme.spacing(1),
         width: '100%',
         fontSize: '1vw',
         fontFamily: 'Roboto Slab',
         fontWeight: 'regular',
         marginBottom: '1.3vw',
         [theme.breakpoints.down('md')]: {
-            fontSize: '1.8vw',
-            marginBottom: '2vw',
+            fontSize: '1.3vw',
+            marginBottom: '1.6vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '2.2vw',
+            fontSize: '1.8vw',
             padding: theme.spacing(0),
-            paddingLeft: theme.spacing(1),
         },
     },
     btnsubmit: {
@@ -90,16 +90,16 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: '13vw',
+        width: '11.5vw',
         background: '#FDCB35',
         marginTop: '1.3vw',
         [theme.breakpoints.down('md')]: {
-            marginTop: '3vw',
-            fontSize: '2vw',
+            marginTop: '2.7vw',
+            fontSize: '1.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            marginTop: '5vw',
-            fontSize: '2.5vw',
+            marginTop: '4.2vw',
+            fontSize: '1.8vw',
         },
     },
     box: {
@@ -108,22 +108,36 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Roboto Slab',
         fontWeight: 'regular',
         [theme.breakpoints.down('md')]: {
-            fontSize: '1.8vw',
+            fontSize: '1.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '2.2vw',
+            fontSize: '1.8vw',
         },
     },
     text1: {
         flex: '60%',
         textAlign: 'right',
+        fontSize: '1vw',
+        [theme.breakpoints.down('md')]: {
+            fontSize: '1.3vw',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '1.8vw',
+        },
     },
     text2: {
         flex: '40%',
         color: '#FDCB35',
         fontWeight: 'black',
         cursor: 'pointer',
-        paddingLeft: theme.spacing(1)
+        paddingLeft: theme.spacing(0.5),
+        fontSize: '1vw',
+        [theme.breakpoints.down('md')]: {
+            fontSize: '1.3vw',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '1.8vw',
+        },
     },
     box2: {
         position: 'relative',
@@ -137,20 +151,20 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('md')]: {
             bottom: `calc(-1em - ${theme.spacing(0)}px)`,
             left: `calc(-1em - ${theme.spacing(0)}px)`,
-            fontSize: '1.5vw',
+            fontSize: '1.2vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '2.3vw',
+            fontSize: '1.8vw',
         },
     },
     icon: {
         fontSize: '1.2vw',
         marginRight: theme.spacing(0.5),
         [theme.breakpoints.down('md')]: {
-            fontSize: '1.8vw',
+            fontSize: '1.5vw',
         },
         [theme.breakpoints.down('sm')]: {
-            fontSize: '2.7vw',
+            fontSize: '2vw',
         },
     },
 }));
